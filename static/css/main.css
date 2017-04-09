@@ -1,0 +1,55 @@
+* { font-family: "lato" }
+
+label { display:inline-block; font-weight: 600; margin-bottom: 0.25rem; width:200px; font-size:0.9rem; }
+
+.field-wrap {
+    margin:0 auto;
+}
+
+.field-container {
+    display:block;
+    margin: 0 0 0.2rem 0;
+    position: relative;
+}
+
+.field-container span {
+    position: relative;
+}
+
+input[type=text] {
+    padding:0.3rem;
+    width:300px;
+    font-size:0.9rem;
+}
+
+select {
+    width:300px;
+    font-size:0.9rem;
+    padding:0.35rem;
+    -webkit-appearance:none;
+    appearance:none;
+    border-radius:0;
+    border:1px solid #dfdfdf;
+}
+
+.field-container img {
+    width:26px;
+    height:auto;
+    display:block;
+    position:absolute;
+    top: -1px;
+    right: 2px;
+    cursor:pointer;
+}
+
+.btn {
+    background:#6099c6;
+    color:white;
+    border:0;
+    border-radius:3px;
+    display:block;
+    padding:0.75rem 2rem;
+    text-align: center;
+    font-size: 1rem;
+    margin: 0.5rem 0;
+}
