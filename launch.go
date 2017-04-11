@@ -1,4 +1,4 @@
-package main
+package main // import "github.com/collisdigital/go-launch-a-survey"
 
 import (
 	"fmt"
@@ -18,6 +18,8 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"regexp"
+
+	"github.com/collisdigital/go-launch-a-survey/settings"
 )
 
 type Page struct {
@@ -75,7 +77,7 @@ type EqClaims struct {
 // TODO: Document this, it returns an rsa.PublicKey
 func loadEncryptionKey() (interface{}, error) {
 
-	encryptionKeyPath := GetSettings()["JWT_ENCRYPTION_KEY_PATH"]
+	encryptionKeyPath := settings.GetSettings()["JWT_ENCRYPTION_KEY_PATH"]
 	if keyData, err := ioutil.ReadFile(encryptionKeyPath); err == nil {
 		block, _ := pem.Decode(keyData)
 		pub, err := x509.ParsePKIXPublicKey(block.Bytes)
@@ -90,7 +92,7 @@ func loadEncryptionKey() (interface{}, error) {
 // TODO: Document this, it returns an rsa.PrivateKey
 // TODO: Add support for password protected private keys
 func loadSigningKey() (interface{}, error) {
-	signingKeyPath := GetSettings()["JWT_SIGNING_KEY_PATH"]
+	signingKeyPath := settings.GetSettings()["JWT_SIGNING_KEY_PATH"]
 	if keyData, err := ioutil.ReadFile(signingKeyPath); err == nil {
 		block, _ := pem.Decode(keyData)
 		priv, err := x509.ParsePKCS1PrivateKey(block.Bytes)
@@ -225,7 +227,7 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 		//fields.Roles = ['dumper']
 
 		if token, err = convertPostToToken(fields); err == nil {
-			hostUrl := GetSettings()["SURVEY_RUNNER_URL"]
+			hostUrl := settings.GetSettings()["SURVEY_RUNNER_URL"]
 			http.Redirect(w, r, hostUrl+"/session?token="+token, 301)
 		}
 
@@ -316,7 +318,7 @@ func main() {
 	http.HandleFunc("/", rootHandler)
 
 	// Bind to a port and pass our router in
-	hostPort := GetSettings()["GO_LAUNCH_A_SURVEY_LISTEN_HOST"] + ":" + GetSettings()["GO_LAUNCH_A_SURVEY_LISTEN_PORT"]
+	hostPort := settings.GetSettings()["GO_LAUNCH_A_SURVEY_LISTEN_HOST"] + ":" + settings.GetSettings()["GO_LAUNCH_A_SURVEY_LISTEN_PORT"]
 
 	log.Println("Listening on " + hostPort)
 	log.Fatal(http.ListenAndServe(hostPort, nil))

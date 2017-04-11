@@ -1,4 +1,4 @@
-package main
+package settings
 
 import (
 	"os"
@@ -22,7 +22,7 @@ func GetSettings() Settings {
 	once.Do(func() {
 		settings = make(Settings)
 		getSetting(settings, "GO_LAUNCH_A_SURVEY_LISTEN_HOST", "0.0.0.0")
-		getSetting(settings, "GO_LAUNCH_A_SURVEY_LISTEN_PORT", "7999")
+		getSetting(settings, "GO_LAUNCH_A_SURVEY_LISTEN_PORT", "8000")
 		getSetting(settings, "SURVEY_RUNNER_URL", "http://localhost:5000")
 		getSetting(settings, "JWT_ENCRYPTION_KEY_PATH", "jwt-test-keys/sdc-user-authentication-encryption-sr-public-key.pem")
 		getSetting(settings, "JWT_SIGNING_KEY_PATH", "jwt-test-keys/sdc-user-authentication-signing-rrm-private-key.pem")
