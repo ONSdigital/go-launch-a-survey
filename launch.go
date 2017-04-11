@@ -71,11 +71,11 @@ type EqClaims struct {
 	TxId                  string `json:"tx_id"`
 }
 
-// TODO: move key path into settings - use os.Getenv("...")?
 // TODO: should this move into a separate file?
 // TODO: Document this, it returns an rsa.PublicKey
 func loadEncryptionKey() (interface{}, error) {
-	encryptionKeyPath := "jwt-test-keys/sdc-user-authentication-encryption-sr-public-key.pem"
+
+	encryptionKeyPath := GetSettings()["JWT_ENCRYPTION_KEY_PATH"]
 	if keyData, err := ioutil.ReadFile(encryptionKeyPath); err == nil {
 		block, _ := pem.Decode(keyData)
 		pub, err := x509.ParsePKIXPublicKey(block.Bytes)
@@ -86,12 +86,11 @@ func loadEncryptionKey() (interface{}, error) {
 	return nil, errors.New("Failed to load encryption key")
 }
 
-// TODO: move key path into settings - use os.Getenv("...")?
 // TODO: should this move into a separate file?
 // TODO: Document this, it returns an rsa.PrivateKey
 // TODO: Add support for password protected private keys
 func loadSigningKey() (interface{}, error) {
-	signingKeyPath := "jwt-test-keys/sdc-user-authentication-signing-rrm-private-key.pem"
+	signingKeyPath := GetSettings()["JWT_SIGNING_KEY_PATH"]
 	if keyData, err := ioutil.ReadFile(signingKeyPath); err == nil {
 		block, _ := pem.Decode(keyData)
 		priv, err := x509.ParsePKCS1PrivateKey(block.Bytes)
@@ -226,8 +225,8 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 		//fields.Roles = ['dumper']
 
 		if token, err = convertPostToToken(fields); err == nil {
-			// TODO: Make URL configurable
-			http.Redirect(w, r, "http://localhost:5000/session?token="+token, 301)
+			hostUrl := GetSettings()["SURVEY_RUNNER_URL"]
+			http.Redirect(w, r, hostUrl+"/session?token="+token, 301)
 		}
 
 	default:
@@ -317,6 +316,8 @@ func main() {
 	http.HandleFunc("/", rootHandler)
 
 	// Bind to a port and pass our router in
-	log.Println("Listening...")
-	log.Fatal(http.ListenAndServe(":8000", nil))
+	hostPort := GetSettings()["GO_LAUNCH_A_SURVEY_LISTEN_HOST"] + ":" + GetSettings()["GO_LAUNCH_A_SURVEY_LISTEN_PORT"]
+
+	log.Println("Listening on " + hostPort)
+	log.Fatal(http.ListenAndServe(hostPort, nil))
 }
