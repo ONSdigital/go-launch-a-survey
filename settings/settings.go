@@ -21,6 +21,7 @@ func init() {
 	setSetting("JWT_SIGNING_KEY_PATH", "jwt-test-keys/sdc-user-authentication-signing-rrm-private-key.pem")
 }
 
-func GetSetting(name string) string {
+// Get returns the value for the specified named setting
+func Get(name string) string {
 	return _settings[name]
 }

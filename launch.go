@@ -39,7 +39,7 @@ func serveTemplate(templateName string, data interface{}, w http.ResponseWriter,
 	}
 }
 
-type Page struct {
+type page struct {
 	Schemas []string
 }
 
@@ -92,23 +92,25 @@ func getAvailableSchemas() []string {
 }
 
 func getLaunchHandler(w http.ResponseWriter, r *http.Request) {
-	page := Page{Schemas: getAvailableSchemas()}
-	serveTemplate("launch.html", page, w, r)
+	p := page{Schemas: getAvailableSchemas()}
+	serveTemplate("launch.html", p, w, r)
 }
 
 func postLaunchHandler(w http.ResponseWriter, r *http.Request) {
-	var token string
-	var err error
-
-	if err = r.ParseForm(); err != nil {
-		fmt.Fprintf(w, "POST. ParseForm() err: %v\n", err)
+	err := r.ParseForm()
+	if err != nil {
+		http.Error(w, fmt.Sprintf("POST. r.ParseForm() err: %v", err), 500)
 		return
 	}
 
-	if token, err = authentication.ConvertPostToToken(r.PostForm); err == nil {
-		hostUrl := settings.GetSetting("SURVEY_RUNNER_URL")
-		http.Redirect(w, r, hostUrl+"/session?token="+token, 301)
+	token, tokenErr := authentication.ConvertPostToToken(r.PostForm)
+	if tokenErr != nil {
+		http.Error(w, fmt.Sprintf("ConvertPostToToken failed err: %v", err), 500)
+		return
 	}
+
+	hostURL := settings.Get("SURVEY_RUNNER_URL")
+	http.Redirect(w, r, hostURL+"/session?token="+token, 301)
 }
 
 func main() {
@@ -122,12 +124,9 @@ func main() {
 	staticFs := http.FileServer(http.Dir("static"))
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", staticFs))
 
-	// Assign mux to handle all URLs
-	http.Handle("/", r)
-
 	// Bind to a port and pass our router in
-	hostname := settings.GetSetting("GO_LAUNCH_A_SURVEY_LISTEN_HOST") + ":" + settings.GetSetting("GO_LAUNCH_A_SURVEY_LISTEN_PORT")
+	hostname := settings.Get("GO_LAUNCH_A_SURVEY_LISTEN_HOST") + ":" + settings.Get("GO_LAUNCH_A_SURVEY_LISTEN_PORT")
 
 	log.Println("Listening on " + hostname)
-	log.Fatal(http.ListenAndServe(hostname, nil))
+	log.Fatal(http.ListenAndServe(hostname, r))
 }
