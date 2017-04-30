@@ -22,3 +22,7 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+# binaries
+go-launch-a-survey
+govendor
