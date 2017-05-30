@@ -41,6 +41,10 @@ select {
     background-size:22px;
 }
 
+select[multiple] {
+    background:none;
+}
+
 .field-container img {
     width:26px;
     height:auto;
@@ -60,5 +64,6 @@ select {
     padding:0.75rem 2rem;
     text-align: center;
     font-size: 1rem;
-    margin: 0.5rem 0;
+    margin: 0.5rem;
+    float: left;
 }
