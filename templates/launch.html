@@ -102,7 +102,16 @@
     </div>
 
     <div class="field-container">
-        <input type="submit" value="Open Survey" class="qa-btn-submit-dev btn"/>
+        <label for="roles">Roles</label>
+        <select id="roles" name="roles" multiple="multiple" class="qa-roles">
+            <option name="flusher" value="flusher">flusher</option>
+            <option name="dumper" value="dumper">dumper</option>
+        </select>
+    </div>
+
+    <div class="field-container">
+        <input type="submit" name="action_launch" value="Open Survey" class="qa-btn-submit-dev btn"/>
+        <input type="submit" name="action_flush" value="Flush Survey Data" class="qa-btn-submit-dev btn"/>
     </div>
 
 </form>
