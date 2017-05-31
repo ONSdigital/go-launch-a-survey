@@ -109,15 +109,18 @@ func postLaunchHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	action := r.PostForm.Get("action")
+	launchAction := r.PostForm.Get("action_launch")
+	flushAction := r.PostForm.Get("action_flush")
 	log.Println("Request: " + r.PostForm.Encode())
 
 	hostURL := settings.Get("SURVEY_RUNNER_URL")
 
-	if action == "Flush Survey Data" {
+	if flushAction != "" {
 		http.Redirect(w, r, hostURL+"/flush?token="+token, 307)
-	} else {
+	} else if launchAction != "" {
 		http.Redirect(w, r, hostURL+"/session?token="+token, 301)
+	} else {
+		http.Error(w, fmt.Sprintf("Invalid Action"), 500)
 	}
 }
 
