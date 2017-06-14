@@ -1,4 +1,4 @@
-package main // import "github.com/collisdigital/go-launch-a-survey"
+package main // import "github.com/ONSdigital/go-launch-a-survey"
 
 import (
 	"fmt"
@@ -10,8 +10,8 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"github.com/collisdigital/go-launch-a-survey/authentication"
-	"github.com/collisdigital/go-launch-a-survey/settings"
+	"github.com/ONSdigital/go-launch-a-survey/authentication"
+	"github.com/ONSdigital/go-launch-a-survey/settings"
 )
 
 func serveTemplate(templateName string, data interface{}, w http.ResponseWriter, r *http.Request) {

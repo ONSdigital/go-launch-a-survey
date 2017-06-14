@@ -6,8 +6,8 @@ Install Go and ensure that your `GOPATH` env variable is set (usually it's `~/go
 Note this app uses govendor (https://github.com/kardianos/govendor) to manage its dependencies.
 
 ```
-go get -d github.com/collisdigital/go-launch-a-survey/
-cd $GOPATH/src/github.com/collisdigital/go-launch-a-survey/
+go get -d github.com/ONSdigital/go-launch-a-survey/
+cd $GOPATH/src/github.com/ONSdigital/go-launch-a-survey/
 go build
 ./go-launch-a-survey
 ```

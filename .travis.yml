@@ -12,8 +12,8 @@ script:
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - export TAG=`if [ "$TRAVIS_PULL_REQUEST_BRANCH" == "" ]; then echo "latest"; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi`
-  - docker run -v "$(pwd):/src" -v /var/run/docker.sock:/var/run/docker.sock centurylink/golang-builder collisdigital/go-launch-a-survey:$TAG
-  - docker push collisdigital/go-launch-a-survey:$TAG
+  - docker run -v "$(pwd):/src" -v /var/run/docker.sock:/var/run/docker.sock centurylink/golang-builder onsdigital/go-launch-a-survey:$TAG
+  - docker push onsdigital/go-launch-a-survey:$TAG
 
 branches:
     only:
