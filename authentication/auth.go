@@ -16,7 +16,7 @@ import (
 	"gopkg.in/square/go-jose.v2"
 	"gopkg.in/square/go-jose.v2/jwt"
 
-	"github.com/collisdigital/go-launch-a-survey/settings"
+	"github.com/ONSdigital/go-launch-a-survey/settings"
 )
 
 // KeyLoadError describes an error that can occur during key loading
