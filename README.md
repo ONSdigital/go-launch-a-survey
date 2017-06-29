@@ -21,7 +21,7 @@ To build and run, exposing the server on port 8000 locally:
 
 ```
 docker run --rm -v "$(pwd):/src" -v /var/run/docker.sock:/var/run/docker.sock centurylink/golang-builder
-docker run -p 8000:8000 go-launch-a-survey:latest
+docker run -it -p 8000:8000 go-launch-a-survey:latest
 ```
 
 ### Notes
