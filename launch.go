@@ -105,7 +105,7 @@ func postLaunchHandler(w http.ResponseWriter, r *http.Request) {
 
 	token, tokenErr := authentication.ConvertPostToToken(r.PostForm)
 	if tokenErr != nil {
-		http.Error(w, fmt.Sprintf("ConvertPostToToken failed err: %v", err), 500)
+		http.Error(w, fmt.Sprintf("ConvertPostToToken failed err: %v", tokenErr), 500)
 		return
 	}
 
