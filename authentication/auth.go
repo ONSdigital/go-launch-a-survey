@@ -39,13 +39,13 @@ func (e *KeyLoadError) Error() string {
 
 // PublicKeyResult is a wrapper for the public key and the kid that identifies it
 type PublicKeyResult struct {
-	key rsa.PublicKey
+	key *rsa.PublicKey
 	kid string
 }
 
 // PrivateKeyResult is a wrapper for the private key and the kid that identifies it
 type PrivateKeyResult struct {
-	key rsa.PrivateKey
+	key *rsa.PrivateKey
 	kid string
 }
 
@@ -70,7 +70,7 @@ func loadEncryptionKey() (*PublicKeyResult, *KeyLoadError) {
 		return nil, &KeyLoadError{Op: "cast", Err: "Failed to cast key to rsa.PublicKey"}
 	}
 
-	return &PublicKeyResult{*publicKey, kid}, nil
+	return &PublicKeyResult{publicKey, kid}, nil
 }
 
 func loadSigningKey() (*PrivateKeyResult, *KeyLoadError) {
@@ -98,7 +98,7 @@ func loadSigningKey() (*PrivateKeyResult, *KeyLoadError) {
 
 	kid := fmt.Sprintf("%x", sha1.Sum(pubBytes))
 
-	return &PrivateKeyResult{*privateKey, kid}, nil
+	return &PrivateKeyResult{privateKey, kid}, nil
 }
 
 type eqClaims struct {
