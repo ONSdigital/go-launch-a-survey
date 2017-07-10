@@ -2,8 +2,8 @@ package authentication
 
 import (
 	"crypto/rsa"
-	"crypto/x509"
 	"crypto/sha1"
+	"crypto/x509"
 	"encoding/pem"
 	"fmt"
 	"io/ioutil"
@@ -37,11 +37,13 @@ func (e *KeyLoadError) Error() string {
 	return e.Op + ": " + e.Err
 }
 
+// PublicKeyResult is a wrapper for the public key and the kid that identifies it
 type PublicKeyResult struct {
 	key rsa.PublicKey
 	kid string
 }
 
+// PrivateKeyResult is a wrapper for the private key and the kid that identifies it
 type PrivateKeyResult struct {
 	key rsa.PrivateKey
 	kid string
@@ -63,12 +65,12 @@ func loadEncryptionKey() (*PublicKeyResult, *KeyLoadError) {
 
 	kid := fmt.Sprintf("%x", sha1.Sum(keyData))
 
-	publicKey, ok := pub.(rsa.PublicKey)
+	publicKey, ok := pub.(*rsa.PublicKey)
 	if !ok {
 		return nil, &KeyLoadError{Op: "cast", Err: "Failed to cast key to rsa.PublicKey"}
 	}
 
-	return &PublicKeyResult{publicKey, kid}, nil
+	return &PublicKeyResult{*publicKey, kid}, nil
 }
 
 func loadSigningKey() (*PrivateKeyResult, *KeyLoadError) {
@@ -101,28 +103,28 @@ func loadSigningKey() (*PrivateKeyResult, *KeyLoadError) {
 
 type eqClaims struct {
 	jwt.Claims
-	UserID                string `json:"user_id"`
-	EqID                  string `json:"eq_id"`
-	PeriodID              string `json:"period_id"`
-	PeriodStr             string `json:"period_str"`
-	CollectionExerciseSid string `json:"collection_exercise_sid"`
-	RuRef                 string `json:"ru_ref"`
-	RuName                string `json:"ru_name"`
-	RefPStartDate         string `json:"ref_p_start_date"` // iso_8601_date
-	RefPEndDate           string `json:"ref_p_end_date"`   // iso_8601_date
-	FormType              string `json:"form_type"`
-	ReturnBy              string `json:"return_by"`
-	TradAs                string `json:"trad_as"`
-	EmploymentDate        string `json:"employment_date"` // iso_8601_date
-	RegionCode            string `json:"region_code"`
-	LanguageCode          string `json:"language_code"`
+	UserID                string       `json:"user_id"`
+	EqID                  string       `json:"eq_id"`
+	PeriodID              string       `json:"period_id"`
+	PeriodStr             string       `json:"period_str"`
+	CollectionExerciseSid string       `json:"collection_exercise_sid"`
+	RuRef                 string       `json:"ru_ref"`
+	RuName                string       `json:"ru_name"`
+	RefPStartDate         string       `json:"ref_p_start_date"` // iso_8601_date
+	RefPEndDate           string       `json:"ref_p_end_date"`   // iso_8601_date
+	FormType              string       `json:"form_type"`
+	ReturnBy              string       `json:"return_by"`
+	TradAs                string       `json:"trad_as"`
+	EmploymentDate        string       `json:"employment_date"` // iso_8601_date
+	RegionCode            string       `json:"region_code"`
+	LanguageCode          string       `json:"language_code"`
 	VariantFlags          variantFlags `json:"variant_flags"`
-	Roles                 string `json:"roles"`
-	TxID                  string `json:"tx_id"`
+	Roles                 string       `json:"roles"`
+	TxID                  string       `json:"tx_id"`
 }
 
 type variantFlags struct {
-	SexualIdentity		string `json:"sexual_identity"`
+	SexualIdentity string `json:"sexual_identity"`
 }
 
 var eqIDFormTypeRegex = regexp.MustCompile(`^(?P<eq_id>[a-z0-9]+)_(?P<form_type>\w+)\.json`)
@@ -165,9 +167,9 @@ func generateClaims(postValues url.Values) (claims eqClaims) {
 		RegionCode:     postValues.Get("region_code"),
 		LanguageCode:   postValues.Get("language_code"),
 		TxID:           uuid.NewV4().String(),
-		Roles:		postValues.Get("roles"),
-		VariantFlags:	variantFlags{
-			SexualIdentity:	postValues.Get("sexual_identity"),
+		Roles:          postValues.Get("roles"),
+		VariantFlags: variantFlags{
+			SexualIdentity: postValues.Get("sexual_identity"),
 		},
 	}
 }
