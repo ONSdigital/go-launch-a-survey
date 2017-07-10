@@ -37,46 +37,56 @@ func (e *KeyLoadError) Error() string {
 	return e.Op + ": " + e.Err
 }
 
-func loadEncryptionKey() (*rsa.PublicKey, string, *KeyLoadError) {
+type PublicKeyResult struct {
+	key rsa.PublicKey
+	kid string
+}
+
+type PrivateKeyResult struct {
+	key rsa.PrivateKey
+	kid string
+}
+
+func loadEncryptionKey() (*PublicKeyResult, *KeyLoadError) {
 	encryptionKeyPath := settings.Get("JWT_ENCRYPTION_KEY_PATH")
 
 	keyData, err := ioutil.ReadFile(encryptionKeyPath)
 	if err != nil {
-		return nil, "", &KeyLoadError{Op: "read", Err: "Failed to read encryption key from file: " + encryptionKeyPath}
+		return nil, &KeyLoadError{Op: "read", Err: "Failed to read encryption key from file: " + encryptionKeyPath}
 	}
 
 	block, _ := pem.Decode(keyData)
 	pub, err := x509.ParsePKIXPublicKey(block.Bytes)
 	if err != nil {
-		return nil, "", &KeyLoadError{Op: "parse", Err: "Failed to parse encryption key PEM"}
+		return nil, &KeyLoadError{Op: "parse", Err: "Failed to parse encryption key PEM"}
 	}
 
 	kid := fmt.Sprintf("%x", sha1.Sum(keyData))
 
-	publicKey, ok := pub.(*rsa.PublicKey)
+	publicKey, ok := pub.(rsa.PublicKey)
 	if !ok {
-		return nil, "", &KeyLoadError{Op: "cast", Err: "Failed to cast key to rsa.PublicKey"}
+		return nil, &KeyLoadError{Op: "cast", Err: "Failed to cast key to rsa.PublicKey"}
 	}
 
-	return publicKey, kid, nil
+	return &PublicKeyResult{publicKey, kid}, nil
 }
 
-func loadSigningKey() (*rsa.PrivateKey, string, *KeyLoadError) {
+func loadSigningKey() (*PrivateKeyResult, *KeyLoadError) {
 	signingKeyPath := settings.Get("JWT_SIGNING_KEY_PATH")
 	keyData, err := ioutil.ReadFile(signingKeyPath)
 	if err != nil {
-		return nil, "", &KeyLoadError{Op: "read", Err: "Failed to read signing key from file: " + signingKeyPath}
+		return nil, &KeyLoadError{Op: "read", Err: "Failed to read signing key from file: " + signingKeyPath}
 	}
 
 	block, _ := pem.Decode(keyData)
 	privateKey, err := x509.ParsePKCS1PrivateKey(block.Bytes)
 	if err != nil {
-		return nil, "", &KeyLoadError{Op: "parse", Err: "Failed to parse signing key from PEM"}
+		return nil, &KeyLoadError{Op: "parse", Err: "Failed to parse signing key from PEM"}
 	}
 
 	PublicKey, err := x509.MarshalPKIXPublicKey(&privateKey.PublicKey)
 	if err != nil {
-		return nil, "", &KeyLoadError{Op: "marshal", Err: "Failed to marshal public key"}
+		return nil, &KeyLoadError{Op: "marshal", Err: "Failed to marshal public key"}
 	}
 
 	pubBytes := pem.EncodeToMemory(&pem.Block{
@@ -86,7 +96,7 @@ func loadSigningKey() (*rsa.PrivateKey, string, *KeyLoadError) {
 
 	kid := fmt.Sprintf("%x", sha1.Sum(pubBytes))
 
-	return privateKey, kid, nil
+	return &PrivateKeyResult{*privateKey, kid}, nil
 }
 
 type eqClaims struct {
@@ -188,28 +198,28 @@ func ConvertPostToToken(postValues url.Values) (string, *TokenError) {
 
 	cl := generateClaims(postValues)
 
-	signingKey, signingKeyKid, keyErr := loadSigningKey()
+	privateKeyResult, keyErr := loadSigningKey()
 	if keyErr != nil {
 		return "", &TokenError{Desc: "Error loading signing key", From: keyErr}
 	}
 
-	encryptionKey, encryptionKeyKid, keyErr := loadEncryptionKey()
+	publicKeyResult, keyErr := loadEncryptionKey()
 	if keyErr != nil {
 		return "", &TokenError{Desc: "Error loading encryption key", From: keyErr}
 	}
 
 	opts := jose.SignerOptions{}
 	opts.WithType("JWT")
-	opts.WithHeader("kid", signingKeyKid)
+	opts.WithHeader("kid", privateKeyResult.kid)
 
-	signer, err := jose.NewSigner(jose.SigningKey{Algorithm: jose.RS256, Key: signingKey}, &opts)
+	signer, err := jose.NewSigner(jose.SigningKey{Algorithm: jose.RS256, Key: privateKeyResult.key}, &opts)
 	if err != nil {
 		return "", &TokenError{Desc: "Error creating JWT signer", From: err}
 	}
 
 	encryptor, err := jose.NewEncrypter(
 		jose.A256GCM,
-		jose.Recipient{Algorithm: jose.RSA_OAEP, Key: encryptionKey, KeyID: encryptionKeyKid},
+		jose.Recipient{Algorithm: jose.RSA_OAEP, Key: publicKeyResult.key, KeyID: publicKeyResult.kid},
 		(&jose.EncrypterOptions{}).WithType("JWT").WithContentType("JWT"))
 
 	if err != nil {
