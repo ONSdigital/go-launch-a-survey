@@ -65,7 +65,13 @@ func getAvailableSchemas() []string {
 		"census_communal.json",
 		"census_household.json",
 		"census_individual.json",
+		"mci_0203.json",
+		"mci_0213.json",
+		"mci_0205.json",
 		"multiple_answers.json",
+		"rsi_0102.json",
+		"rsi_0112.json",
+		"test_big_list_naughty_strings.json",
 		"test_checkbox.json",
 		"test_conditional_routing.json",
 		"test_currency.json",
@@ -93,7 +99,8 @@ func getAvailableSchemas() []string {
 		"test_textarea.json",
 		"test_textfield.json",
 		"test_timeout.json",
-		"test_total_breakdown.json"}
+		"test_total_breakdown.json",
+	}
 }
 
 func getLaunchHandler(w http.ResponseWriter, r *http.Request) {
