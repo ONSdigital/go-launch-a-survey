@@ -80,6 +80,7 @@ func getAvailableSchemas() []string {
 		"test_metadata_routing.json",
 		"test_navigation.json",
 		"test_navigation_confirmation.json",
+		"test_numbers.json",
 		"test_percentage.json",
 		"test_question_guidance.json",
 		"test_radio.json",
