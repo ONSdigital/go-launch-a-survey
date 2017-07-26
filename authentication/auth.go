@@ -111,20 +111,20 @@ type eqClaims struct {
 	RuRef                 string       `json:"ru_ref"`
 	RuName                string       `json:"ru_name"`
 	RefPStartDate         string       `json:"ref_p_start_date"` // iso_8601_date
-	RefPEndDate           string       `json:"ref_p_end_date"`   // iso_8601_date
+	RefPEndDate           string       `json:"ref_p_end_date,omitempty"` // iso_8601_date
 	FormType              string       `json:"form_type"`
 	ReturnBy              string       `json:"return_by"`
-	TradAs                string       `json:"trad_as"`
-	EmploymentDate        string       `json:"employment_date"` // iso_8601_date
-	RegionCode            string       `json:"region_code"`
-	LanguageCode          string       `json:"language_code"`
-	VariantFlags          variantFlags `json:"variant_flags"`
-	Roles                 string       `json:"roles"`
-	TxID                  string       `json:"tx_id"`
+	TradAs                string       `json:"trad_as,omitempty"`
+	EmploymentDate        string       `json:"employment_date,omitempty"` // iso_8601_date
+	RegionCode            string       `json:"region_code,omitempty"`
+	LanguageCode          string       `json:"language_code,omitempty"`
+	VariantFlags          variantFlags `json:"variant_flags,omitempty"`
+	Roles                 string       `json:"roles,omitempty"`
+	TxID                  string       `json:"tx_id,omitempty"`
 }
 
 type variantFlags struct {
-	SexualIdentity string `json:"sexual_identity"`
+	SexualIdentity string `json:"sexual_identity,omitempty"`
 }
 
 var eqIDFormTypeRegex = regexp.MustCompile(`^(?P<eq_id>[a-z0-9]+)_(?P<form_type>\w+)\.json`)
