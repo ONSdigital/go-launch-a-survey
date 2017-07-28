@@ -68,6 +68,7 @@ func getAvailableSchemas() []string {
 		"rsi_0112.json",
 		"test_big_list_naughty_strings.json",
 		"test_checkbox.json",
+		"test_conditional_dates.json",
 		"test_conditional_routing.json",
 		"test_currency.json",
 		"test_dates.json",
