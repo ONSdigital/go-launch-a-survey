@@ -97,6 +97,7 @@ func getAvailableSchemas() []string {
 		"test_textfield.json",
 		"test_timeout.json",
 		"test_total_breakdown.json",
+		"test_unit_patterns.json",
 	}
 }
 
