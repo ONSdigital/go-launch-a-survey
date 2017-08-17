@@ -2,6 +2,7 @@ package main // import "github.com/ONSdigital/go-launch-a-survey"
 
 import (
 	"fmt"
+
 	"html/template"
 	"log"
 	"net/http"
@@ -12,6 +13,7 @@ import (
 
 	"github.com/ONSdigital/go-launch-a-survey/authentication"
 	"github.com/ONSdigital/go-launch-a-survey/settings"
+	"github.com/ONSdigital/go-launch-a-survey/surveys"
 )
 
 func serveTemplate(templateName string, data interface{}, w http.ResponseWriter, r *http.Request) {
@@ -40,69 +42,11 @@ func serveTemplate(templateName string, data interface{}, w http.ResponseWriter,
 }
 
 type page struct {
-	Schemas []string
-}
-
-func getAvailableSchemas() []string {
-	// TODO: Replace with something dynamic
-	return []string{
-		"0_rogue_one.json",
-		"0_star_wars.json",
-		"1_0001.json",
-		"1_0005.json",
-		"1_0102.json",
-		"1_0112.json",
-		"1_0203.json",
-		"1_0205.json",
-		"1_0213.json",
-		"1_0215.json",
-		"2_0001.json",
-		"census_communal.json",
-		"census_household.json",
-		"census_individual.json",
-		"mci_0203.json",
-		"mci_0213.json",
-		"mci_0205.json",
-		"multiple_answers.json",
-		"rsi_0102.json",
-		"rsi_0112.json",
-		"test_big_list_naughty_strings.json",
-		"test_checkbox.json",
-		"test_conditional_dates.json",
-		"test_conditional_routing.json",
-		"test_currency.json",
-		"test_dates.json",
-		"test_final_confirmation.json",
-		"test_household_question.json",
-		"test_interstitial_page.json",
-		"test_language.json",
-		"test_language_cy.json",
-		"test_markup.json",
-		"test_metadata_routing.json",
-		"test_navigation.json",
-		"test_navigation_confirmation.json",
-		"test_numbers.json",
-		"test_percentage.json",
-		"test_question_guidance.json",
-		"test_radio.json",
-		"test_radio_checkbox_descriptions.json",
-		"test_relationship_household.json",
-		"test_repeating_and_conditional_routing.json",
-		"test_repeating_household.json",
-		"test_routing_on_multiple_select.json",
-		"test_skip_condition.json",
-		"test_skip_condition_block.json",
-		"test_skip_condition_group.json",
-		"test_textarea.json",
-		"test_textfield.json",
-		"test_timeout.json",
-		"test_total_breakdown.json",
-		"test_unit_patterns.json",
-	}
+	Schemas []surveys.LauncherSchema
 }
 
 func getLaunchHandler(w http.ResponseWriter, r *http.Request) {
-	p := page{Schemas: getAvailableSchemas()}
+	p := page{Schemas: surveys.GetAvailableSchemas()}
 	serveTemplate("launch.html", p, w, r)
 }
 

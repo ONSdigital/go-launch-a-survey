@@ -23,6 +23,7 @@ _testmain.go
 *.test
 *.prof
 
+vendor/
+
 # binaries
 go-launch-a-survey
-govendor

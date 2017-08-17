@@ -9,7 +9,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/url"
-	"regexp"
 	"time"
 
 	"github.com/satori/go.uuid"
@@ -18,6 +17,7 @@ import (
 	"gopkg.in/square/go-jose.v2/jwt"
 
 	"github.com/ONSdigital/go-launch-a-survey/settings"
+	"github.com/ONSdigital/go-launch-a-survey/surveys"
 )
 
 // KeyLoadError describes an error that can occur during key loading
@@ -113,6 +113,7 @@ type eqClaims struct {
 	RefPStartDate         string       `json:"ref_p_start_date"` // iso_8601_date
 	RefPEndDate           string       `json:"ref_p_end_date,omitempty"` // iso_8601_date
 	FormType              string       `json:"form_type"`
+	SurveyURL              string       `json:"survey_url"`
 	ReturnBy              string       `json:"return_by"`
 	TradAs                string       `json:"trad_as,omitempty"`
 	EmploymentDate        string       `json:"employment_date,omitempty"` // iso_8601_date
@@ -127,23 +128,12 @@ type variantFlags struct {
 	SexualIdentity string `json:"sexual_identity,omitempty"`
 }
 
-var eqIDFormTypeRegex = regexp.MustCompile(`^(?P<eq_id>[a-z0-9]+)_(?P<form_type>\w+)\.json`)
-
-func extractEqIDFormType(schema string) (EqID, formType string) {
-	match := eqIDFormTypeRegex.FindStringSubmatch(schema)
-	if match != nil {
-		EqID = match[1]
-		formType = match[2]
-	}
-	return
-}
-
 func generateClaims(postValues url.Values) (claims eqClaims) {
 	issued := time.Now()
 	expires := issued.Add(time.Minute * 10) // TODO: Support custom exp: r.PostForm.Get("exp")
 
 	schema := postValues.Get("schema")
-	EqID, formType := extractEqIDFormType(schema)
+	launcherSchema := surveys.FindSurveyByName(schema)
 
 	return eqClaims{
 		Claims: jwt.Claims{
@@ -151,8 +141,9 @@ func generateClaims(postValues url.Values) (claims eqClaims) {
 			Expiry:   jwt.NewNumericDate(expires),
 			ID:       uuid.NewV4().String(),
 		},
-		EqID:                  EqID,
-		FormType:              formType,
+		EqID:                  launcherSchema.EqID,
+		FormType:              launcherSchema.FormType,
+		SurveyURL:			   launcherSchema.URL,
 		UserID:                postValues.Get("user_id"),
 		PeriodID:              postValues.Get("period_id"),
 		PeriodStr:             postValues.Get("period_str"),
