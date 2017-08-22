@@ -8,6 +8,8 @@ Note this app uses govendor (https://github.com/kardianos/govendor) to manage it
 ```
 go get -d github.com/ONSdigital/go-launch-a-survey/
 cd $GOPATH/src/github.com/ONSdigital/go-launch-a-survey/
+go get -u github.com/golang/dep/cmd/dep
+dep ensure
 go build
 ./go-launch-a-survey
 ```
