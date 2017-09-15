@@ -125,7 +125,7 @@ type eqClaims struct {
 }
 
 type variantFlags struct {
-	SexualIdentity string `json:"sexual_identity,omitempty"`
+	SexualIdentity bool `json:"sexual_identity,omitempty"`
 }
 
 func generateClaims(postValues url.Values) (claims eqClaims) {
@@ -160,7 +160,7 @@ func generateClaims(postValues url.Values) (claims eqClaims) {
 		TxID:           uuid.NewV4().String(),
 		Roles:          postValues.Get("roles"),
 		VariantFlags: variantFlags{
-			SexualIdentity: postValues.Get("sexual_identity"),
+			SexualIdentity: postValues.Get("sexual_identity") == "true",
 		},
 	}
 }
