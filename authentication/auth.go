@@ -103,25 +103,25 @@ func loadSigningKey() (*PrivateKeyResult, *KeyLoadError) {
 
 type eqClaims struct {
 	jwt.Claims
-	UserID                string       `json:"user_id"`
-	EqID                  string       `json:"eq_id"`
-	PeriodID              string       `json:"period_id"`
-	PeriodStr             string       `json:"period_str"`
-	CollectionExerciseSid string       `json:"collection_exercise_sid"`
-	RuRef                 string       `json:"ru_ref"`
-	RuName                string       `json:"ru_name"`
-	RefPStartDate         string       `json:"ref_p_start_date"` // iso_8601_date
-	RefPEndDate           string       `json:"ref_p_end_date,omitempty"` // iso_8601_date
-	FormType              string       `json:"form_type"`
-	SurveyURL              string       `json:"survey_url"`
-	ReturnBy              string       `json:"return_by"`
-	TradAs                string       `json:"trad_as,omitempty"`
-	EmploymentDate        string       `json:"employment_date,omitempty"` // iso_8601_date
-	RegionCode            string       `json:"region_code,omitempty"`
-	LanguageCode          string       `json:"language_code,omitempty"`
-	VariantFlags          variantFlags `json:"variant_flags,omitempty"`
-	Roles                 string       `json:"roles,omitempty"`
-	TxID                  string       `json:"tx_id,omitempty"`
+	UserID                string        `json:"user_id"`
+	EqID                  string        `json:"eq_id"`
+	PeriodID              string        `json:"period_id"`
+	PeriodStr             string        `json:"period_str"`
+	CollectionExerciseSid string        `json:"collection_exercise_sid"`
+	RuRef                 string        `json:"ru_ref"`
+	RuName                string        `json:"ru_name"`
+	RefPStartDate         string        `json:"ref_p_start_date"`         // iso_8601_date
+	RefPEndDate           string        `json:"ref_p_end_date,omitempty"` // iso_8601_date
+	FormType              string        `json:"form_type"`
+	SurveyURL             string        `json:"survey_url,omitempty"`
+	ReturnBy              string        `json:"return_by"`
+	TradAs                string        `json:"trad_as,omitempty"`
+	EmploymentDate        string        `json:"employment_date,omitempty"` // iso_8601_date
+	RegionCode            string        `json:"region_code,omitempty"`
+	LanguageCode          string        `json:"language_code,omitempty"`
+	VariantFlags          *variantFlags `json:"variant_flags,omitempty"`
+	Roles                 string        `json:"roles,omitempty"`
+	TxID                  string        `json:"tx_id,omitempty"`
 }
 
 type variantFlags struct {
@@ -135,7 +135,7 @@ func generateClaims(postValues url.Values) (claims eqClaims) {
 	schema := postValues.Get("schema")
 	launcherSchema := surveys.FindSurveyByName(schema)
 
-	return eqClaims{
+	claims = eqClaims{
 		Claims: jwt.Claims{
 			IssuedAt: jwt.NewNumericDate(issued),
 			Expiry:   jwt.NewNumericDate(expires),
@@ -143,26 +143,56 @@ func generateClaims(postValues url.Values) (claims eqClaims) {
 		},
 		EqID:                  launcherSchema.EqID,
 		FormType:              launcherSchema.FormType,
-		SurveyURL:			   launcherSchema.URL,
 		UserID:                postValues.Get("user_id"),
 		PeriodID:              postValues.Get("period_id"),
 		PeriodStr:             postValues.Get("period_str"),
 		CollectionExerciseSid: postValues.Get("collection_exercise_sid"),
-		RuRef:          postValues.Get("ru_ref"),
-		RuName:         postValues.Get("ru_name"),
-		RefPStartDate:  postValues.Get("ref_p_start_date"),
-		RefPEndDate:    postValues.Get("ref_p_end_date"),
-		ReturnBy:       postValues.Get("return_by"),
-		TradAs:         postValues.Get("trad_as"),
-		EmploymentDate: postValues.Get("employment_date"),
-		RegionCode:     postValues.Get("region_code"),
-		LanguageCode:   postValues.Get("language_code"),
-		TxID:           uuid.NewV4().String(),
-		Roles:          postValues.Get("roles"),
-		VariantFlags: variantFlags{
-			SexualIdentity: postValues.Get("sexual_identity") == "true",
-		},
+		RuRef:         postValues.Get("ru_ref"),
+		RuName:        postValues.Get("ru_name"),
+		RefPStartDate: postValues.Get("ref_p_start_date"),
+		ReturnBy:      postValues.Get("return_by"),
 	}
+
+	// Add optional values
+	if launcherSchema.URL != "" {
+		claims.SurveyURL = launcherSchema.URL
+	}
+
+	if postValues.Get("ref_p_end_date") != "" {
+		claims.RefPEndDate = postValues.Get("ref_p_end_date")
+	}
+
+	if postValues.Get("trad_as") != "" {
+		claims.TradAs = postValues.Get("trad_as")
+	}
+
+	if postValues.Get("employment_date") != "" {
+		claims.EmploymentDate = postValues.Get("employment_date")
+	}
+
+	if postValues.Get("region_code") != "" {
+		claims.RegionCode = postValues.Get("region_code")
+	}
+
+	if postValues.Get("language_code") != "" {
+		claims.LanguageCode = postValues.Get("language_code")
+	}
+
+	if postValues.Get("roles") != "" {
+		claims.Roles = postValues.Get("roles")
+	}
+
+	if postValues.Get("sexual_identity") == "true" {
+		claims.VariantFlags = &variantFlags{
+			SexualIdentity: postValues.Get("sexual_identity") == "true",
+		}
+	}
+
+	if postValues.Get("tx_id") == "true" {
+		claims.TxID = uuid.NewV4().String()
+	}
+
+	return claims
 }
 
 // TokenError describes an error that can occur during JWT generation

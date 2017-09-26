@@ -2,11 +2,11 @@ package surveys
 
 import (
 	"encoding/json"
-	"github.com/ONSdigital/go-launch-a-survey/settings"
-	"net/http"
-	"log"
-	"regexp"
 	"github.com/AreaHQ/jsonhal"
+	"github.com/ONSdigital/go-launch-a-survey/settings"
+	"log"
+	"net/http"
+	"regexp"
 )
 
 // LauncherSchema is a representation of a schema in the Launcher
@@ -147,9 +147,9 @@ func getAvailableSchemasFromRegister() []LauncherSchema {
 			url := schema.Links["self"]
 			EqID, formType := extractEqIDFormType(schema.Name)
 			schemaList = append(schemaList, LauncherSchema{
-				Name: schema.Name,
-				URL: url.Href,
-				EqID: EqID,
+				Name:     schema.Name,
+				URL:      url.Href,
+				EqID:     EqID,
 				FormType: formType,
 			})
 		}
@@ -159,7 +159,7 @@ func getAvailableSchemasFromRegister() []LauncherSchema {
 }
 
 // FindSurveyByName Finds the schema in the list of available schemas
-func FindSurveyByName(name string) LauncherSchema  {
+func FindSurveyByName(name string) LauncherSchema {
 	for _, survey := range GetAvailableSchemas() {
 		if survey.Name == name {
 			return survey
