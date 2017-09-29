@@ -182,14 +182,12 @@ func generateClaims(postValues url.Values) (claims eqClaims) {
 		claims.Roles = postValues.Get("roles")
 	}
 
-	if postValues.Get("sexual_identity") == "true" {
-		claims.VariantFlags = &variantFlags{
-			SexualIdentity: postValues.Get("sexual_identity") == "true",
-		}
-	}
-
 	if postValues.Get("tx_id") == "true" {
 		claims.TxID = uuid.NewV4().String()
+	}
+
+	claims.VariantFlags = &variantFlags{
+		SexualIdentity: postValues.Get("sexual_identity") == "true",
 	}
 
 	return claims
