@@ -12,6 +12,9 @@ go get -u github.com/golang/dep/cmd/dep
 dep ensure
 go build
 ./go-launch-a-survey
+
+go run launch.go (Does both the build and run cmd above)
+
 ```
 
 Open http://localhost:8000/

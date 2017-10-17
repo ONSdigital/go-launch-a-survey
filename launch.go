@@ -10,7 +10,6 @@ import (
 	"path/filepath"
 
 	"github.com/gorilla/mux"
-
 	"github.com/ONSdigital/go-launch-a-survey/authentication"
 	"github.com/ONSdigital/go-launch-a-survey/settings"
 	"github.com/ONSdigital/go-launch-a-survey/surveys"
@@ -23,7 +22,7 @@ func serveTemplate(templateName string, data interface{}, w http.ResponseWriter,
 	// Return a 404 if the template doesn't exist or is directory
 	info, err := os.Stat(fp)
 	if err != nil && (os.IsNotExist(err) || info.IsDir()) {
-		fmt.Println("Cannot find: " + fp)
+		log.Println("Cannot find: " + fp)
 		http.NotFound(w, r)
 		return
 	}
@@ -56,18 +55,21 @@ func postLaunchHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, fmt.Sprintf("POST. r.ParseForm() err: %v", err), 500)
 		return
 	}
+	redirectURL(w, r)
+}
 
-	token, tokenErr := authentication.ConvertPostToToken(r.PostForm)
+func redirectURL(w http.ResponseWriter, r *http.Request) {
+	hostURL := settings.Get("SURVEY_RUNNER_URL")
+
+	token, tokenErr := authentication.GenerateTokenFromPost(r.PostForm)
 	if tokenErr != nil {
-		http.Error(w, fmt.Sprintf("ConvertPostToToken failed err: %v", tokenErr), 500)
+		http.Error(w, fmt.Sprintf("GenerateTokenFromPost failed err: %v", tokenErr), 500)
 		return
 	}
 
 	launchAction := r.PostForm.Get("action_launch")
 	flushAction := r.PostForm.Get("action_flush")
 	log.Println("Request: " + r.PostForm.Encode())
-
-	hostURL := settings.Get("SURVEY_RUNNER_URL")
 
 	if flushAction != "" {
 		http.Redirect(w, r, hostURL+"/flush?token="+token, 307)
@@ -78,12 +80,33 @@ func postLaunchHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func quickLauncherHandler(w http.ResponseWriter, r *http.Request) {
+	hostURL := settings.Get("SURVEY_RUNNER_URL")
+	surveyURL := r.URL.Query().Get("url")
+	log.Println("Quick launch request received", surveyURL)
+
+	token, err := authentication.GenerateTokenFromDefaults(surveyURL)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("GenerateTokenFromDefaults failed err: %v", err), 500)
+		return
+	}
+
+	if surveyURL != "" {
+		http.Redirect(w, r, hostURL+"/session?token="+token, 302)
+	} else {
+		http.Error(w, fmt.Sprintf("Not Found"), 404)
+	}
+}
+
 func main() {
 	r := mux.NewRouter()
 
 	// Launch handlers
 	r.HandleFunc("/", getLaunchHandler).Methods("GET")
 	r.HandleFunc("/", postLaunchHandler).Methods("POST")
+
+	//Author Launcher with passed parameters in Url
+	r.HandleFunc("/quick-launch", quickLauncherHandler).Methods("GET")
 
 	// Serve static assets
 	staticFs := http.FileServer(http.Dir("static"))

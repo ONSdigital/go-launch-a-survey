@@ -17,8 +17,8 @@ type LauncherSchema struct {
 	URL      string
 }
 
-// RegsiterResponse is the response from the eq-survey-register request
-type RegsiterResponse struct {
+// RegisterResponse is the response from the eq-survey-register request
+type RegisterResponse struct {
 	jsonhal.Hal
 }
 
@@ -131,7 +131,7 @@ func getAvailableSchemasFromRegister() []LauncherSchema {
 
 		defer resp.Body.Close()
 
-		var registerResponse RegsiterResponse
+		var registerResponse RegisterResponse
 
 		if err := json.NewDecoder(resp.Body).Decode(&registerResponse); err != nil {
 			log.Println(err)
