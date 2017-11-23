@@ -90,6 +90,7 @@ func GetAvailableSchemas() []LauncherSchema {
 		LauncherSchemaFromFilename("test_navigation.json"),
 		LauncherSchemaFromFilename("test_navigation_completeness.json"),
 		LauncherSchemaFromFilename("test_navigation_confirmation.json"),
+		LauncherSchemaFromFilename("test_navigation_routing.json"),
 		LauncherSchemaFromFilename("test_numbers.json"),
 		LauncherSchemaFromFilename("test_percentage.json"),
 		LauncherSchemaFromFilename("test_question_guidance.json"),
