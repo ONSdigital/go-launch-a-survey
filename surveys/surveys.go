@@ -94,7 +94,6 @@ func GetAvailableSchemas() []LauncherSchema {
 		LauncherSchemaFromFilename("test_numbers.json"),
 		LauncherSchemaFromFilename("test_percentage.json"),
 		LauncherSchemaFromFilename("test_question_guidance.json"),
-		LauncherSchemaFromFilename("test_radio.json"),
 		LauncherSchemaFromFilename("test_radio_checkbox_descriptions.json"),
 		LauncherSchemaFromFilename("test_radio_mandatory.json"),
 		LauncherSchemaFromFilename("test_radio_mandatory_with_mandatory_other.json"),
