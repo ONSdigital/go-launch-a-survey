@@ -56,7 +56,6 @@ func LauncherSchemaFromFilename(filename string) LauncherSchema {
 func GetAvailableSchemas() []LauncherSchema {
 	schemaList := []LauncherSchema{
 		LauncherSchemaFromFilename("0_star_wars.json"),
-		LauncherSchemaFromFilename("1_0001.json"),
 		LauncherSchemaFromFilename("1_0005.json"),
 		LauncherSchemaFromFilename("1_0102.json"),
 		LauncherSchemaFromFilename("1_0112.json"),
