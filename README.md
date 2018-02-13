@@ -34,6 +34,17 @@ You can also run a Survey Register for launcher to load Schemas from
 docker run -it -p 8080:8080 onsdigital/eq-survey-register:simple-rest-api
 ```
 
+### Run Quick-Launch
+For this to work ensure the JSON you are passing has an eq_id and form_type.
+Run Survey Launcher
+```
+scripts/run_app.sh
+```
+Now run Go launcher and navigate to "http://localhost:8000/quick-launch?url=" passing the url of the JSON
+```
+e.g."http://localhost:8000/quick-launch?url=http://localhost:7777/1_0001.json"
+```
+
 ### Notes
 * There are no unit tests yet
 * JWT spec based on http://ons-schema-definitions.readthedocs.io/en/latest/jwt_profile.html
