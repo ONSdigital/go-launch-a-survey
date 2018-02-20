@@ -123,7 +123,10 @@ type EqClaims struct {
 	LanguageCode          string       `json:"language_code,omitempty"`
 	VariantFlags          variantFlags `json:"variant_flags,omitempty"`
 	TxID                  string       `json:"tx_id,omitempty"`
-	Roles 		   	      []string	   `json:"roles,omitempty"`
+	Roles                 []string     `json:"roles,omitempty"`
+	CaseID                string       `json:"case_id,omitempty"`
+	CaseRef               string       `json:"case_ref,omitempty"`
+	AccountServiceURL     string       `json:"account_service_url,omitempty"`
 }
 
 type variantFlags struct {
@@ -151,7 +154,7 @@ func randomStringGen() (rs string) {
 	return randomString
 }
 
-func generateDefaultClaims() (claims EqClaims) {
+func generateDefaultClaims(accountURL string) (claims EqClaims) {
 	defaultClaims := EqClaims{
 		UserID:                "UNKNOWN",
 		PeriodID:              "201605",
@@ -167,10 +170,13 @@ func generateDefaultClaims() (claims EqClaims) {
 		RegionCode:            "GB-ENG",
 		LanguageCode:          "en",
 		TxID:                  uuid.NewV4().String(),
+		CaseID:                uuid.NewV4().String(),
+		CaseRef:               "1000000000000001",
+		AccountServiceURL:     accountURL,
 		VariantFlags: variantFlags{
 			SexualIdentity: true,
 		},
-		Roles:                 []string{"dumper"},
+		Roles: []string{"dumper"},
 	}
 	return defaultClaims
 }
@@ -194,7 +200,10 @@ func generateClaimsFromPost(postValues url.Values) (claims EqClaims) {
 		VariantFlags: variantFlags{
 			SexualIdentity: postValues.Get("sexual_identity") == "true",
 		},
-		Roles: 				  []string{postValues.Get("roles")},
+		Roles:             []string{postValues.Get("roles")},
+		CaseID:            uuid.NewV4().String(),
+		CaseRef:           postValues.Get("case_ref"),
+		AccountServiceURL: postValues.Get("account_url"),
 	}
 
 	return postClaims
@@ -307,9 +316,9 @@ func generateTokenFromClaims(cl EqClaims) (string, *TokenError) {
 }
 
 // GenerateTokenFromDefaults coverts a set of DEFAULT values into a JWT
-func GenerateTokenFromDefaults(url string) (string, *TokenError) {
+func GenerateTokenFromDefaults(url string, accountURL string) (string, *TokenError) {
 	claims := EqClaims{}
-	claims = generateDefaultClaims()
+	claims = generateDefaultClaims(accountURL)
 
 	jwtClaims := GenerateJwtClaims()
 	claims.Claims = jwtClaims

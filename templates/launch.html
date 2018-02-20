@@ -49,6 +49,13 @@
     </div>
 
     <div class="field-container">
+        <label for="case_ref">Case Ref</label>
+        <span>
+            <input id="case_ref" name="case_ref" type="text" value="1000000000000001" class="qa-case_ref">
+        </span>
+    </div>
+
+    <div class="field-container">
         <label for="ru_name">RU Name</label>
         <input id="ru_name" name="ru_name" type="text" value="ESSENTIAL ENTERPRISE LTD." class="qa-ru-name">
     </div>
@@ -107,13 +114,13 @@
         <label for="roles">Roles</label>
         <select id="roles" name="roles" multiple="multiple" class="qa-roles">
             <option name="flusher" value="flusher">flusher</option>
-            <option name="dumper" value="dumper">dumper</option>
+            <option name="dumper" value="dumper" selected="selected">dumper</option>
         </select>
     </div>
      
     <div class="field-container">
-        <label for="tx_id">Send tx_id</label>
-        <input id="tx_id" type="checkbox" name="tx_id" checked="true" class="qa-tx-id" value="true">
+        <label for="account_url">Account URL</label>
+        <input id="account_url" name="account_url" type="text" value="{{.AccountServiceURL}}" class="qa-account_url">
     </div>
     
     <div class="field-container">

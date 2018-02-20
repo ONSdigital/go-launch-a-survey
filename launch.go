@@ -9,10 +9,11 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/gorilla/mux"
 	"github.com/ONSdigital/go-launch-a-survey/authentication"
 	"github.com/ONSdigital/go-launch-a-survey/settings"
 	"github.com/ONSdigital/go-launch-a-survey/surveys"
+	"github.com/gorilla/mux"
+	"html"
 )
 
 func serveTemplate(templateName string, data interface{}, w http.ResponseWriter, r *http.Request) {
@@ -41,11 +42,15 @@ func serveTemplate(templateName string, data interface{}, w http.ResponseWriter,
 }
 
 type page struct {
-	Schemas []surveys.LauncherSchema
+	Schemas           []surveys.LauncherSchema
+	AccountServiceURL string
 }
 
 func getLaunchHandler(w http.ResponseWriter, r *http.Request) {
-	p := page{Schemas: surveys.GetAvailableSchemas()}
+	p := page{
+		Schemas:           surveys.GetAvailableSchemas(),
+		AccountServiceURL: getAccountURL(r),
+	}
 	serveTemplate("launch.html", p, w, r)
 }
 
@@ -56,6 +61,20 @@ func postLaunchHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	redirectURL(w, r)
+}
+
+func getAccountURL(r *http.Request) (string) {
+	forwardedProtocol := r.Header.Get("X-Forwarded-Proto")
+
+	requestProtocol := "http"
+
+	if forwardedProtocol != "" {
+		requestProtocol = forwardedProtocol
+	}
+
+	return fmt.Sprintf("%s://%s",
+		requestProtocol,
+		html.EscapeString(r.Host))
 }
 
 func redirectURL(w http.ResponseWriter, r *http.Request) {
@@ -82,10 +101,11 @@ func redirectURL(w http.ResponseWriter, r *http.Request) {
 
 func quickLauncherHandler(w http.ResponseWriter, r *http.Request) {
 	hostURL := settings.Get("SURVEY_RUNNER_URL")
+	accountURL := getAccountURL(r)
 	surveyURL := r.URL.Query().Get("url")
 	log.Println("Quick launch request received", surveyURL)
 
-	token, err := authentication.GenerateTokenFromDefaults(surveyURL)
+	token, err := authentication.GenerateTokenFromDefaults(surveyURL, accountURL)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("GenerateTokenFromDefaults failed err: %v", err), 500)
 		return
