@@ -121,6 +121,7 @@ func GetAvailableSchemas() []LauncherSchema {
 		LauncherSchemaFromFilename("test_skip_condition_block.json"),
 		LauncherSchemaFromFilename("test_skip_condition_group.json"),
 		LauncherSchemaFromFilename("test_summary.json"),
+		LauncherSchemaFromFilename("test_section_summary.json"),
 		LauncherSchemaFromFilename("test_view_submitted_response.json"),
 		LauncherSchemaFromFilename("test_textarea.json"),
 		LauncherSchemaFromFilename("test_textfield.json"),
