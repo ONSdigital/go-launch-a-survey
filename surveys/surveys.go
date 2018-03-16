@@ -76,6 +76,7 @@ func GetAvailableSchemas() []LauncherSchema {
 		LauncherSchemaFromFilename("test_conditional_routing.json"),
 		LauncherSchemaFromFilename("test_currency.json"),
 		LauncherSchemaFromFilename("test_dates.json"),
+		LauncherSchemaFromFilename("test_default.json"),
 		LauncherSchemaFromFilename("test_dropdown_mandatory.json"),
 		LauncherSchemaFromFilename("test_dropdown_mandatory_with_overridden_error.json"),
 		LauncherSchemaFromFilename("test_dropdown_optional.json"),
