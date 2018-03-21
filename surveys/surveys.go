@@ -134,6 +134,7 @@ func GetAvailableSchemas() []LauncherSchema {
 		LauncherSchemaFromFilename("test_sum_equal_validation_against_total.json"),
 		LauncherSchemaFromFilename("test_sum_equal_or_less_validation_against_total.json"),
 		LauncherSchemaFromFilename("test_sum_less_validation_against_total.json"),
+		LauncherSchemaFromFilename("test_sum_multi_validation_against_total.json"),
 		LauncherSchemaFromFilename("test_view_submitted_response.json"),
 		LauncherSchemaFromFilename("test_textarea.json"),
 		LauncherSchemaFromFilename("test_textfield.json"),
