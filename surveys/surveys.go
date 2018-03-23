@@ -74,6 +74,7 @@ func GetAvailableSchemas() []LauncherSchema {
 		LauncherSchemaFromFilename("test_checkbox.json"),
 		LauncherSchemaFromFilename("test_conditional_dates.json"),
 		LauncherSchemaFromFilename("test_conditional_routing.json"),
+		LauncherSchemaFromFilename("test_confirmation_question.json"),
 		LauncherSchemaFromFilename("test_currency.json"),
 		LauncherSchemaFromFilename("test_dates.json"),
 		LauncherSchemaFromFilename("test_default.json"),
