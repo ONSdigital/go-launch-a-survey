@@ -20,6 +20,7 @@ import (
 	"math/rand"
 	"encoding/base64"
 	"log"
+	"strings"
 )
 
 // KeyLoadError describes an error that can occur during key loading
@@ -239,10 +240,15 @@ func launcherSchemaFromURL(url string) (launcherSchema surveys.LauncherSchema) {
 		panic(err)
 	}
 
+	cacheBust := ""
+	if !strings.Contains(url, "?") {
+		cacheBust = "?bust=" + time.Now().Format("20060102150405")
+	}
+
 	launcherSchema = surveys.LauncherSchema{
 		EqID:     schema.EqID,
 		FormType: schema.FormType,
-		URL:      url,
+		URL:      url + cacheBust,
 	}
 
 	return launcherSchema
