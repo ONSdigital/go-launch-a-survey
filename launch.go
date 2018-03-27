@@ -80,9 +80,9 @@ func getAccountURL(r *http.Request) (string) {
 func redirectURL(w http.ResponseWriter, r *http.Request) {
 	hostURL := settings.Get("SURVEY_RUNNER_URL")
 
-	token, tokenErr := authentication.GenerateTokenFromPost(r.PostForm)
-	if tokenErr != nil {
-		http.Error(w, fmt.Sprintf("GenerateTokenFromPost failed err: %v", tokenErr), 500)
+	token, err := authentication.GenerateTokenFromPost(r.PostForm)
+	if err != "" {
+		http.Error(w, err, 500)
 		return
 	}
 
@@ -106,8 +106,8 @@ func quickLauncherHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println("Quick launch request received", surveyURL)
 
 	token, err := authentication.GenerateTokenFromDefaults(surveyURL, accountURL)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("GenerateTokenFromDefaults failed err: %v", err), 500)
+	if err != "" {
+		http.Error(w, err, 500)
 		return
 	}
 
