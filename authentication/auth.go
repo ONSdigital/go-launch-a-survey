@@ -20,7 +20,9 @@ import (
 	"math/rand"
 	"encoding/base64"
 	"log"
+	"bytes"
 	"strings"
+	"path"
 )
 
 // KeyLoadError describes an error that can occur during key loading
@@ -224,15 +226,24 @@ func GenerateJwtClaims() (jwtClaims jwt.Claims) {
 	return jwtClaims
 }
 
-func launcherSchemaFromURL(url string) (launcherSchema surveys.LauncherSchema) {
+func launcherSchemaFromURL(url string) (launcherSchema surveys.LauncherSchema, error string) {
 	resp, err := http.Get(url)
 	if err != nil {
 		panic(err)
 	}
 
+	if resp.StatusCode != 200 {
+		return launcherSchema, fmt.Sprintf("Failed to load Schema from %s", url)
+	}
+
 	responseBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		panic(err)
+	}
+
+	validationError := validateSchema(responseBody)
+	if validationError != "" {
+		return launcherSchema, validationError
 	}
 
 	var schema QuestionnaireSchema
@@ -251,7 +262,28 @@ func launcherSchemaFromURL(url string) (launcherSchema surveys.LauncherSchema) {
 		URL:      url + cacheBust,
 	}
 
-	return launcherSchema
+	return launcherSchema, ""
+}
+
+func validateSchema(payload []byte) (error string) {
+	if settings.Get("SCHEMA_VALIDATOR_URL") == "" {
+		validateURL := path.Join(settings.Get("SCHEMA_VALIDATOR_URL"), "validate")
+		resp, err := http.Post(validateURL, "application/json", bytes.NewBuffer(payload))
+		if err != nil {
+			return err.Error()
+		}
+
+		responseBody, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return err.Error()
+		}
+
+		if resp.StatusCode != 200 {
+			return string(responseBody)
+		}
+	}
+
+	return ""
 }
 
 func addSchemaToClaims(claims *EqClaims, LauncherSchema surveys.LauncherSchema) () {
@@ -322,22 +354,29 @@ func generateTokenFromClaims(cl EqClaims) (string, *TokenError) {
 }
 
 // GenerateTokenFromDefaults coverts a set of DEFAULT values into a JWT
-func GenerateTokenFromDefaults(url string, accountURL string) (string, *TokenError) {
+func GenerateTokenFromDefaults(url string, accountURL string) (token string, error string) {
 	claims := EqClaims{}
 	claims = generateDefaultClaims(accountURL)
 
 	jwtClaims := GenerateJwtClaims()
 	claims.Claims = jwtClaims
 
-	launcherSchema := launcherSchemaFromURL(url)
+	launcherSchema, validationError := launcherSchemaFromURL(url)
+	if validationError != "" {
+		return "", validationError
+	}
 	addSchemaToClaims(&claims, launcherSchema)
 
-	token, nil := generateTokenFromClaims(claims)
-	return token, nil
+	token, tokenError := generateTokenFromClaims(claims)
+	if tokenError != nil {
+		return token, fmt.Sprintf("GenerateTokenFromDefaults failed err: %v", tokenError)
+	}
+
+	return token, ""
 }
 
 // GenerateTokenFromPost coverts a set of POST values into a JWT
-func GenerateTokenFromPost(postValues url.Values) (string, *TokenError) {
+func GenerateTokenFromPost(postValues url.Values) (string, string) {
 	log.Println("POST received: ", postValues)
 
 	claims := EqClaims{}
@@ -350,6 +389,6 @@ func GenerateTokenFromPost(postValues url.Values) (string, *TokenError) {
 	launcherSchema := surveys.FindSurveyByName(schema)
 	addSchemaToClaims(&claims, launcherSchema)
 
-	token, nil := generateTokenFromClaims(claims)
-	return token, nil
+	token, error := generateTokenFromClaims(claims)
+	return token, fmt.Sprintf("GenerateTokenFromPost failed err: %v", error)
 }
