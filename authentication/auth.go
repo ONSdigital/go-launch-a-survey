@@ -389,6 +389,10 @@ func GenerateTokenFromPost(postValues url.Values) (string, string) {
 	launcherSchema := surveys.FindSurveyByName(schema)
 	addSchemaToClaims(&claims, launcherSchema)
 
-	token, error := generateTokenFromClaims(claims)
-	return token, fmt.Sprintf("GenerateTokenFromPost failed err: %v", error)
+	token, tokenError := generateTokenFromClaims(claims)
+	if tokenError != nil {
+		return token, fmt.Sprintf("GenerateTokenFromPost failed err: %v", tokenError)
+	}
+
+	return token, ""
 }
