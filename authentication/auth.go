@@ -267,20 +267,22 @@ func launcherSchemaFromURL(url string) (launcherSchema surveys.LauncherSchema, e
 
 func validateSchema(payload []byte) (error string) {
 	if settings.Get("SCHEMA_VALIDATOR_URL") == "" {
-		validateURL := path.Join(settings.Get("SCHEMA_VALIDATOR_URL"), "validate")
-		resp, err := http.Post(validateURL, "application/json", bytes.NewBuffer(payload))
-		if err != nil {
-			return err.Error()
-		}
+		return ""
+	}
 
-		responseBody, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return err.Error()
-		}
+	validateURL := path.Join(settings.Get("SCHEMA_VALIDATOR_URL"), "validate")
+	resp, err := http.Post(validateURL, "application/json", bytes.NewBuffer(payload))
+	if err != nil {
+		return err.Error()
+	}
 
-		if resp.StatusCode != 200 {
-			return string(responseBody)
-		}
+	responseBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err.Error()
+	}
+
+	if resp.StatusCode != 200 {
+		return string(responseBody)
 	}
 
 	return ""
