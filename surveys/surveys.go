@@ -69,6 +69,8 @@ func GetAvailableSchemas() []LauncherSchema {
 		LauncherSchemaFromFilename("census_individual.json"),
 		LauncherSchemaFromFilename("e_commerce.json"),
 		LauncherSchemaFromFilename("mbs_0111.json"),
+		LauncherSchemaFromFilename("mbs_0117.json"),
+		LauncherSchemaFromFilename("mbs_0167.json"),
 		LauncherSchemaFromFilename("mbs_0205.json"),
 		LauncherSchemaFromFilename("mbs_0216.json"),
 		LauncherSchemaFromFilename("mbs_0255.json"),
