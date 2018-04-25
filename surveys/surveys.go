@@ -2,11 +2,12 @@ package surveys
 
 import (
 	"encoding/json"
-	"github.com/AreaHQ/jsonhal"
-	"github.com/ONSdigital/go-launch-a-survey/settings"
 	"log"
 	"net/http"
 	"regexp"
+
+	"github.com/AreaHQ/jsonhal"
+	"github.com/ONSdigital/go-launch-a-survey/settings"
 )
 
 // LauncherSchema is a representation of a schema in the Launcher
@@ -68,6 +69,7 @@ func GetAvailableSchemas() []LauncherSchema {
 		LauncherSchemaFromFilename("census_household.json"),
 		LauncherSchemaFromFilename("census_individual.json"),
 		LauncherSchemaFromFilename("e_commerce.json"),
+		LauncherSchemaFromFilename("labour_force.json"),
 		LauncherSchemaFromFilename("mbs_0111.json"),
 		LauncherSchemaFromFilename("mbs_0117.json"),
 		LauncherSchemaFromFilename("mbs_0123.json"),
