@@ -70,6 +70,7 @@ func GetAvailableSchemas() []LauncherSchema {
 		LauncherSchemaFromFilename("census_individual.json"),
 		LauncherSchemaFromFilename("e_commerce.json"),
 		LauncherSchemaFromFilename("labour_force.json"),
+		LauncherSchemaFromFilename("mbs_0106.json"),
 		LauncherSchemaFromFilename("mbs_0111.json"),
 		LauncherSchemaFromFilename("mbs_0117.json"),
 		LauncherSchemaFromFilename("mbs_0123.json"),
