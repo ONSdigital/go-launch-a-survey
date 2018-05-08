@@ -99,6 +99,7 @@ func GetAvailableSchemas() []LauncherSchema {
 		LauncherSchemaFromFilename("test_confirmation_question.json"),
 		LauncherSchemaFromFilename("test_currency.json"),
 		LauncherSchemaFromFilename("test_date_validation_combined.json"),
+		LauncherSchemaFromFilename("test_date_validation_mm_yyyy_combined.json"),
 		LauncherSchemaFromFilename("test_date_validation_range.json"),
 		LauncherSchemaFromFilename("test_date_validation_single.json"),
 		LauncherSchemaFromFilename("test_dates.json"),
