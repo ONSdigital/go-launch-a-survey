@@ -92,6 +92,7 @@ func GetAvailableSchemas() []LauncherSchema {
 		LauncherSchemaFromFilename("mbs_0867.json"),
 		LauncherSchemaFromFilename("mbs_0873.json"),
 		LauncherSchemaFromFilename("multiple_answers.json"),
+		LauncherSchemaFromFilename("rsi_transformation.json"),
 		LauncherSchemaFromFilename("test_big_list_naughty_strings.json"),
 		LauncherSchemaFromFilename("test_checkbox.json"),
 		LauncherSchemaFromFilename("test_conditional_dates.json"),
