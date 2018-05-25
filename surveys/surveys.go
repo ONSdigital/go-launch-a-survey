@@ -112,6 +112,7 @@ func GetAvailableSchemas() []LauncherSchema {
 		LauncherSchemaFromFilename("test_difference_in_years_month_year.json"),
 		LauncherSchemaFromFilename("test_difference_in_years_month_year_range.json"),
 		LauncherSchemaFromFilename("test_difference_in_years_range.json"),
+		LauncherSchemaFromFilename("test_different_question_titles.json"),
 		LauncherSchemaFromFilename("test_dropdown_mandatory.json"),
 		LauncherSchemaFromFilename("test_dropdown_mandatory_with_overridden_error.json"),
 		LauncherSchemaFromFilename("test_dropdown_optional.json"),
@@ -133,6 +134,7 @@ func GetAvailableSchemas() []LauncherSchema {
 		LauncherSchemaFromFilename("test_percentage.json"),
 		LauncherSchemaFromFilename("test_question_guidance.json"),
 		LauncherSchemaFromFilename("test_radio_checkbox_descriptions.json"),
+		LauncherSchemaFromFilename("test_radio_checkbox_titles.json"),
 		LauncherSchemaFromFilename("test_radio_mandatory.json"),
 		LauncherSchemaFromFilename("test_radio_mandatory_with_mandatory_other.json"),
 		LauncherSchemaFromFilename("test_radio_mandatory_with_mandatory_other_overridden_error.json"),
@@ -170,6 +172,7 @@ func GetAvailableSchemas() []LauncherSchema {
 		LauncherSchemaFromFilename("test_textarea.json"),
 		LauncherSchemaFromFilename("test_textfield.json"),
 		LauncherSchemaFromFilename("test_timeout.json"),
+		LauncherSchemaFromFilename("test_titles_within_repeating_blocks.json"),
 		LauncherSchemaFromFilename("test_total_breakdown.json"),
 		LauncherSchemaFromFilename("test_unit_patterns.json"),
 	}
