@@ -95,6 +95,7 @@ func GetAvailableSchemas() []LauncherSchema {
 		LauncherSchemaFromFilename("rsi_transformation.json"),
 		LauncherSchemaFromFilename("test_big_list_naughty_strings.json"),
 		LauncherSchemaFromFilename("test_checkbox.json"),
+		LauncherSchemaFromFilename("test_checkbox_mutually_exclusive.json"),
 		LauncherSchemaFromFilename("test_conditional_dates.json"),
 		LauncherSchemaFromFilename("test_conditional_routing.json"),
 		LauncherSchemaFromFilename("test_confirmation_question.json"),
