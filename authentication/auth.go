@@ -10,19 +10,19 @@ import (
 	"github.com/ONSdigital/go-launch-a-survey/surveys"
 	"github.com/satori/go.uuid"
 	"gopkg.in/square/go-jose.v2"
+	"gopkg.in/square/go-jose.v2/json"
 	"gopkg.in/square/go-jose.v2/jwt"
 	"io/ioutil"
+	"net/http"
 	"net/url"
 	"time"
-	"net/http"
-	"gopkg.in/square/go-jose.v2/json"
 
-	"math/rand"
+	"bytes"
 	"encoding/base64"
 	"log"
-	"bytes"
-	"strings"
+	"math/rand"
 	"path"
+	"strings"
 )
 
 // KeyLoadError describes an error that can occur during key loading
@@ -157,59 +157,72 @@ func randomStringGen() (rs string) {
 	return randomString
 }
 
-func generateDefaultClaims(accountURL string) (claims EqClaims) {
-	defaultClaims := EqClaims{
-		UserID:                "UNKNOWN",
-		PeriodID:              "201605",
-		PeriodStr:             "May 2017",
-		CollectionExerciseSid: randomStringGen(),
-		RuRef:                 "12346789012A",
-		RuName:                "ESSENTIAL ENTERPRISE LTD.",
-		RefPStartDate:         "2016-05-01",
-		RefPEndDate:           "2016-05-31",
-		ReturnBy:              "2016-06-12",
-		TradAs:                "ESSENTIAL ENTERPRISE LTD.",
-		EmploymentDate:        "2016-06-10",
-		RegionCode:            "GB-ENG",
-		LanguageCode:          "en",
-		TxID:                  uuid.NewV4().String(),
-		CaseID:                uuid.NewV4().String(),
-		CaseRef:               "1000000000000001",
-		AccountServiceURL:     accountURL,
-		VariantFlags: variantFlags{
-			SexualIdentity: true,
-		},
-		Roles: []string{"dumper"},
+func getStringOrDefault(key string, values map[string][]string, defaultValue string) string {
+	var value string
+	if keyValues, ok := values[key]; ok {
+		value = keyValues[0]
+	} else {
+		value = defaultValue
 	}
-	return defaultClaims
+	return value
 }
 
-func generateClaimsFromPost(postValues url.Values) (claims EqClaims) {
-	postClaims := EqClaims{
-		UserID:                postValues.Get("user_id"),
-		PeriodID:              postValues.Get("period_id"),
-		PeriodStr:             postValues.Get("period_str"),
-		CollectionExerciseSid: postValues.Get("collection_exercise_sid"),
-		RuRef:                 postValues.Get("ru_ref"),
-		RuName:                postValues.Get("ru_name"),
-		RefPStartDate:         postValues.Get("ref_p_start_date"),
-		RefPEndDate:           postValues.Get("ref_p_end_date"),
-		ReturnBy:              postValues.Get("return_by"),
-		TradAs:                postValues.Get("trad_as"),
-		EmploymentDate:        postValues.Get("employment_date"),
-		RegionCode:            postValues.Get("region_code"),
-		LanguageCode:          postValues.Get("language_code"),
-		TxID:                  uuid.NewV4().String(),
-		VariantFlags: variantFlags{
-			SexualIdentity: postValues.Get("sexual_identity") == "true",
-		},
-		Roles:             []string{postValues.Get("roles")},
-		CaseID:            uuid.NewV4().String(),
-		CaseRef:           postValues.Get("case_ref"),
-		AccountServiceURL: postValues.Get("account_url"),
+func generateClaims(claimValues map[string][]string) (claims EqClaims) {
+	userID := getStringOrDefault("user_id", claimValues, "UNKNOWN")
+	periodID := getStringOrDefault("period_id", claimValues, "201605")
+	periodStr := getStringOrDefault("period_str", claimValues, "May 2017")
+	collexSID := getStringOrDefault("collection_exercise_sid", claimValues, randomStringGen())
+	ruRef := getStringOrDefault("ru_ref", claimValues, "12346789012A")
+	ruName := getStringOrDefault("ru_name", claimValues, "ESSENTIAL ENTERPRISE LTD.")
+	refPStartDate := getStringOrDefault("ref_p_start_date", claimValues, "2016-05-01")
+	refPEndDate := getStringOrDefault("ref_p_end_date", claimValues, "2016-05-31")
+	returnBy := getStringOrDefault("return_by", claimValues, "2016-06-12")
+	tradAs := getStringOrDefault("trad_as", claimValues, "ESSENTIAL ENTERPRISE LTD.")
+	employmentDate := getStringOrDefault("employmentDate", claimValues, "2016-06-10")
+	regionCode := getStringOrDefault("region_code", claimValues, "GB-ENG")
+	languageCode := getStringOrDefault("language_code", claimValues, "en")
+	caseRef := getStringOrDefault("case_ref", claimValues, "1000000000000001")
+	accountURL := getStringOrDefault("account_url", claimValues, "")
+
+	var sexualIdentity bool
+	if sexualIdentityValues, ok := claimValues["sexual_identity"]; ok {
+		sexualIdentity = sexualIdentityValues[0] == "true"
+	} else {
+		sexualIdentity = true
 	}
 
-	return postClaims
+	var roles []string
+	if rolesValues, ok := claimValues["roles"]; ok {
+		roles = rolesValues
+	} else {
+		roles = []string{"dumper"}
+	}
+
+	claims = EqClaims{
+		UserID:                userID,
+		PeriodID:              periodID,
+		PeriodStr:             periodStr,
+		CollectionExerciseSid: collexSID,
+		RuRef:          ruRef,
+		RuName:         ruName,
+		RefPStartDate:  refPStartDate,
+		RefPEndDate:    refPEndDate,
+		ReturnBy:       returnBy,
+		TradAs:         tradAs,
+		EmploymentDate: employmentDate,
+		RegionCode:     regionCode,
+		LanguageCode:   languageCode,
+		TxID:           uuid.NewV4().String(),
+		VariantFlags: variantFlags{
+			SexualIdentity: sexualIdentity,
+		},
+		Roles:             roles,
+		CaseID:            uuid.NewV4().String(),
+		CaseRef:           caseRef,
+		AccountServiceURL: accountURL,
+	}
+
+	return claims
 }
 
 // GenerateJwtClaims creates a jwtClaim needed to generate a token
@@ -290,7 +303,7 @@ func validateSchema(payload []byte) (error string) {
 	return ""
 }
 
-func addSchemaToClaims(claims *EqClaims, LauncherSchema surveys.LauncherSchema) () {
+func addSchemaToClaims(claims *EqClaims, LauncherSchema surveys.LauncherSchema) {
 	claims.EqID = LauncherSchema.EqID
 	claims.FormType = LauncherSchema.FormType
 	claims.SurveyURL = LauncherSchema.URL
@@ -358,14 +371,14 @@ func generateTokenFromClaims(cl EqClaims) (string, *TokenError) {
 }
 
 // GenerateTokenFromDefaults coverts a set of DEFAULT values into a JWT
-func GenerateTokenFromDefaults(url string, accountURL string) (token string, error string) {
+func GenerateTokenFromDefaults(surveyURL string, accountURL string, urlValues url.Values) (token string, error string) {
 	claims := EqClaims{}
-	claims = generateDefaultClaims(accountURL)
+	urlValues["account_url"] = []string{accountURL}
+	claims = generateClaims(urlValues)
 
 	jwtClaims := GenerateJwtClaims()
 	claims.Claims = jwtClaims
-
-	launcherSchema, validationError := launcherSchemaFromURL(url)
+	launcherSchema, validationError := launcherSchemaFromURL(surveyURL)
 	if validationError != "" {
 		return "", validationError
 	}
@@ -384,7 +397,7 @@ func GenerateTokenFromPost(postValues url.Values) (string, string) {
 	log.Println("POST received: ", postValues)
 
 	claims := EqClaims{}
-	claims = generateClaimsFromPost(postValues)
+	claims = generateClaims(postValues)
 
 	jwtClaims := GenerateJwtClaims()
 	claims.Claims = jwtClaims

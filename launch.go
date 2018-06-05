@@ -63,7 +63,7 @@ func postLaunchHandler(w http.ResponseWriter, r *http.Request) {
 	redirectURL(w, r)
 }
 
-func getAccountURL(r *http.Request) (string) {
+func getAccountURL(r *http.Request) string {
 	forwardedProtocol := r.Header.Get("X-Forwarded-Proto")
 
 	requestProtocol := "http"
@@ -102,10 +102,11 @@ func redirectURL(w http.ResponseWriter, r *http.Request) {
 func quickLauncherHandler(w http.ResponseWriter, r *http.Request) {
 	hostURL := settings.Get("SURVEY_RUNNER_URL")
 	accountURL := getAccountURL(r)
-	surveyURL := r.URL.Query().Get("url")
+	urlValues := r.URL.Query()
+	surveyURL := urlValues.Get("url")
 	log.Println("Quick launch request received", surveyURL)
 
-	token, err := authentication.GenerateTokenFromDefaults(surveyURL, accountURL)
+	token, err := authentication.GenerateTokenFromDefaults(surveyURL, accountURL, urlValues)
 	if err != "" {
 		http.Error(w, err, 500)
 		return
