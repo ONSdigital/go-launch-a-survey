@@ -12,9 +12,31 @@
     <div class="field-container">
         <label for="schema">Schemas</label>
         <select id="schema" name="schema" class="qa-select-schema">
-            {{range .Schemas}}
-                <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
-            {{end}}
+            <optgroup label="Business Surveys">
+                {{range .Schemas.Business}}
+                    <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
+                {{end}}
+            </optgroup>
+            <optgroup label="Census Surveys">
+                {{range .Schemas.Census}}
+                    <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
+                {{end}}
+            </optgroup>
+            <optgroup label="Social Surveys">
+                {{range .Schemas.Social}}
+                    <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
+                {{end}}
+            </optgroup>
+            <optgroup label="Test Surveys">
+                {{range .Schemas.Test}}
+                    <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
+                {{end}}
+            </optgroup>
+            <optgroup label="Other Surveys">
+                {{range .Schemas.Other}}
+                    <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
+                {{end}}
+            </optgroup>
         </select>
     </div>
     <div class="field-container">
