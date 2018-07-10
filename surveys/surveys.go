@@ -140,7 +140,6 @@ func GetAvailableSchemas() LauncherSchemas {
 			LauncherSchemaFromFilename("test_interstitial_page.json"),
 			LauncherSchemaFromFilename("test_introduction.json"),
 			LauncherSchemaFromFilename("test_language.json"),
-			LauncherSchemaFromFilename("test_language_cy.json"),
 			LauncherSchemaFromFilename("test_markup.json"),
 			LauncherSchemaFromFilename("test_metadata_routing.json"),
 			LauncherSchemaFromFilename("test_multiple_piping.json"),
