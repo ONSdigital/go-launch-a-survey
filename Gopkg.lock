@@ -27,13 +27,18 @@
 
 [[projects]]
   name = "gopkg.in/square/go-jose.v2"
-  packages = [".","cipher","json","jwt"]
+  packages = [
+    ".",
+    "cipher",
+    "json",
+    "jwt"
+  ]
   revision = "b25e6cab129e4a54675b42ea49d38e9c33ade9e6"
   version = "v2.1.2"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "4c6f245a0c0f791c3f2c18f9dd44439573756f91a4492959a2af343857822f67"
+  inputs-digest = "144248699bcf6581bf277d64d9a64247e26712ddba674ac8bf250a6cfd8b017d"
   solver-name = "gps-cdcl"
   solver-version = 1
