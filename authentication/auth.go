@@ -20,7 +20,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"log"
-	"math/rand"
+	"crypto/rand"
 	"path"
 	"strings"
 )
