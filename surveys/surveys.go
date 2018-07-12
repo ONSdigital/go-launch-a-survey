@@ -189,6 +189,7 @@ func GetAvailableSchemas() LauncherSchemas {
 			LauncherSchemaFromFilename("test_sum_less_validation_against_total.json"),
 			LauncherSchemaFromFilename("test_sum_multi_validation_against_total.json"),
 			LauncherSchemaFromFilename("test_titles.json"),
+			LauncherSchemaFromFilename("test_titles_conditional_within_repeating_block.json"),
 			LauncherSchemaFromFilename("test_titles_radio_and_checkbox.json"),
 			LauncherSchemaFromFilename("test_titles_within_repeating_blocks.json"),
             LauncherSchemaFromFilename("test_titles_repeating_non_repeating_dependency.json"),
