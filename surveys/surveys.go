@@ -134,6 +134,7 @@ func GetAvailableSchemas() LauncherSchemas {
 			LauncherSchemaFromFilename("test_dropdown_mandatory.json"),
 			LauncherSchemaFromFilename("test_dropdown_mandatory_with_overridden_error.json"),
 			LauncherSchemaFromFilename("test_dropdown_optional.json"),
+			LauncherSchemaFromFilename("test_durations.json"),
 			LauncherSchemaFromFilename("test_error_messages.json"),
 			LauncherSchemaFromFilename("test_final_confirmation.json"),
 			LauncherSchemaFromFilename("test_household_question.json"),
