@@ -22,13 +22,13 @@ label { display:inline-block; font-weight: 600; margin-bottom: 0.25rem; width:20
 
 input[type=text] {
     padding:0.3rem;
-    width:300px;
+    width:350px;
     font-size:0.9rem;
     box-sizing: border-box;
 }
 
 select {
-    width:300px;
+    width:350px;
     font-size:0.9rem;
     padding:0.35rem;
     -webkit-appearance:none;
