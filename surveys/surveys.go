@@ -166,6 +166,7 @@ func GetAvailableSchemas() LauncherSchemas {
 			LauncherSchemaFromFilename("test_repeating_and_conditional_routing.json"),
 			LauncherSchemaFromFilename("test_repeating_household.json"),
 			LauncherSchemaFromFilename("test_repeating_household_routing.json"),
+			LauncherSchemaFromFilename("test_routing_answer_count.json"),
 			LauncherSchemaFromFilename("test_routing_date_equals.json"),
 			LauncherSchemaFromFilename("test_routing_date_greater_than.json"),
 			LauncherSchemaFromFilename("test_routing_date_less_than.json"),
