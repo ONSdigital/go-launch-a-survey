@@ -18,9 +18,7 @@ import (
 	"time"
 
 	"bytes"
-	"encoding/base64"
 	"log"
-	"crypto/rand"
 	"path"
 	"strings"
 )
@@ -142,21 +140,6 @@ type QuestionnaireSchema struct {
 	FormType string `json:"form_type"`
 }
 
-// Generates a random string of a defined length
-func randomStringGen() (rs string) {
-	size := 6 //change the length of the generated random string
-	rb := make([]byte, size)
-	_, err := rand.Read(rb)
-
-	if err != nil {
-		log.Println(err)
-	}
-
-	randomString := base64.URLEncoding.EncodeToString(rb)
-
-	return randomString
-}
-
 func getStringOrDefault(key string, values map[string][]string, defaultValue string) string {
 	var value string
 	if keyValues, ok := values[key]; ok {
@@ -171,7 +154,7 @@ func generateClaims(claimValues map[string][]string) (claims EqClaims) {
 	userID := getStringOrDefault("user_id", claimValues, "UNKNOWN")
 	periodID := getStringOrDefault("period_id", claimValues, "201605")
 	periodStr := getStringOrDefault("period_str", claimValues, "May 2017")
-	collexSID := getStringOrDefault("collection_exercise_sid", claimValues, randomStringGen())
+	collexSID := getStringOrDefault("collection_exercise_sid", claimValues, uuid.NewV4().String())
 	ruRef := getStringOrDefault("ru_ref", claimValues, "12346789012A")
 	ruName := getStringOrDefault("ru_name", claimValues, "ESSENTIAL ENTERPRISE LTD.")
 	refPStartDate := getStringOrDefault("ref_p_start_date", claimValues, "2016-05-01")
