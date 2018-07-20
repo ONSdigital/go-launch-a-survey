@@ -184,6 +184,7 @@ func GetAvailableSchemas() LauncherSchemas {
 			LauncherSchemaFromFilename("test_skip_condition_block.json"),
 			LauncherSchemaFromFilename("test_skip_condition_group.json"),
 			LauncherSchemaFromFilename("test_skip_condition_not_set.json"),
+			LauncherSchemaFromFilename("test_skip_conditions_on_blocks_repeating_group.json"),
 			LauncherSchemaFromFilename("test_skip_condition_set.json"),
 			LauncherSchemaFromFilename("test_summary.json"),
 			LauncherSchemaFromFilename("test_section_summary.json"),
