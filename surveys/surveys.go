@@ -180,6 +180,7 @@ func GetAvailableSchemas() LauncherSchemas {
 			LauncherSchemaFromFilename("test_routing_number_less_than_or_equal.json"),
 			LauncherSchemaFromFilename("test_routing_number_not_equals.json"),
 			LauncherSchemaFromFilename("test_routing_on_multiple_select.json"),
+			LauncherSchemaFromFilename("test_routing_repeat_until.json"),
 			LauncherSchemaFromFilename("test_skip_condition.json"),
 			LauncherSchemaFromFilename("test_skip_condition_block.json"),
 			LauncherSchemaFromFilename("test_skip_condition_group.json"),
