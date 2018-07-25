@@ -112,6 +112,7 @@ func GetAvailableSchemas() LauncherSchemas {
 			LauncherSchemaFromFilename("0_star_wars.json"),
 			LauncherSchemaFromFilename("multiple_answers.json"),
 			LauncherSchemaFromFilename("test_big_list_naughty_strings.json"),
+			LauncherSchemaFromFilename("test_calculated_summary.json"),
 			LauncherSchemaFromFilename("test_checkbox.json"),
 			LauncherSchemaFromFilename("test_checkbox_mutually_exclusive.json"),
 			LauncherSchemaFromFilename("test_conditional_dates.json"),
