@@ -6,16 +6,17 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
+	"io/ioutil"
+	"net/http"
+	"net/url"
+	"time"
+
 	"github.com/ONSdigital/go-launch-a-survey/settings"
 	"github.com/ONSdigital/go-launch-a-survey/surveys"
 	"github.com/satori/go.uuid"
 	"gopkg.in/square/go-jose.v2"
 	"gopkg.in/square/go-jose.v2/json"
 	"gopkg.in/square/go-jose.v2/jwt"
-	"io/ioutil"
-	"net/http"
-	"net/url"
-	"time"
 
 	"bytes"
 	"log"
@@ -128,6 +129,7 @@ type EqClaims struct {
 	CaseID                string       `json:"case_id,omitempty"`
 	CaseRef               string       `json:"case_ref,omitempty"`
 	AccountServiceURL     string       `json:"account_service_url,omitempty"`
+	DisplayAddress        string       `json:"display_address"`
 }
 
 type variantFlags struct {
@@ -157,6 +159,7 @@ func generateClaims(claimValues map[string][]string) (claims EqClaims) {
 	collexSID := getStringOrDefault("collection_exercise_sid", claimValues, uuid.NewV4().String())
 	ruRef := getStringOrDefault("ru_ref", claimValues, "12346789012A")
 	ruName := getStringOrDefault("ru_name", claimValues, "ESSENTIAL ENTERPRISE LTD.")
+	displayAddress := getStringOrDefault("display_address", claimValues, "68 Abingdon Road, Goathill, PE12 5EH")
 	refPStartDate := getStringOrDefault("ref_p_start_date", claimValues, "2016-05-01")
 	refPEndDate := getStringOrDefault("ref_p_end_date", claimValues, "2016-05-31")
 	returnBy := getStringOrDefault("return_by", claimValues, "2016-06-12")
@@ -188,6 +191,7 @@ func generateClaims(claimValues map[string][]string) (claims EqClaims) {
 		CollectionExerciseSid: collexSID,
 		RuRef:          ruRef,
 		RuName:         ruName,
+		DisplayAddress: displayAddress,
 		RefPStartDate:  refPStartDate,
 		RefPEndDate:    refPEndDate,
 		ReturnBy:       returnBy,
