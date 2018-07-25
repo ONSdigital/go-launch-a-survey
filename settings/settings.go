@@ -17,6 +17,7 @@ func init() {
 	setSetting("GO_LAUNCH_A_SURVEY_LISTEN_HOST", "0.0.0.0")
 	setSetting("GO_LAUNCH_A_SURVEY_LISTEN_PORT", "8000")
 	setSetting("SURVEY_RUNNER_URL", "http://localhost:5000")
+	setSetting("SURVEY_RUNNER_SCHEMA_URL", Get("SURVEY_RUNNER_URL"))
 	setSetting("SCHEMA_VALIDATOR_URL", "")
 	setSetting("SURVEY_REGISTER_URL", "")
 	setSetting("JWT_ENCRYPTION_KEY_PATH", "jwt-test-keys/sdc-user-authentication-encryption-sr-public-key.pem")
