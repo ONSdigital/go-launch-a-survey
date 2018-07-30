@@ -122,6 +122,7 @@ type EqClaims struct {
 	TradAs                string       `json:"trad_as,omitempty"`
 	EmploymentDate        string       `json:"employment_date,omitempty"` // iso_8601_date
 	RegionCode            string       `json:"region_code,omitempty"`
+	CountryCode           string       `json:"country_code,omitempty"`
 	LanguageCode          string       `json:"language_code,omitempty"`
 	VariantFlags          variantFlags `json:"variant_flags,omitempty"`
 	TxID                  string       `json:"tx_id,omitempty"`
@@ -166,6 +167,7 @@ func generateClaims(claimValues map[string][]string) (claims EqClaims) {
 	tradAs := getStringOrDefault("trad_as", claimValues, "ESSENTIAL ENTERPRISE LTD.")
 	employmentDate := getStringOrDefault("employmentDate", claimValues, "2016-06-10")
 	regionCode := getStringOrDefault("region_code", claimValues, "GB-ENG")
+	countryCode := getStringOrDefault("country_code", claimValues, "E")
 	languageCode := getStringOrDefault("language_code", claimValues, "en")
 	caseRef := getStringOrDefault("case_ref", claimValues, "1000000000000001")
 	accountURL := getStringOrDefault("account_url", claimValues, "")
@@ -198,6 +200,7 @@ func generateClaims(claimValues map[string][]string) (claims EqClaims) {
 		TradAs:         tradAs,
 		EmploymentDate: employmentDate,
 		RegionCode:     regionCode,
+		CountryCode:    countryCode,
 		LanguageCode:   languageCode,
 		TxID:           uuid.NewV4().String(),
 		VariantFlags: variantFlags{
