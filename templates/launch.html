@@ -5,13 +5,11 @@
 <div class="field-wrap">
 
 <form action="" method="POST" xmlns="http://www.w3.org/1999/html">
-    <div class="field-container">
-        <label for="user_id">User ID</label>
-        <input id="user_id" name="user_id" type="text" value="UNKNOWN" class="qa-user-id">
-    </div>
+
     <div class="field-container">
         <label for="schema">Schemas</label>
-        <select id="schema" name="schema" class="qa-select-schema">
+        <select id="schema" name="schema" class="qa-select-schema" onchange="loadMetadata()">
+            <option selected disabled>Select Schema</option>
             <optgroup label="Business Surveys">
                 {{range .Schemas.Business}}
                     <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
@@ -39,28 +37,13 @@
             </optgroup>
         </select>
     </div>
-    <div class="field-container">
-        <label for="exp">Token Expiry (seconds)</label>
-        <input id="exp" name="exp" type="text" value="1800" class="qa-token-expiry">
+
+    <h3>Survey Metadata</h3>
+    <div id="survey_metadata">
+        <p>--- Metadata fields will be loaded when you select a schema ---</p>
     </div>
 
-    <div class="field-container">
-        <label for="period_str">Period String</label>
-        <input id="period_str" name="period_str" type="text" value="May 2016" class="qa-period-str">
-    </div>
-
-    <div class="field-container">
-        <label for="period_id">Period ID</label>
-        <input id="period_id" name="period_id" type="text" value="201605" class="qa-period-id">
-    </div>
-
-    <div class="field-container">
-        <label for="collection_exercise_sid">Collection Exercise SID</label>
-        <span>
-            <input id="collection_exercise_sid" name="collection_exercise_sid" type="text" value="789" class="qa-collection-sid">
-            <img onclick="uuid('collection_exercise_sid')" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg==">
-        </span>
-    </div>
+    <h3>Required Data</h3>
 
     <div class="field-container">
         <label for="ru_ref">RU Ref</label>
@@ -71,68 +54,17 @@
     </div>
 
     <div class="field-container">
-        <label for="case_ref">Case Ref</label>
+        <label for="collection_exercise_sid">Collection Exercise SID</label>
         <span>
-            <input id="case_ref" name="case_ref" type="text" value="1000000000000001" class="qa-case_ref">
+            <input id="collection_exercise_sid" name="collection_exercise_sid" type="text" value="789" class="qa-collection-sid">
+            <img onclick="uuid('collection_exercise_sid')" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg==">
         </span>
     </div>
 
+    <h3>Runner Data</h3>
     <div class="field-container">
-        <label for="ru_name">RU Name</label>
-        <input id="ru_name" name="ru_name" type="text" value="ESSENTIAL ENTERPRISE LTD." class="qa-ru-name">
-    </div>
-
-    <div class="field-container">
-        <label for="display_address">Display Address</label>
-        <input id="display_address" name="display_address" type="text" value="68 Abingdon Road, Goathill, PE12 5EH" class="qa-display-address">
-    </div>
-
-    <div class="field-container">
-        <label for="ref_p_start_date">REF P Start Date</label>
-        <input id="ref_p_start_date" name="ref_p_start_date" type="text" value="2016-05-01" class="qa-ref-p-start-date">
-    </div>
-
-    <div class="field-container">
-        <label for="ref_p_end_date">REF P End Date</label>
-        <input id="ref_p_end_date" name="ref_p_end_date" type="text" value="2016-05-31" class="qa-ref-p-end-date">
-    </div>
-
-    <div class="field-container">
-        <label for="return_by">Return By</label>
-        <input id="return_by" name="return_by" type="text" value="2016-06-12" class="qa-return-by">
-    </div>
-
-    <div class="field-container">
-        <label for="trad_as">Trading As</label>
-        <input id="trad_as" name="trad_as" type="text" value="ESSENTIAL ENTERPRISE LTD." class="qa-trad-as">
-    </div>
-
-    <div class="field-container">
-        <label for="employment_date">Employment Date</label>
-        <input id="employment_date" name="employment_date" type="text" value="2016-06-10" class="qa-employment-date">
-    </div>
-
-    <div class="field-container">
-        <label for="region_code">Region Code</label>
-        <select id="region_code" name="region_code" class="qa-region-code">
-            <option name="GB-ENG" value="GB-ENG">GB-ENG</option>
-            <option name="GB-GBN" value="GB-GBN">GB-GBN</option>
-            <option name="GB-NIR" value="GB-NIR">GB-NIR</option>
-            <option name="GB-SCO" value="GB-SCO">GB-SCO</option>
-            <option name="GB-WLS" value="GB-WLS">GB-WLS</option>
-            <option name="" value="">&ltnot set&gt</option>
-        </select>
-    </div>
-
-    <div class="field-container">
-        <label for="country_code">Country Code</label>
-        <select id="country_code" name="country_code" class="qa-country-code">
-            <option name="E" value="E">E - England</option>
-            <option name="W" value="W">W - Wales</option>
-            <option name="N" value="N">N - Scotland North of the Caledonian Canal</option>
-            <option name="S" value="S">S - Scotland South of the Caledonian Canal</option>
-            <option name="" value="">&ltnot set&gt</option>
-        </select>
+        <label for="exp">Token Expiry (seconds)</label>
+        <input id="exp" name="exp" type="text" value="1800" class="qa-token-expiry">
     </div>
 
     <div class="field-container">
@@ -142,11 +74,6 @@
             <option name="cy" value="cy">cy</option>
             <option name="" value="">&ltnot set&gt</option>
         </select>
-    </div>
-    
-    <div class="field-container">
-        <label for="sexual_identity">Sexual Identity Flag</label>
-        <input id="sexual_identity" type="checkbox" name="sexual_identity" class="qa-sexual-identity" value="true">
     </div>
 
     <div class="field-container">
@@ -163,8 +90,8 @@
     </div>
     
     <div class="field-container">
-        <input type="submit" name="action_launch" value="Open Survey" class="qa-btn-submit-dev btn"/>
-        <input type="submit" name="action_flush" value="Flush Survey Data" class="qa-btn-submit-dev btn"/>
+        <input type="submit" name="action_launch" value="Open Survey" class="qa-btn-submit-dev btn" id="submit-btn" disabled="disabled" />
+        <input type="submit" name="action_flush" value="Flush Survey Data" class="qa-btn-submit-dev btn" id="flush-btn" disabled="disabled" />
     </div>
 
 </form>
@@ -172,11 +99,86 @@
 
 <script>
 
-    function uuid(el_id) {
-      result = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+    function loadMetadata() {
+        document.getElementById("submit-btn").disabled = true;
+        document.getElementById("flush-btn").disabled = true;
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+
+                    document.getElementById("survey_metadata").innerHTML = ""
+
+                    var response = JSON.parse(this.responseText);
+
+                    if (response.length > 0) {
+                        for (var i = 0; i < response.length; i++) {
+                            metadataField = response[i]
+
+                            var defaultValue = metadataField['name'];
+
+                            if (metadataField['validator'] == "date") {
+                                var currentDate = new Date()
+                                var defaultValue = currentDate.getFullYear() + "-" + ('0' + (currentDate.getMonth() + 1)).slice(-2) + "-" + ('0' + currentDate.getDate()).slice(-2)
+                            }
+
+                            if (metadataField['default'] != "") {
+                                defaultValue = metadataField['default']
+                            }
+
+                            var metadataFieldHtml = ""
+
+                            if (metadataField['validator'] == "boolean") {
+
+                                metadataFieldHtml = "<div class=\"field-container\">" +
+                                        "<label for=\"" + metadataField['name'] + "\">" + metadataField['name'] + "</label>" +
+                                        "<input id=\"" + metadataField['name'] + "\" name=\"" + metadataField['name'] + "\" type=\"checkbox\" name=\"" + metadataField['name'] + "\" class=\"qa-" + metadataField['name'] + "\">" +
+                                        "</div>"
+
+                            } else if (metadataField['validator'] == "uuid") {
+
+                                metadataFieldHtml = "<div class=\"field-container\">" +
+                                        "<label for=\"" + metadataField['name'] + "\">" + metadataField['name'] + "</label>" +
+                                        "<span>" +
+                                        "<input id=\"" + metadataField['name'] + "\" name=\"" + metadataField['name'] + "\" type=\"text\" value=\"" + get_uuid() + "\" class=\"" + metadataField['name'] + "\">" +
+                                        "<img onclick=\"uuid('" + metadataField['name'] + "')\" src=\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg==\">" +
+                                        "</span>" +
+                                        "</div>"
+
+                            } else {
+                                metadataFieldHtml = "<div class=\"field-container\">" +
+                                        "<label for=\"" + metadataField['name'] + "\">" + metadataField['name'] + "</label>" +
+                                        "<input id=\"" + metadataField['name'] + "\" name=\"" + metadataField['name'] + "\" type=\"text\" value=\"" + defaultValue + "\" class=\"qa-" + metadataField['name'] + "\">" +
+                                        "</div>"
+                            }
+
+                            document.getElementById("survey_metadata").innerHTML = document.getElementById("survey_metadata").innerHTML + metadataFieldHtml
+                        }
+                    } else {
+                        document.getElementById("survey_metadata").innerHTML = "No metadata required for this survey"
+                    }
+
+                    document.getElementById("submit-btn").disabled = false;
+                    document.getElementById("flush-btn").disabled = false;
+
+
+                } else {
+                    document.getElementById("survey_metadata").innerHTML = "Failed to load Schema Metadata"
+                }
+            }
+        };
+        xhttp.open("GET", "/metadata?schema=" + document.getElementById('schema').value , true);
+        xhttp.send();
+    }
+
+    function get_uuid() {
+      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
       )
-      document.getElementById(el_id).value = result;
+    }
+
+    function uuid(el_id) {
+      document.getElementById(el_id).value = get_uuid();
     }
 
     function ruref(el_id) {
