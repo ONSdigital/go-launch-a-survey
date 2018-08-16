@@ -48,6 +48,10 @@ type page struct {
 	AccountServiceURL string
 }
 
+func getStatusPage(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("OK"))
+}
+
 func getLaunchHandler(w http.ResponseWriter, r *http.Request) {
 	p := page{
 		Schemas:           surveys.GetAvailableSchemas(),
@@ -152,6 +156,9 @@ func main() {
 
 	//Author Launcher with passed parameters in Url
 	r.HandleFunc("/quick-launch", quickLauncherHandler).Methods("GET")
+
+	// Status Page
+	r.HandleFunc("/status", getStatusPage).Methods("GET")
 
 	// Serve static assets
 	staticFs := http.FileServer(http.Dir("static"))
