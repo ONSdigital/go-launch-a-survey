@@ -132,6 +132,7 @@ func quickLauncherHandler(w http.ResponseWriter, r *http.Request) {
 
 	urlValues.Add("ru_ref", authentication.GetDefaultValues()["ru_ref"])
 	urlValues.Add("collection_exercise_sid", uuid.NewV4().String())
+	urlValues.Add("case_id", uuid.NewV4().String())
 
 	token, err := authentication.GenerateTokenFromDefaults(surveyURL, accountURL, urlValues)
 	if err != "" {
