@@ -6,9 +6,9 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
+	"github.com/ONSdigital/go-launch-a-survey/clients"
 	"github.com/ONSdigital/go-launch-a-survey/settings"
 	"github.com/ONSdigital/go-launch-a-survey/surveys"
-	"github.com/ONSdigital/go-launch-a-survey/clients"
 	"github.com/satori/go.uuid"
 	"gopkg.in/square/go-jose.v2"
 	"gopkg.in/square/go-jose.v2/json"
@@ -21,8 +21,8 @@ import (
 	"bytes"
 	"log"
 	"path"
-	"strings"
 	"strconv"
+	"strings"
 )
 
 // KeyLoadError describes an error that can occur during key loading
@@ -222,7 +222,7 @@ func validateSchema(payload []byte) (error string) {
 	return ""
 }
 
-func getSchemaClaims(LauncherSchema surveys.LauncherSchema) (map[string]interface{}) {
+func getSchemaClaims(LauncherSchema surveys.LauncherSchema) map[string]interface{} {
 
 	schemaClaims := make(map[string]interface{})
 	schemaClaims["eq_id"] = LauncherSchema.EqID
@@ -441,7 +441,7 @@ func GetRequiredMetadata(launcherSchema surveys.LauncherSchema) ([]Metadata, str
 }
 
 // GetDefaultValues Returns a map of default values for metadata keys
-func GetDefaultValues() (map[string]string) {
+func GetDefaultValues() map[string]string {
 
 	defaults := make(map[string]string)
 
@@ -461,6 +461,7 @@ func GetDefaultValues() (map[string]string) {
 	defaults["case_ref"] = "1000000000000001"
 	defaults["display_address"] = "68 Abingdon Road, Goathill, PE12 5EH"
 	defaults["country_code"] = "E"
+	defaults["started_at"] = time.Now().UTC().Format("2006-01-02")
 
 	return defaults
 }
