@@ -460,7 +460,7 @@ func GetDefaultValues() (map[string]string) {
 	defaults["language_code"] = "en"
 	defaults["case_ref"] = "1000000000000001"
 	defaults["display_address"] = "68 Abingdon Road, Goathill, PE12 5EH"
-	defaults["country_code"] = "E"
+	defaults["country"] = "E"
 
 	return defaults
 }
