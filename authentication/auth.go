@@ -6,23 +6,24 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
-	"github.com/ONSdigital/go-launch-a-survey/settings"
-	"github.com/ONSdigital/go-launch-a-survey/surveys"
-	"github.com/ONSdigital/go-launch-a-survey/clients"
-	"github.com/satori/go.uuid"
-	"gopkg.in/square/go-jose.v2"
-	"gopkg.in/square/go-jose.v2/json"
-	"gopkg.in/square/go-jose.v2/jwt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"time"
 
+	"github.com/ONSdigital/go-launch-a-survey/clients"
+	"github.com/ONSdigital/go-launch-a-survey/settings"
+	"github.com/ONSdigital/go-launch-a-survey/surveys"
+	"github.com/satori/go.uuid"
+	"gopkg.in/square/go-jose.v2"
+	"gopkg.in/square/go-jose.v2/json"
+	"gopkg.in/square/go-jose.v2/jwt"
+
 	"bytes"
 	"log"
 	"path"
-	"strings"
 	"strconv"
+	"strings"
 )
 
 // KeyLoadError describes an error that can occur during key loading
@@ -222,7 +223,7 @@ func validateSchema(payload []byte) (error string) {
 	return ""
 }
 
-func getSchemaClaims(LauncherSchema surveys.LauncherSchema) (map[string]interface{}) {
+func getSchemaClaims(LauncherSchema surveys.LauncherSchema) map[string]interface{} {
 
 	schemaClaims := make(map[string]interface{})
 	schemaClaims["eq_id"] = LauncherSchema.EqID
@@ -311,9 +312,9 @@ func getStringOrDefault(key string, values map[string][]string, defaultValue str
 }
 
 // GenerateTokenFromDefaults coverts a set of DEFAULT values into a JWT
-func GenerateTokenFromDefaults(surveyURL string, accountURL string, urlValues url.Values) (token string, error string) {
+func GenerateTokenFromDefaults(surveyURL string, accountServiceURL string, urlValues url.Values) (token string, error string) {
 	claims := make(map[string]interface{})
-	urlValues["account_url"] = []string{accountURL}
+	urlValues["account_service_url"] = []string{accountServiceURL}
 	claims = generateClaims(urlValues)
 
 	launcherSchema, validationError := launcherSchemaFromURL(surveyURL)
@@ -441,7 +442,7 @@ func GetRequiredMetadata(launcherSchema surveys.LauncherSchema) ([]Metadata, str
 }
 
 // GetDefaultValues Returns a map of default values for metadata keys
-func GetDefaultValues() (map[string]string) {
+func GetDefaultValues() map[string]string {
 
 	defaults := make(map[string]string)
 
