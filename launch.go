@@ -9,13 +9,14 @@ import (
 	"os"
 	"path/filepath"
 
+	"html"
+
 	"github.com/ONSdigital/go-launch-a-survey/authentication"
 	"github.com/ONSdigital/go-launch-a-survey/settings"
 	"github.com/ONSdigital/go-launch-a-survey/surveys"
 	"github.com/gorilla/mux"
-	"gopkg.in/square/go-jose.v2/json"
-	"html"
 	"github.com/satori/go.uuid"
+	"gopkg.in/square/go-jose.v2/json"
 )
 
 func serveTemplate(templateName string, data interface{}, w http.ResponseWriter, r *http.Request) {
@@ -55,7 +56,7 @@ func getStatusPage(w http.ResponseWriter, r *http.Request) {
 func getLaunchHandler(w http.ResponseWriter, r *http.Request) {
 	p := page{
 		Schemas:           surveys.GetAvailableSchemas(),
-		AccountServiceURL: getAccountURL(r),
+		AccountServiceURL: getAccountServiceURL(r),
 	}
 	serveTemplate("launch.html", p, w, r)
 }
@@ -87,7 +88,7 @@ func getMetadataHandler(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-func getAccountURL(r *http.Request) string {
+func getAccountServiceURL(r *http.Request) string {
 	forwardedProtocol := r.Header.Get("X-Forwarded-Proto")
 
 	requestProtocol := "http"
@@ -125,7 +126,7 @@ func redirectURL(w http.ResponseWriter, r *http.Request) {
 
 func quickLauncherHandler(w http.ResponseWriter, r *http.Request) {
 	hostURL := settings.Get("SURVEY_RUNNER_URL")
-	accountURL := getAccountURL(r)
+	accountServiceURL := getAccountServiceURL(r)
 	urlValues := r.URL.Query()
 	surveyURL := urlValues.Get("url")
 	log.Println("Quick launch request received", surveyURL)
@@ -134,7 +135,7 @@ func quickLauncherHandler(w http.ResponseWriter, r *http.Request) {
 	urlValues.Add("collection_exercise_sid", uuid.NewV4().String())
 	urlValues.Add("case_id", uuid.NewV4().String())
 
-	token, err := authentication.GenerateTokenFromDefaults(surveyURL, accountURL, urlValues)
+	token, err := authentication.GenerateTokenFromDefaults(surveyURL, accountServiceURL, urlValues)
 	if err != "" {
 		http.Error(w, err, 500)
 		return
