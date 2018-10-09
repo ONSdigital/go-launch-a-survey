@@ -460,7 +460,12 @@ func GetDefaultValues() map[string]string {
 	defaults["region_code"] = "GB-ENG"
 	defaults["language_code"] = "en"
 	defaults["case_ref"] = "1000000000000001"
-	defaults["display_address"] = "68 Abingdon Road, Goathill, PE12 5EH"
+	defaults["address_line1"] = "68 Abingdon Road"
+	defaults["address_line2"] = ""
+	defaults["locality"] = ""
+	defaults["town_name"] = "Goathill"
+	defaults["postcode"] = "PE12 4GH"
+	defaults["display_address"] = "68 Abingdon Road, Goathill"
 	defaults["country"] = "E"
 
 	return defaults

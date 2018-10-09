@@ -91,12 +91,12 @@
             <option name="dumper" value="dumper" selected="selected">dumper</option>
         </select>
     </div>
-     
+
     <div class="field-container">
         <label for="account_service_url">Account Service URL</label>
         <input id="account_service_url" name="account_service_url" type="text" value="{{.AccountServiceURL}}" class="qa-account_service_url">
     </div>
-    
+
     <div class="field-container">
         <input type="submit" name="action_launch" value="Open Survey" class="qa-btn-submit-dev btn" id="submit-btn" disabled="disabled" />
         <input type="submit" name="action_flush" value="Flush Survey Data" class="qa-btn-submit-dev btn" id="flush-btn" disabled="disabled" />
@@ -130,9 +130,7 @@
                                 var defaultValue = currentDate.getFullYear() + "-" + ('0' + (currentDate.getMonth() + 1)).slice(-2) + "-" + ('0' + currentDate.getDate()).slice(-2)
                             }
 
-                            if (metadataField['default'] != "") {
-                                defaultValue = metadataField['default']
-                            }
+                            defaultValue = metadataField['default']
 
                             var metadataFieldHtml = ""
 
