@@ -456,7 +456,7 @@ func GetDefaultValues() map[string]string {
 	defaults["ref_p_end_date"] = "2016-05-31"
 	defaults["return_by"] = "2016-06-12"
 	defaults["trad_as"] = "ESSENTIAL ENTERPRISE LTD."
-	defaults["employmentDate"] = "2016-06-10"
+	defaults["employment_date"] = "2016-06-10"
 	defaults["region_code"] = "GB-ENG"
 	defaults["language_code"] = "en"
 	defaults["case_ref"] = "1000000000000001"
