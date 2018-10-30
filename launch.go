@@ -137,7 +137,7 @@ func quickLauncherHandler(w http.ResponseWriter, r *http.Request) {
 
 	token, err := authentication.GenerateTokenFromDefaults(surveyURL, accountServiceURL, urlValues)
 	if err != "" {
-		http.Error(w, err, 500)
+		http.Error(w, err, 400)
 		return
 	}
 
