@@ -1,7 +1,7 @@
 language: go
 
 go:
-  - 1.8.1
+  - 1.9
 
 services:
   - docker
@@ -13,8 +13,10 @@ script:
   - go get -u github.com/golang/dep/cmd/dep
   - dep ensure
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+  - go get -t ./...
+  - go build
   - export TAG=`if [ "$TRAVIS_PULL_REQUEST_BRANCH" == "" ]; then echo "latest"; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi`
-  - docker run -v "$(pwd):/src" -v /var/run/docker.sock:/var/run/docker.sock centurylink/golang-builder onsdigital/go-launch-a-survey:$TAG
+  - docker build -t onsdigital/go-launch-a-survey:$TAG .
   - echo "Pushing with tag [$TAG]"
   - docker push onsdigital/go-launch-a-survey:$TAG
 

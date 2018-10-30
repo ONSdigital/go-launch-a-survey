@@ -205,6 +205,8 @@ func validateSchema(payload []byte) (error string) {
 	validateURL, _ := url.Parse(settings.Get("SCHEMA_VALIDATOR_URL"))
 	validateURL.Path = path.Join(validateURL.Path, "validate")
 
+	log.Println("Validating schema: ", validateURL.String())
+
 	resp, err := http.Post(validateURL.String(), "application/json", bytes.NewBuffer(payload))
 	if err != nil {
 		return err.Error()
