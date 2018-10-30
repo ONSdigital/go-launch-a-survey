@@ -45,8 +45,9 @@ func serveTemplate(templateName string, data interface{}, w http.ResponseWriter,
 }
 
 type page struct {
-	Schemas           surveys.LauncherSchemas
-	AccountServiceURL string
+	Schemas                 surveys.LauncherSchemas
+	AccountServiceURL       string
+	AccountServiceLogOutURL string
 }
 
 func getStatusPage(w http.ResponseWriter, r *http.Request) {
@@ -55,8 +56,9 @@ func getStatusPage(w http.ResponseWriter, r *http.Request) {
 
 func getLaunchHandler(w http.ResponseWriter, r *http.Request) {
 	p := page{
-		Schemas:           surveys.GetAvailableSchemas(),
-		AccountServiceURL: getAccountServiceURL(r),
+		Schemas:                 surveys.GetAvailableSchemas(),
+		AccountServiceURL:       getAccountServiceURL(r),
+		AccountServiceLogOutURL: getAccountServiceURL(r),
 	}
 	serveTemplate("launch.html", p, w, r)
 }
@@ -127,6 +129,7 @@ func redirectURL(w http.ResponseWriter, r *http.Request) {
 func quickLauncherHandler(w http.ResponseWriter, r *http.Request) {
 	hostURL := settings.Get("SURVEY_RUNNER_URL")
 	accountServiceURL := getAccountServiceURL(r)
+	AccountServiceLogOutURL := getAccountServiceURL(r)
 	urlValues := r.URL.Query()
 	surveyURL := urlValues.Get("url")
 	log.Println("Quick launch request received", surveyURL)
@@ -135,7 +138,7 @@ func quickLauncherHandler(w http.ResponseWriter, r *http.Request) {
 	urlValues.Add("collection_exercise_sid", uuid.NewV4().String())
 	urlValues.Add("case_id", uuid.NewV4().String())
 
-	token, err := authentication.GenerateTokenFromDefaults(surveyURL, accountServiceURL, urlValues)
+	token, err := authentication.GenerateTokenFromDefaults(surveyURL, accountServiceURL, AccountServiceLogOutURL, urlValues)
 	if err != "" {
 		http.Error(w, err, 400)
 		return
