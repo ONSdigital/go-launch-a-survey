@@ -3,42 +3,59 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:cf7759da55c9f1dfa3eefff1dbe140f0877d9081a0fa2d973a55595cbf11325c"
   name = "github.com/AreaHQ/jsonhal"
   packages = ["."]
+  pruneopts = ""
   revision = "715ffaec982bc9cb2636d5cadcd6def5f92fa49f"
 
 [[projects]]
+  digest = "1:20ed7daa9b3b38b6d1d39b48ab3fd31122be5419461470d0c28de3e121c93ecf"
   name = "github.com/gorilla/context"
   packages = ["."]
+  pruneopts = ""
   revision = "1ea25387ff6f684839d82767c1733ff4d4d15d0a"
   version = "v1.1"
 
 [[projects]]
+  digest = "1:783fde5796ef54ba05de240f2529b6c9fbabc541e70ea43585c53b3f1bbabb5b"
   name = "github.com/gorilla/mux"
   packages = ["."]
+  pruneopts = ""
   revision = "bcd8bc72b08df0f70df986b97f95590779502d31"
   version = "v1.4.0"
 
 [[projects]]
+  digest = "1:6b55df4b0517a459af9d3879c99330af4367adcf45f3d0d37ded80a6272ae057"
   name = "github.com/satori/go.uuid"
   packages = ["."]
+  pruneopts = ""
   revision = "879c5887cd475cd7864858769793b2ceb0d44feb"
   version = "v1.1.0"
 
 [[projects]]
+  digest = "1:8cce7ac3155e85d9054c69f804654e698002c2eae33b83c6b47d8615a4dd7838"
   name = "gopkg.in/square/go-jose.v2"
   packages = [
     ".",
     "cipher",
     "json",
-    "jwt"
+    "jwt",
   ]
+  pruneopts = ""
   revision = "b25e6cab129e4a54675b42ea49d38e9c33ade9e6"
   version = "v2.1.2"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "144248699bcf6581bf277d64d9a64247e26712ddba674ac8bf250a6cfd8b017d"
+  input-imports = [
+    "github.com/AreaHQ/jsonhal",
+    "github.com/gorilla/mux",
+    "github.com/satori/go.uuid",
+    "gopkg.in/square/go-jose.v2",
+    "gopkg.in/square/go-jose.v2/json",
+    "gopkg.in/square/go-jose.v2/jwt",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1

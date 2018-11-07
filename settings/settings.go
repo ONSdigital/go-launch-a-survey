@@ -1,6 +1,12 @@
 package settings
 
-import "os"
+import (
+	"os"
+	"net"
+	"fmt"
+	"strings"
+)
+
 
 var _settings map[string]string
 
@@ -13,10 +19,27 @@ func setSetting(key string, defaultValue string) {
 }
 
 func init() {
+	addrs, err := net.InterfaceAddrs()
+	
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	var currentIP string
+
+	for _, address := range addrs {
+		if ipnet, ok := address.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+			if ipnet.IP.To4() != nil {
+				currentIP = ipnet.IP.String()
+			}
+		}
+	}
+
+
 	_settings = make(map[string]string)
 	setSetting("GO_LAUNCH_A_SURVEY_LISTEN_HOST", "0.0.0.0")
 	setSetting("GO_LAUNCH_A_SURVEY_LISTEN_PORT", "8000")
-	setSetting("SURVEY_RUNNER_URL", "http://localhost:5000")
+	setSetting("SURVEY_RUNNER_URL", strings.Replace("http://localhost:5000", "localhost", currentIP, -1))
 	setSetting("SURVEY_RUNNER_SCHEMA_URL", Get("SURVEY_RUNNER_URL"))
 	setSetting("SCHEMA_VALIDATOR_URL", "")
 	setSetting("SURVEY_REGISTER_URL", "")
