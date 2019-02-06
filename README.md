@@ -20,16 +20,28 @@ go run launch.go (Does both the build and run cmd above)
 Open http://localhost:8000/
 
 ### Docker
-Built using https://github.com/CenturyLinkLabs/golang-builder to create a tiny Docker image.
-
-To build and run, exposing the server on port 8000 locally:
+The dockerfile is a multistage dockerfile which can be built using:
 
 ```
-docker run --rm -v "$(pwd):/src" -v /var/run/docker.sock:/var/run/docker.sock centurylink/golang-builder
-docker run -it -p 8000:8000 go-launch-a-survey:latest
+docker build -t go-launch-a-survey:latest .
 ```
+
+You can then run the image using `SURVEY_RUNNER_SCHEMA_URL` to point it at an instance of survey runner. 
+
+```
+docker run -e SURVEY_RUNNER_SCHEMA_URL=http://localhost:5000 -it -p 8000:8000 go-launch-a-survey:latest
+```
+
+The syntax for this will be slightly different on Mac
+
+```
+docker run -e SURVEY_RUNNER_SCHEMA_URL=http://docker.for.mac.host.internal:5000 -it -p 8000:8000 go-launch-a-survey:latest
+```
+
+You should then be able to access go launcher at `localhost:8000`
 
 You can also run a Survey Register for launcher to load Schemas from 
+
 ```
 docker run -it -p 8080:8080 onsdigital/eq-survey-register:simple-rest-api
 ```

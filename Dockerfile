@@ -1,19 +1,29 @@
-FROM alpine
+# Start from golang v1.8 base image
+FROM golang:1.8 as builder
 
-RUN apk --no-cache update && \
-    apk --no-cache add python py-pip py-setuptools ca-certificates groff less && \
-    pip --no-cache-dir install awscli && \
-    rm -rf /var/cache/apk/*
+WORKDIR /go/src/github.com/ONSdigital/go-launch-a-survey
 
-ENV GO_LAUNCH_A_SURVEY_LISTEN_HOST="0.0.0.0"
-ENV GO_LAUNCH_A_SURVEY_LISTEN_PORT="8000"
+COPY . .
 
-EXPOSE 8000
+# Download dependencies
+RUN go get -u github.com/golang/dep/cmd/dep
+RUN $GOPATH/bin/dep ensure
 
-COPY docker-entrypoint.sh /
+# Build the Go app
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /go/bin/go-launch-a-survey .
+
+######## Start a new stage from scratch #######
+FROM alpine:latest  
+
+RUN apk --no-cache add ca-certificates
+
+# Copy the Pre-built binary file and entry point from the previous stage
+COPY --from=builder /go/bin/go-launch-a-survey .
+COPY docker-entrypoint.sh .
 COPY static/ /static/
 COPY templates/ /templates/
 COPY jwt-test-keys /jwt-test-keys/
-COPY go-launch-a-survey /
+
+EXPOSE 8000
 
 ENTRYPOINT ["sh", "/docker-entrypoint.sh"]
