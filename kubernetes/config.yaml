@@ -1,0 +1,59 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: launcher
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'
+spec:
+  selector:
+    app: launcher
+  ports:
+    - port: 80
+      targetPort: 8000
+  type: NodePort
+---
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: launcher-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: launcher
+    ingress.gcp.kubernetes.io/pre-shared-cert: launcher
+spec:
+  backend:
+    serviceName: launcher
+    servicePort: 80
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: launcher
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: launcher
+  template:
+    metadata:
+      name: launcher
+      labels:
+        app: launcher
+    spec:
+      containers:
+        - name: launcher
+          image: eu.gcr.io/census-eq-ci/go-launch-a-survey:latest
+          imagePullPolicy: Always
+          readinessProbe:
+            httpGet:
+              path: /status
+              port: 8000
+          env:
+            - name: SURVEY_RUNNER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: gcp
+                  key: survey_runner_url
+            - name: SURVEY_RUNNER_SCHEMA_URL
+              value: "http://survey-runner"
+          ports:
+            - containerPort: 8000

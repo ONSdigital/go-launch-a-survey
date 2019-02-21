@@ -1,0 +1,11 @@
+apiVersion: skaffold/v1beta5
+kind: Config
+build:
+  tagPolicy:
+    gitCommit: {}
+  artifacts:
+    - image: eu.gcr.io/census-eq-ci/go-launch-a-survey
+deploy:
+  kubectl:
+    manifests:
+      - kubernetes/config.yaml
