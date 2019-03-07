@@ -57,6 +57,22 @@ Now run Go launcher and navigate to "http://localhost:8000/quick-launch?url=" pa
 e.g."http://localhost:8000/quick-launch?url=http://localhost:7777/1_0001.json"
 ```
 
+### Deployment with [Helm](https://helm.sh/)
+
+To deploy this application with helm, you must have a kubernetes cluster already running.
+
+You need to have Helm installed locally
+
+1. Install Helm with `brew install kubernetes-helm` and then run `helm init --client-only`
+
+1. Install Helm Tiller plugin for tillerless deploys `helm plugin install https://github.com/rimusz/helm-tiller`
+
+To deploy to a cluster you can run the following command
+
+```
+helm tiller run helm upgrade --install survey-launcher ./helm/launcher --set surveyRunnerUrl=https://SURVEY-RUNNER-URL 
+```
+
 ### Notes
 * There are no unit tests yet
 * JWT spec based on http://ons-schema-definitions.readthedocs.io/en/latest/jwt_profile.html
