@@ -59,7 +59,12 @@ e.g."http://localhost:8000/quick-launch?url=http://localhost:7777/1_0001.json"
 
 ### Deployment with [Helm](https://helm.sh/)
 
-To deploy this application with helm, you must have a kubernetes cluster already running.
+To deploy this application with helm, you must have a kubernetes cluster already running and be logged into the cluster.
+
+Log in to the cluster using:
+```
+gcloud container clusters get-credentials survey-runner --region <region> --project <gcp_project_id>
+```
 
 You need to have Helm installed locally
 
@@ -70,7 +75,11 @@ You need to have Helm installed locally
 To deploy to a cluster you can run the following command
 
 ```
-helm tiller run helm upgrade --install survey-launcher ./helm/launcher --set surveyRunnerUrl=https://SURVEY-RUNNER-URL 
+./k8s/deploy_app.sh <RUNNER_URL> <IMAGE_TAG>
+```
+##### Example
+ ```
+./k8s/deploy_app.sh https://example.com v1.0.0
 ```
 
 ### Notes
