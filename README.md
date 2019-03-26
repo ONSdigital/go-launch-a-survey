@@ -75,11 +75,11 @@ You need to have Helm installed locally
 To deploy to a cluster you can run the following command
 
 ```
-./k8s/deploy_app.sh <RUNNER_URL> <IMAGE_TAG>
+./k8s/deploy_app.sh <RUNNER_URL> <DOCKER_REGISTRY> <IMAGE_TAG>
 ```
 ##### Example
  ```
-./k8s/deploy_app.sh https://example.com v1.0.0
+./k8s/deploy_app.sh https://example.com  eu.gcr.io/census-eq-dev v1.0.0
 ```
 
 ### Notes
