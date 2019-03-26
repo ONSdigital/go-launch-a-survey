@@ -8,11 +8,13 @@ if [[ -z "$1" ]]; then
 fi
 
 RUNNER_URL=$1
-IMAGE_TAG="${2:-latest}"
+DOCKER_REGISTRY="${2:-eu.gcr.io/census-eq-ci}"
+IMAGE_TAG="${3:-latest}"
 
 helm tiller run \
     helm upgrade --install \
     survey-launcher \
     k8s/helm \
     --set surveyRunnerUrl=https://${RUNNER_URL} \
+    --set image.repository=${DOCKER_REGISTRY}/go-launch-a-survey \
     --set image.tag=${IMAGE_TAG}
