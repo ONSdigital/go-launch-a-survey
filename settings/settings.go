@@ -21,7 +21,7 @@ func init() {
 	setSetting("SCHEMA_VALIDATOR_URL", "")
 	setSetting("SURVEY_REGISTER_URL", "")
 	setSetting("JWT_ENCRYPTION_KEY_PATH", "jwt-test-keys/sdc-user-authentication-encryption-sr-public-key.pem")
-	setSetting("JWT_SIGNING_KEY_PATH", "jwt-test-keys/sdc-user-authentication-signing-rrm-private-key.pem")
+	setSetting("JWT_SIGNING_KEY_PATH", "jwt-test-keys/sdc-user-authentication-signing-launcher-private-key.pem")
 }
 
 // Get returns the value for the specified named setting
