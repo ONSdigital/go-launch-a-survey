@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"math/rand"
 
 	"html"
 
@@ -18,6 +19,16 @@ import (
 	"github.com/satori/go.uuid"
 	"gopkg.in/square/go-jose.v2/json"
 )
+
+func randomNumericString(n int) string {
+    var letter = []rune("0123456789")
+
+    output := make([]rune, n)
+    for i := range output {
+        output[i] = letter[rand.Intn(len(letter))]
+    }
+    return string(output)
+}
 
 func serveTemplate(templateName string, data interface{}, w http.ResponseWriter, r *http.Request) {
 	lp := filepath.Join("templates", "layout.html")
@@ -137,6 +148,7 @@ func quickLauncherHandler(w http.ResponseWriter, r *http.Request) {
 	urlValues.Add("ru_ref", authentication.GetDefaultValues()["ru_ref"])
 	urlValues.Add("collection_exercise_sid", uuid.NewV4().String())
 	urlValues.Add("case_id", uuid.NewV4().String())
+	urlValues.Add("response_id", randomNumericString(16))
 
 	token, err := authentication.GenerateTokenFromDefaults(surveyURL, accountServiceURL, AccountServiceLogOutURL, urlValues)
 	if err != "" {
