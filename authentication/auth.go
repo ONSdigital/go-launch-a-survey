@@ -116,7 +116,7 @@ type QuestionnaireSchema struct {
 // Metadata is a representation of the metadata within the schema with an additional `Default` value
 type Metadata struct {
 	Name      string `json:"name"`
-	Validator string `json:"validator"`
+	Validator string `json:"type"`
 	Default   string `json:"default"`
 }
 
@@ -135,7 +135,11 @@ func generateClaims(claimValues map[string][]string) (claims map[string]interfac
 	claims["tx_id"] = uuid.NewV4().String()
 
 	for key, value := range claimValues {
-		claims[key] = value[0]
+		if key != "roles" {
+			claims[key] = value[0]
+		} else {
+			claims[key] = value
+		}
 	}
 
 	log.Printf("Claims: %s", claims)
@@ -230,7 +234,9 @@ func getSchemaClaims(LauncherSchema surveys.LauncherSchema) map[string]interface
 	schemaClaims := make(map[string]interface{})
 	schemaClaims["eq_id"] = LauncherSchema.EqID
 	schemaClaims["form_type"] = LauncherSchema.FormType
-	schemaClaims["survey_url"] = LauncherSchema.URL
+	if LauncherSchema.URL != "" {
+        schemaClaims["survey_url"] = LauncherSchema.URL
+    }
 
 	return schemaClaims
 }

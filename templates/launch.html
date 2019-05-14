@@ -140,7 +140,7 @@
 
                             var defaultValue = metadataField['name'];
 
-                            if (metadataField['validator'] == "date") {
+                            if (metadataField['type'] == "date") {
                                 var currentDate = new Date()
                                 var defaultValue = currentDate.getFullYear() + "-" + ('0' + (currentDate.getMonth() + 1)).slice(-2) + "-" + ('0' + currentDate.getDate()).slice(-2)
                             }
@@ -149,14 +149,14 @@
 
                             var metadataFieldHtml = ""
 
-                            if (metadataField['validator'] == "boolean") {
+                            if (metadataField['type'] == "boolean") {
 
                                 metadataFieldHtml = "<div class=\"field-container\">" +
                                         "<label for=\"" + metadataField['name'] + "\">" + metadataField['name'] + "</label>" +
                                         "<input id=\"" + metadataField['name'] + "\" name=\"" + metadataField['name'] + "\" type=\"checkbox\" name=\"" + metadataField['name'] + "\" class=\"qa-" + metadataField['name'] + "\">" +
                                         "</div>"
 
-                            } else if (metadataField['validator'] == "uuid") {
+                            } else if (metadataField['type'] == "uuid") {
 
                                 metadataFieldHtml = "<div class=\"field-container\">" +
                                         "<label for=\"" + metadataField['name'] + "\">" + metadataField['name'] + "</label>" +
