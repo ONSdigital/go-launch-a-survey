@@ -2,13 +2,12 @@ package main // import "github.com/ONSdigital/go-launch-a-survey"
 
 import (
 	"fmt"
-
 	"html/template"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
 	"path/filepath"
-	"math/rand"
 
 	"html"
 
@@ -84,8 +83,15 @@ func postLaunchHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func getMetadataHandler(w http.ResponseWriter, r *http.Request) {
+	schemaURL := r.URL.Query().Get("schema_url")
 	schema := r.URL.Query().Get("schema")
-	launcherSchema := surveys.FindSurveyByName(schema)
+
+	var launcherSchema surveys.LauncherSchema
+	if schemaURL != "" {
+		launcherSchema = surveys.LauncherSchemaFromURL(schemaURL)
+	} else {
+		launcherSchema = surveys.FindSurveyByName(schema)
+	}
 
 	metadata, err := authentication.GetRequiredMetadata(launcherSchema)
 
@@ -95,9 +101,7 @@ func getMetadataHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	metadataJSON, _ := json.Marshal(metadata)
-
 	w.Write([]byte(metadataJSON))
-
 	return
 }
 

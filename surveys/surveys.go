@@ -66,6 +66,13 @@ func LauncherSchemaFromFilename(filename string) LauncherSchema {
 	}
 }
 
+// LauncherSchemaFromURL creates a LauncherSchema record from a url
+func LauncherSchemaFromURL(url string) LauncherSchema {
+	return LauncherSchema{
+		URL: url,
+	}
+}
+
 // GetAvailableSchemas Gets the list of static schemas an joins them with any schemas from the eq-survey-register if defined
 func GetAvailableSchemas() LauncherSchemas {
 	schemaList := LauncherSchemas{}
