@@ -444,8 +444,8 @@ func GetRequiredMetadata(launcherSchema *surveys.LauncherSchema) ([]Metadata, st
 	// See https://github.com/ONSdigital/eq-schema-validator/blob/master/schemas/questionnaire_v1.json#L4
 	if schema.EqID != "" {
 		launcherSchema.EqID = schema.EqID
-	} else if schema.SurveyId != "" {
-		launcherSchema.EqID = schema.SurveyId
+	} else if schema.SurveyID != "" {
+		launcherSchema.EqID = schema.SurveyID
 	}
 
 	if schema.FormType != "" {
