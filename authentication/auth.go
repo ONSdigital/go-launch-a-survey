@@ -111,6 +111,7 @@ type QuestionnaireSchema struct {
 	EqID     string     `json:"eq_id"`
 	FormType string     `json:"form_type"`
 	Metadata []Metadata `json:"metadata"`
+	SurveyID string     `json:"survey_id"`
 }
 
 // Metadata is a representation of the metadata within the schema with an additional `Default` value
@@ -325,7 +326,7 @@ func GenerateTokenFromDefaults(surveyURL string, accountServiceURL string, accou
 		return "", validationError
 	}
 
-	requiredMetadata, error := GetRequiredMetadata(launcherSchema)
+	requiredMetadata, error := GetRequiredMetadata(&launcherSchema)
 	if error != "" {
 		return "", fmt.Sprintf("GetRequiredMetadata failed err: %v", error)
 	}
@@ -360,8 +361,16 @@ func GenerateTokenFromDefaults(surveyURL string, accountServiceURL string, accou
 func GenerateTokenFromPost(postValues url.Values) (string, string) {
 	log.Println("POST received: ", postValues)
 
-	schema := postValues.Get("schema")
-	launcherSchema := surveys.FindSurveyByName(schema)
+	schemaUrl := postValues.Get("schema_url")
+
+	var launcherSchema surveys.LauncherSchema
+
+	if schemaUrl != "" {
+		launcherSchema = surveys.LauncherSchemaFromURL(schemaUrl)
+	} else {
+		schema := postValues.Get("schema")
+		launcherSchema = surveys.FindSurveyByName(schema)
+	}
 
 	claims := generateClaims(postValues)
 
@@ -370,14 +379,14 @@ func GenerateTokenFromPost(postValues url.Values) (string, string) {
 		claims[key] = v
 	}
 
+	requiredMetadata, error := GetRequiredMetadata(&launcherSchema)
+	if error != "" {
+		return "", fmt.Sprintf("GetRequiredMetadata failed err: %v", error)
+	}
+
 	schemaClaims := getSchemaClaims(launcherSchema)
 	for key, v := range schemaClaims {
 		claims[key] = v
-	}
-
-	requiredMetadata, error := GetRequiredMetadata(launcherSchema)
-	if error != "" {
-		return "", fmt.Sprintf("GetRequiredMetadata failed err: %v", error)
 	}
 
 	for _, metadata := range requiredMetadata {
@@ -396,7 +405,7 @@ func GenerateTokenFromPost(postValues url.Values) (string, string) {
 }
 
 // GetRequiredMetadata Gets the required metadata from a schema
-func GetRequiredMetadata(launcherSchema surveys.LauncherSchema) ([]Metadata, string) {
+func GetRequiredMetadata(launcherSchema *surveys.LauncherSchema) ([]Metadata, string) {
 
 	var url string
 
@@ -429,6 +438,18 @@ func GetRequiredMetadata(launcherSchema surveys.LauncherSchema) ([]Metadata, str
 	if err := json.Unmarshal(responseBody, &schema); err != nil {
 		log.Print(err)
 		return nil, fmt.Sprintf("Failed to unmarshal Schema from %s", url)
+	}
+
+	// This should probably be set by eq_id but eq_id is not a mandatory field in the schema so falling back to survey_id
+	// See https://github.com/ONSdigital/eq-schema-validator/blob/master/schemas/questionnaire_v1.json#L4
+	if schema.EqID != "" {
+		launcherSchema.EqID = schema.EqID
+	} else if schema.SurveyId != "" {
+		launcherSchema.EqID = schema.SurveyId
+	}
+
+	if schema.FormType != "" {
+		launcherSchema.FormType = schema.FormType
 	}
 
 	defaults := GetDefaultValues()

@@ -20,13 +20,13 @@ import (
 )
 
 func randomNumericString(n int) string {
-    var letter = []rune("0123456789")
+	var letter = []rune("0123456789")
 
-    output := make([]rune, n)
-    for i := range output {
-        output[i] = letter[rand.Intn(len(letter))]
-    }
-    return string(output)
+	output := make([]rune, n)
+	for i := range output {
+		output[i] = letter[rand.Intn(len(letter))]
+	}
+	return string(output)
 }
 
 func serveTemplate(templateName string, data interface{}, w http.ResponseWriter, r *http.Request) {
@@ -93,7 +93,7 @@ func getMetadataHandler(w http.ResponseWriter, r *http.Request) {
 		launcherSchema = surveys.FindSurveyByName(schema)
 	}
 
-	metadata, err := authentication.GetRequiredMetadata(launcherSchema)
+	metadata, err := authentication.GetRequiredMetadata(&launcherSchema)
 
 	if err != "" {
 		http.Error(w, fmt.Sprintf("GetRequiredMetadata err: %v", err), 500)
