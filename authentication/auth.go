@@ -14,7 +14,7 @@ import (
 	"github.com/ONSdigital/go-launch-a-survey/clients"
 	"github.com/ONSdigital/go-launch-a-survey/settings"
 	"github.com/ONSdigital/go-launch-a-survey/surveys"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 	"gopkg.in/square/go-jose.v2"
 	"gopkg.in/square/go-jose.v2/json"
 	"gopkg.in/square/go-jose.v2/jwt"
@@ -132,7 +132,10 @@ func generateClaims(claimValues map[string][]string) (claims map[string]interfac
 	claims = make(map[string]interface{})
 
 	claims["roles"] = roles
-	claims["tx_id"] = uuid.NewV4().String()
+
+	u := uuid.NewV4()
+
+	claims["tx_id"] = u.String()
 
 	for key, value := range claimValues {
 		claims[key] = value[0]
@@ -152,7 +155,10 @@ func GenerateJwtClaims() (jwtClaims map[string]interface{}) {
 
 	jwtClaims["iat"] = jwt.NewNumericDate(issued)
 	jwtClaims["exp"] = jwt.NewNumericDate(expires)
-	jwtClaims["jti"] = uuid.NewV4().String()
+
+	u := uuid.NewV4()
+
+	jwtClaims["jti"] = u.String()
 
 	return jwtClaims
 }
@@ -325,9 +331,9 @@ func GenerateTokenFromDefaults(surveyURL string, accountServiceURL string, accou
 		return "", validationError
 	}
 
-	requiredMetadata, error := GetRequiredMetadata(launcherSchema)
-	if error != "" {
-		return "", fmt.Sprintf("GetRequiredMetadata failed err: %v", error)
+	requiredMetadata, err := GetRequiredMetadata(launcherSchema)
+	if err != nil {
+		return "", fmt.Sprintf("GetRequiredMetadata failed err: %v", err)
 	}
 
 	for _, metadata := range requiredMetadata {
@@ -361,6 +367,7 @@ func GenerateTokenFromPost(postValues url.Values) (string, string) {
 	log.Println("POST received: ", postValues)
 
 	schema := postValues.Get("schema")
+
 	launcherSchema := surveys.FindSurveyByName(schema)
 
 	claims := generateClaims(postValues)
@@ -375,9 +382,9 @@ func GenerateTokenFromPost(postValues url.Values) (string, string) {
 		claims[key] = v
 	}
 
-	requiredMetadata, error := GetRequiredMetadata(launcherSchema)
-	if error != "" {
-		return "", fmt.Sprintf("GetRequiredMetadata failed err: %v", error)
+	requiredMetadata, err := GetRequiredMetadata(launcherSchema)
+	if err != nil {
+		return "", fmt.Sprintf("GetRequiredMetadata failed err: %v", err)
 	}
 
 	for _, metadata := range requiredMetadata {
@@ -396,7 +403,7 @@ func GenerateTokenFromPost(postValues url.Values) (string, string) {
 }
 
 // GetRequiredMetadata Gets the required metadata from a schema
-func GetRequiredMetadata(launcherSchema surveys.LauncherSchema) ([]Metadata, string) {
+func GetRequiredMetadata(launcherSchema surveys.LauncherSchema) ([]Metadata, error) {
 
 	var url string
 
@@ -408,27 +415,66 @@ func GetRequiredMetadata(launcherSchema surveys.LauncherSchema) ([]Metadata, str
 		url = fmt.Sprintf("%s/schemas/%s/%s", hostURL, launcherSchema.EqID, launcherSchema.FormType)
 	}
 
-	log.Println("Loading metadata from schema:", url)
+	var requestBody []byte
+	var err error
 
-	resp, err := clients.GetHTTPClient().Get(url)
+	if launcherSchema.BodyParams.SurveyID != "" {
+		requestBody, err = json.Marshal(map[string]string{
+			"survey_id":      launcherSchema.BodyParams.SurveyID,
+			"form_type":      launcherSchema.BodyParams.FormType,
+			"survey_version": launcherSchema.BodyParams.SurveyVersion,
+		})
+		if err != nil {
+			log.Println(err)
+			return nil, fmt.Errorf("Failed to marshal JSON for request body to %s", url)
+		}
+	}
+
+	request, err := http.NewRequest("GET", url, bytes.NewBuffer(requestBody))
+	request.Header.Set("Content-type", "application/json")
 	if err != nil {
-		return nil, fmt.Sprintf("Failed to load Schema from %s", url)
+		log.Printf("Failed to build request to %s", url)
+		return nil, fmt.Errorf("Failed to build request to %s", url)
+	}
+
+	log.Println("Loading metadata from url:", url)
+
+	if launcherSchema.BodyParams.SurveyID != "" {
+		log.Println("with body params:", string(requestBody))
+	}
+
+	resp, err := clients.GetHTTPClient().Do(request)
+	if err != nil {
+		log.Printf("Failed to recieve a response from %s", url)
+		return nil, fmt.Errorf("Failed to recieve a response from %s", url)
+	}
+
+	if resp.StatusCode == 500 {
+		log.Printf("Something went wrong within the Survey Registry at  %s", url)
+		return nil, fmt.Errorf("Something went wrong within the Survey Registry at  %s", url)
+	}
+
+	if resp.StatusCode == 404 {
+		log.Printf("Failed to locate survey within Survey Registry at %s", url)
+		return nil, fmt.Errorf("Failed to locate survey within Survey Registry at %s", url)
 	}
 
 	if resp.StatusCode != 200 {
-		return nil, fmt.Sprintf("Failed to load Schema from %s", url)
+		log.Printf("Failed to recieve a successful response from %s", url)
+		return nil, fmt.Errorf("Failed to recieve a successful response from %s", url)
 	}
 
 	responseBody, err := ioutil.ReadAll(resp.Body)
 	resp.Body.Close()
 	if err != nil {
-		return nil, fmt.Sprintf("Failed to load Schema from %s", url)
+		log.Printf("Failed to read response from %s", url)
+		return nil, fmt.Errorf("Failed to read response from %s", url)
 	}
 
 	var schema QuestionnaireSchema
 	if err := json.Unmarshal(responseBody, &schema); err != nil {
-		log.Print(err)
-		return nil, fmt.Sprintf("Failed to unmarshal Schema from %s", url)
+		log.Println(err)
+		return nil, fmt.Errorf("Failed to unmarshal Schema from %s", url)
 	}
 
 	defaults := GetDefaultValues()
@@ -441,7 +487,7 @@ func GetRequiredMetadata(launcherSchema surveys.LauncherSchema) ([]Metadata, str
 		}
 	}
 
-	return schema.Metadata, ""
+	return schema.Metadata, nil
 }
 
 // GetDefaultValues Returns a map of default values for metadata keys
@@ -449,10 +495,12 @@ func GetDefaultValues() map[string]string {
 
 	defaults := make(map[string]string)
 
+	u := uuid.NewV4()
+
 	defaults["user_id"] = "UNKNOWN"
 	defaults["period_id"] = "201605"
 	defaults["period_str"] = "May 2017"
-	defaults["collection_exercise_sid"] = uuid.NewV4().String()
+	defaults["collection_exercise_sid"] = u.String()
 	defaults["ru_ref"] = "12346789012A"
 	defaults["ru_name"] = "ESSENTIAL ENTERPRISE LTD."
 	defaults["ref_p_start_date"] = "2016-05-01"

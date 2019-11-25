@@ -1,14 +1,64 @@
 {{define "layout"}}
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
     <title>{{template "title"}}</title>
-    <link rel="stylesheet" href="/static/css/main.css">
-</head>
-<body>
-{{template "body" .}}
-</body>
+    <link
+      rel="stylesheet"
+      href="https://cdn.ons.gov.uk/sdc/design-system/14.3.0/css/main.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://ons-design-system.netlify.com/css/patternlib.css"
+    />
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <script
+      charset="utf-8"
+      src="https://ons-design-system.netlify.com/scripts/20.js"
+    ></script>
+    <script
+      charset="utf-8"
+      src="https://ons-design-system.netlify.com/scripts/19.js"
+    ></script>
+  </head>
+  <body>
+    <header class="header header--internal header--thin">
+      <div class="header__top" role="banner">
+        <div class="container">
+          <div
+            class="header__grid-top grid grid--gutterless grid--flex grid--between grid--vertical-center grid--no-wrap"
+          >
+            <div class="grid__col col-auto">
+              <a class="header__logo-link" href="#">
+                <img
+                  class="header__logo"
+                  src="static/img/ons-logo-white.svg"
+                  alt="Office for National Statistics logo"
+                />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="header__main">
+        <div class="container">
+          <div
+            class="grid grid--gutterless grid--flex grid--between grid--vertical-center grid--no-wrap"
+          >
+            <div class="grid__col col-auto u-flex-shrink">
+              <div class="header__title">{{template "title"}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="container">
+      {{template "body" .}}
+    </main>
+    <script src="https://ons-design-system.netlify.com/scripts/main.js"></script>
+    <script src="https://ons-design-system.netlify.com/scripts/patternlib.js"></script>
+  </body>
 </html>
 {{end}}

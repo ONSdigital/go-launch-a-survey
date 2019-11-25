@@ -1,224 +1,455 @@
-{{define "title"}}Launch a Survey{{end}}
-
-{{define "body"}}
-<h1>Launch a survey</h1>
-<div class="field-wrap">
-
+{{define "title"}}Launch a Questionnaire{{end}} {{define "body"}}
+<p>This tool allows you to preview published questionnaires and their versions from EQ/Runner and the Survey Registry.</p>
 <form action="" method="POST" xmlns="http://www.w3.org/1999/html">
-
-    <div class="field-container">
-        <label for="schema">Schemas</label>
-        <select id="schema" name="schema" class="qa-select-schema" onchange="loadMetadata()">
-            <option selected disabled>Select Schema</option>
-            <optgroup label="Business Surveys">
-                {{range .Schemas.Business}}
-                    <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
-                {{end}}
-            </optgroup>
-            <optgroup label="Census Surveys">
-                {{range .Schemas.Census}}
-                    <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
-                {{end}}
-            </optgroup>
-            <optgroup label="Social Surveys">
-                {{range .Schemas.Social}}
-                    <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
-                {{end}}
-            </optgroup>
-            <optgroup label="Test Surveys">
-                {{range .Schemas.Test}}
-                    <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
-                {{end}}
-            </optgroup>
-            <optgroup label="Other Surveys">
-                {{range .Schemas.Other}}
-                    <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
-                {{end}}
-            </optgroup>
+  <fieldset class="fieldgroup">
+    <div class="fieldgroup__fields">
+      <div class="field field--select">
+        <label class="label u-fs-r" for="schema" label="label">
+          Questionnaire
+        </label>
+        <select id="schema" name="schema" class="input input--select" onchange="loadMetadata()">
+          <option selected disabled>Select a questionnaire</option>
+          <optgroup label="Business Surveys">
+            {{range .Schemas.Business}}
+            <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
+            {{end}}
+          </optgroup>
+          <optgroup label="Census Surveys">
+            {{range .Schemas.Census}}
+            <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
+            {{end}}
+          </optgroup>
+          <optgroup label="Social Surveys">
+            {{range .Schemas.Social}}
+            <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
+            {{end}}
+          </optgroup>
+          <optgroup label="Test Surveys">
+            {{range .Schemas.Test}}
+            <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
+            {{end}}
+          </optgroup>
+          <optgroup label="Register Surveys">
+            {{range .Schemas.Register}}
+            <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
+            {{end}}
+          </optgroup>
+          <optgroup label="Other Surveys">
+            {{range .Schemas.Other}}
+            <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
+            {{end}}
+          </optgroup>
         </select>
+      </div>
     </div>
+  </fieldset>
+  <div id="accordion" class="accordion">
+    <details id="accordion-1" class="details js-collapsible details--accordion details--initialised" data-btn-close="Hide"
+      data-group="accordion" role="group">
+      <summary class="details__summary js-collapsible-summary" role="link" aria-controls="accordion-1"
+        aria-expanded="false" data-ga-action="Close panel">
+        <div class="details__heading">
+          <span class="details__title u-fs-r--b">Metadata</span>
+          <button type="button" class="btn details__btn btn--secondary btn--small js-collapsible-button u-d-no@xs@s"
+            aria-controls="accordion-1" data-ga-action="Close panel">
+            <span class="btn__inner js-collapsible-button-inner">Show</span>
+          </button>
+        </div>
+      </summary>
+      <div id="accordion-1-content" class="details__content js-collapsible-content" aria-hidden="true">
+          <fieldset class="fieldgroup">
+            <div class="fieldgroup__fields">
+              <div id="survey_metadata">
+                <p class="u-fs-s">
+                  Metadata fields will be loaded when you select a questionnaire
+                </p>
+              </div>
+            </div>
+          </fieldset>
+      </div>
+    </details>
+    <details id="accordion-2" class="details js-collapsible details--accordion details--initialised" data-btn-close="Hide"
+      data-group="accordion" role="group">
+      <summary class="details__summary js-collapsible-summary" role="link" aria-controls="accordion-2"
+        aria-expanded="false" data-ga-action="Close panel">
+        <div class="details__heading">
+          <span class="details__title u-fs-r--b">Required data</span>
+          <button type="button" class="btn details__btn btn--secondary btn--small js-collapsible-button u-d-no@xs@s"
+            aria-controls="accordion-2" data-ga-action="Close panel">
+            <span class="btn__inner js-collapsible-button-inner">Show</span>
+          </button>
+        </div>
+      </summary>
+      <div id="accordion-2-content" class="details__content js-collapsible-content" aria-hidden="true">
+        <fieldset class="fieldgroup">
+        
+          <div class="field u-mb-m">
+            <label class="label u-fs-r" for="ru_ref">RU Ref</label>
+            <span>
+              <input id="ru_ref" name="ru_ref" type="text" class="input input--text" />
+              <img onclick="ruref('ru_ref')"
+                src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg==" />
+            </span>
+          </div>
+        
+          <div class="field u-mb-m">
+            <label class="label u-fs-r" for="response_id">Response ID</label>
+            <span>
+              <input id="response_id" name="response_id" type="text" class="input input--text" />
+              <img onclick="responseId('response_id')"
+                src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg==" />
+            </span>
+          </div>
+        
+          <div class="field u-mb-m">
+            <label class="label u-fs-r" for="collection_exercise_sid">Collection Exercise SID</label>
+            <span>
+              <input id="collection_exercise_sid" name="collection_exercise_sid" type="text" class="input input--text" />
+              <img onclick="uuid('collection_exercise_sid')"
+                src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg==" />
+            </span>
+          </div>
+        
+          <div class="field u-mb-m">
+            <label class="label u-fs-r" for="case_id">Case ID</label>
+            <span>
+              <input id="case_id" name="case_id" type="text" class="input input--text" />
+              <img onclick="uuid('case_id')"
+                src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg==" />
+            </span>
+          </div>
+        </fieldset>
+      </div>
+    </details>
+    <details id="accordion-3" class="details js-collapsible details--accordion details--initialised" data-btn-close="Hide"
+      data-group="accordion" role="group">
+      <summary class="details__summary js-collapsible-summary" role="link" aria-controls="accordion-3"
+        aria-expanded="false" data-ga-action="Close panel">
+        <div class="details__heading">
+          <span class="details__title u-fs-r--b">Runner data</span>
+          <button type="button" class="btn details__btn btn--secondary btn--small js-collapsible-button u-d-no@xs@s"
+            aria-controls="accordion-3" data-ga-action="Close panel">
+            <span class="btn__inner js-collapsible-button-inner">Show</span>
+          </button>
+        </div>
+      </summary>
+      <div id="accordion-3-content" class="details__content js-collapsible-content" aria-hidden="true">
+        <fieldset class="fieldgroup">
+        
+          <div class="field u-mb-m">
+            <label class="label u-fs-r" for="exp">Token Expiry (seconds)</label>
+            <input id="exp" name="exp" type="text" value="1800" class="input input--text" />
+          </div>
+        
+          <div class="field u-mb-m field--select">
+            <label class="label u-fs-r" for="language_code">Language</label>
+            <select id="language_code" name="language_code" class="input input--select">
+              <option selected disabled>Select a language</option>
+              <option name="en" value="en">en</option>
+              <option name="cy" value="cy">cy</option>
+            </select>
+          </div>
+        
+          <div class="field u-mb-m">
+            <label class="label u-fs-r" for="roles">Roles</label>
+            <select id="roles" name="roles" multiple class="input" style="width: 19.5rem">
+              <option name="dumper" value="dumper" selected>dumper</option>
+              <option name="flusher" value="flusher">flusher</option>
+            </select>
+          </div>
+        
+          <div class="field u-mb-m">
+            <label class="label u-fs-r" for="account_service_url">Account Service URL</label>
+            <input id="account_service_url" name="account_service_url" type="text" value="{{.AccountServiceURL}}"
+              class="input input--text" />
+          </div>
+        
+          <div class="field u-mb-m">
+            <label class="label u-fs-r" for="account_service_log_out_url">Account Service Log Out URL</label>
+            <input id="account_service_log_out_url" name="account_service_log_out_url" type="text"
+              value="{{.AccountServiceLogOutURL}}" class="input input--text" />
+          </div>
+        </fieldset>
+      </div>
+    </details>
+  </div>
 
-    <h3>Survey Metadata</h3>
-    <div id="survey_metadata">
-        <p>--- Metadata fields will be loaded when you select a schema ---</p>
-    </div>
-
-    <h3>Required Data</h3>
-
-    <div class="field-container">
-        <label for="ru_ref">RU Ref</label>
-        <span>
-            <input id="ru_ref" name="ru_ref" type="text" class="qa-ru-ref">
-            <img onclick="ruref('ru_ref')" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg==">
-        </span>
-    </div>
-
-    <div class="field-container">
-        <label for="response_id">Response ID</label>
-        <span>
-            <input id="response_id" name="response_id" type="text" class="qa-response_id">
-            <img onclick="responseId('response_id')" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg==">
-        </span>
-    </div>
-
-    <div class="field-container">
-        <label for="collection_exercise_sid">Collection Exercise SID</label>
-        <span>
-            <input id="collection_exercise_sid" name="collection_exercise_sid" type="text" class="qa-collection-sid">
-            <img onclick="uuid('collection_exercise_sid')" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg==">
-        </span>
-    </div>
-
-    <div class="field-container">
-        <label for="case_id">Case ID</label>
-        <span>
-            <input id="case_id" name="case_id" type="text" class="qa-case_id">
-            <img onclick="uuid('case_id')" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg==">
-        </span>
-    </div>
-
-    <h3>Runner Data</h3>
-    <div class="field-container">
-        <label for="exp">Token Expiry (seconds)</label>
-        <input id="exp" name="exp" type="text" value="1800" class="qa-token-expiry">
-    </div>
-
-    <div class="field-container">
-        <label for="language_code">Language</label>
-        <select id="language_code" name="language_code" class="qa-language-code">
-            <option name="en" value="en">en</option>
-            <option name="cy" value="cy">cy</option>
-            <option name="" value="">&lt;not set&gt;</option>
-        </select>
-    </div>
-
-    <div class="field-container">
-        <label for="roles">Roles</label>
-        <select id="roles" name="roles" multiple="multiple" class="qa-roles">
-            <option name="flusher" value="flusher">flusher</option>
-            <option name="dumper" value="dumper" selected="selected">dumper</option>
-        </select>
-    </div>
-
-    <div class="field-container">
-        <label for="account_service_url">Account Service URL</label>
-        <input id="account_service_url" name="account_service_url" type="text" value="{{.AccountServiceURL}}" class="qa-account_service_url">
-    </div>
-
-    <div class="field-container">
-        <label for="account_service_log_out_url">Account Service Log Out URL</label>
-        <input id="account_service_log_out_url" name="account_service_log_out_url" type="text" value="{{.AccountServiceLogOutURL}}" class="qa-account_service_log_out_url">
-    </div>
-
-    <div class="field-container">
-        <input type="submit" name="action_launch" value="Open Survey" class="qa-btn-submit-dev btn" id="submit-btn" disabled="disabled" />
-        <input type="submit" name="action_flush" value="Flush Survey Data" class="qa-btn-submit-dev btn" id="flush-btn" disabled="disabled" />
-    </div>
-
+  <div class="btn-group">
+    <input
+      type="submit"
+      name="action_launch"
+      value="Open Survey"
+      class="btn"
+      id="submit-btn"
+      disabled="disabled"
+    ></input>
+    <input
+      type="submit"
+      name="action_flush"
+      value="Flush Survey Data"
+      class="btn btn__secondary"
+      id="flush-btn"
+      disabled="disabled"
+    />
+  </div>
 </form>
-</div>
 
 <script>
-    // uuidv4: from https://github.com/kelektiv/node-uuid
-    !function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var n;n="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:this,n.uuidv4=e()}}(function(){return function e(n,r,o){function t(f,u){if(!r[f]){if(!n[f]){var a="function"==typeof require&&require;if(!u&&a)return a(f,!0);if(i)return i(f,!0);var d=new Error("Cannot find module '"+f+"'");throw d.code="MODULE_NOT_FOUND",d}var p=r[f]={exports:{}};n[f][0].call(p.exports,function(e){var r=n[f][1][e];return t(r?r:e)},p,p.exports,e,n,r,o)}return r[f].exports}for(var i="function"==typeof require&&require,f=0;f<o.length;f++)t(o[f]);return t}({1:[function(e,n,r){function o(e,n){var r=n||0,o=t;return[o[e[r++]],o[e[r++]],o[e[r++]],o[e[r++]],"-",o[e[r++]],o[e[r++]],"-",o[e[r++]],o[e[r++]],"-",o[e[r++]],o[e[r++]],"-",o[e[r++]],o[e[r++]],o[e[r++]],o[e[r++]],o[e[r++]],o[e[r++]]].join("")}for(var t=[],i=0;i<256;++i)t[i]=(i+256).toString(16).substr(1);n.exports=o},{}],2:[function(e,n,r){var o="undefined"!=typeof crypto&&crypto.getRandomValues&&crypto.getRandomValues.bind(crypto)||"undefined"!=typeof msCrypto&&"function"==typeof window.msCrypto.getRandomValues&&msCrypto.getRandomValues.bind(msCrypto);if(o){var t=new Uint8Array(16);n.exports=function(){return o(t),t}}else{var i=new Array(16);n.exports=function(){for(var e,n=0;n<16;n++)0===(3&n)&&(e=4294967296*Math.random()),i[n]=e>>>((3&n)<<3)&255;return i}}},{}],3:[function(e,n,r){function o(e,n,r){var o=n&&r||0;"string"==typeof e&&(n="binary"===e?new Array(16):null,e=null),e=e||{};var f=e.random||(e.rng||t)();if(f[6]=15&f[6]|64,f[8]=63&f[8]|128,n)for(var u=0;u<16;++u)n[o+u]=f[u];return n||i(f)}var t=e("./lib/rng"),i=e("./lib/bytesToUuid");n.exports=o},{"./lib/bytesToUuid":1,"./lib/rng":2}]},{},[3])(3)});
-
-    function loadMetadata() {
-        document.getElementById("submit-btn").disabled = true;
-        document.getElementById("flush-btn").disabled = true;
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4) {
-                if (this.status == 200) {
-
-                    document.getElementById("survey_metadata").innerHTML = ""
-
-                    var response = JSON.parse(this.responseText);
-
-                    if (response.length > 0) {
-                        for (var i = 0; i < response.length; i++) {
-                            metadataField = response[i]
-
-                            var defaultValue = metadataField['name'];
-
-                            if (metadataField['validator'] == "date") {
-                                var currentDate = new Date()
-                                var defaultValue = currentDate.getFullYear() + "-" + ('0' + (currentDate.getMonth() + 1)).slice(-2) + "-" + ('0' + currentDate.getDate()).slice(-2)
-                            }
-
-                            defaultValue = metadataField['default']
-
-                            var metadataFieldHtml = ""
-
-                            if (metadataField['validator'] == "boolean") {
-
-                                metadataFieldHtml = "<div class=\"field-container\">" +
-                                        "<label for=\"" + metadataField['name'] + "\">" + metadataField['name'] + "</label>" +
-                                        "<input id=\"" + metadataField['name'] + "\" name=\"" + metadataField['name'] + "\" type=\"checkbox\" name=\"" + metadataField['name'] + "\" class=\"qa-" + metadataField['name'] + "\">" +
-                                        "</div>"
-
-                            } else if (metadataField['validator'] == "uuid") {
-
-                                metadataFieldHtml = "<div class=\"field-container\">" +
-                                        "<label for=\"" + metadataField['name'] + "\">" + metadataField['name'] + "</label>" +
-                                        "<span>" +
-                                        "<input id=\"" + metadataField['name'] + "\" name=\"" + metadataField['name'] + "\" type=\"text\" value=\"" + uuidv4() + "\" class=\"" + metadataField['name'] + "\">" +
-                                        "<img onclick=\"uuid('" + metadataField['name'] + "')\" src=\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg==\">" +
-                                        "</span>" +
-                                        "</div>"
-
-                            } else {
-                                metadataFieldHtml = "<div class=\"field-container\">" +
-                                        "<label for=\"" + metadataField['name'] + "\">" + metadataField['name'] + "</label>" +
-                                        "<input id=\"" + metadataField['name'] + "\" name=\"" + metadataField['name'] + "\" type=\"text\" value=\"" + defaultValue + "\" class=\"qa-" + metadataField['name'] + "\">" +
-                                        "</div>"
-                            }
-
-                            document.getElementById("survey_metadata").innerHTML = document.getElementById("survey_metadata").innerHTML + metadataFieldHtml
-                        }
-                    } else {
-                        document.getElementById("survey_metadata").innerHTML = "No metadata required for this survey"
-                    }
-
-                    document.getElementById("submit-btn").disabled = false;
-                    document.getElementById("flush-btn").disabled = false;
-
-
-                } else {
-                    document.getElementById("survey_metadata").innerHTML = "Failed to load Schema Metadata"
-                }
-            }
-        };
-        xhttp.open("GET", "/metadata?schema=" + document.getElementById('schema').value , true);
-        xhttp.send();
+  // uuidv4: from https://github.com/kelektiv/node-uuid
+  !(function(e) {
+    if ("object" == typeof exports && "undefined" != typeof module)
+      module.exports = e();
+    else if ("function" == typeof define && define.amd) define([], e);
+    else {
+      var n;
+      (n =
+        "undefined" != typeof window
+          ? window
+          : "undefined" != typeof global
+          ? global
+          : "undefined" != typeof self
+          ? self
+          : this),
+        (n.uuidv4 = e());
     }
-
-    function uuid(el_id) {
-      document.getElementById(el_id).value = uuidv4();
-    }
-
-    function responseId(el_id) {
-        var result = '';
-        var chars = '0123456789';
-        for (var i = 16; i > 0; --i) {
-            result += chars[Math.round(Math.random() * (chars.length - 1))];
+  })(function() {
+    return (function e(n, r, o) {
+      function t(f, u) {
+        if (!r[f]) {
+          if (!n[f]) {
+            var a = "function" == typeof require && require;
+            if (!u && a) return a(f, !0);
+            if (i) return i(f, !0);
+            var d = new Error("Cannot find module '" + f + "'");
+            throw ((d.code = "MODULE_NOT_FOUND"), d);
+          }
+          var p = (r[f] = { exports: {} });
+          n[f][0].call(
+            p.exports,
+            function(e) {
+              var r = n[f][1][e];
+              return t(r ? r : e);
+            },
+            p,
+            p.exports,
+            e,
+            n,
+            r,
+            o
+          );
         }
-        document.getElementById(el_id).value = result;
-    }
+        return r[f].exports;
+      }
+      for (
+        var i = "function" == typeof require && require, f = 0;
+        f < o.length;
+        f++
+      )
+        t(o[f]);
+      return t;
+    })(
+      {
+        1: [
+          function(e, n, r) {
+            function o(e, n) {
+              var r = n || 0,
+                o = t;
+              return [
+                o[e[r++]],
+                o[e[r++]],
+                o[e[r++]],
+                o[e[r++]],
+                "-",
+                o[e[r++]],
+                o[e[r++]],
+                "-",
+                o[e[r++]],
+                o[e[r++]],
+                "-",
+                o[e[r++]],
+                o[e[r++]],
+                "-",
+                o[e[r++]],
+                o[e[r++]],
+                o[e[r++]],
+                o[e[r++]],
+                o[e[r++]],
+                o[e[r++]]
+              ].join("");
+            }
+            for (var t = [], i = 0; i < 256; ++i)
+              t[i] = (i + 256).toString(16).substr(1);
+            n.exports = o;
+          },
+          {}
+        ],
+        2: [
+          function(e, n, r) {
+            var o =
+              ("undefined" != typeof crypto &&
+                crypto.getRandomValues &&
+                crypto.getRandomValues.bind(crypto)) ||
+              ("undefined" != typeof msCrypto &&
+                "function" == typeof window.msCrypto.getRandomValues &&
+                msCrypto.getRandomValues.bind(msCrypto));
+            if (o) {
+              var t = new Uint8Array(16);
+              n.exports = function() {
+                return o(t), t;
+              };
+            } else {
+              var i = new Array(16);
+              n.exports = function() {
+                for (var e, n = 0; n < 16; n++)
+                  0 === (3 & n) && (e = 4294967296 * Math.random()),
+                    (i[n] = (e >>> ((3 & n) << 3)) & 255);
+                return i;
+              };
+            }
+          },
+          {}
+        ],
+        3: [
+          function(e, n, r) {
+            function o(e, n, r) {
+              var o = (n && r) || 0;
+              "string" == typeof e &&
+                ((n = "binary" === e ? new Array(16) : null), (e = null)),
+                (e = e || {});
+              var f = e.random || (e.rng || t)();
+              if (((f[6] = (15 & f[6]) | 64), (f[8] = (63 & f[8]) | 128), n))
+                for (var u = 0; u < 16; ++u) n[o + u] = f[u];
+              return n || i(f);
+            }
+            var t = e("./lib/rng"),
+              i = e("./lib/bytesToUuid");
+            n.exports = o;
+          },
+          { "./lib/bytesToUuid": 1, "./lib/rng": 2 }
+        ]
+      },
+      {},
+      [3]
+    )(3);
+  });
 
-    function ruref(el_id) {
-      var result = '';
-      var chars = '0123456789';
-      for (var i = 11; i > 0; --i) result += chars[Math.round(Math.random() * (chars.length - 1))];
-      var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  function loadMetadata() {
+    document.getElementById("submit-btn").disabled = true;
+    document.getElementById("flush-btn").disabled = true;
+    const xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4) {
+        if (this.status == 200) {
+          document.getElementById("survey_metadata").innerHTML = "";
+
+          var response = JSON.parse(this.responseText);
+
+          if (response.length > 0) {
+            for (var i = 0; i < response.length; i++) {
+              metadataField = response[i];
+
+              var defaultValue = metadataField["name"];
+
+              if (metadataField["validator"] == "date") {
+                var currentDate = new Date();
+                var defaultValue =
+                  currentDate.getFullYear() +
+                  "-" +
+                  ("0" + (currentDate.getMonth() + 1)).slice(-2) +
+                  "-" +
+                  ("0" + currentDate.getDate()).slice(-2);
+              }
+
+              defaultValue = metadataField["default"];
+
+              var metadataFieldHtml = "";
+
+              if (metadataField["validator"] == "boolean") {
+                metadataFieldHtml = `
+                <div class="field field--checkbox">
+                  <div class="field__item">
+                    <input id="${metadataField["name"]}" type="checkbox" name="${metadataField["name"]}" class="input input--checkbox" />
+                    <label class="label label--inline u-fs-r" for="${metadataField["name"]}"> ${metadataField["name"]} </label>"
+                  </div>
+                </div>
+                `;
+              } else if (metadataField["validator"] == "uuid") {
+                metadataFieldHtml = `
+                <div class="field u-mb-m">
+                  <label class="label u-fs-r" for="${metadataField["name"]}">${
+                  metadataField["name"]
+                }</label>
+                  <span>
+                  <input class="input input--text" type="text" id="${
+                    metadataField["name"]
+                  }" name="${metadataField["name"]}" value="${uuidv4()}">
+                  <img onclick="uuid('${
+                    metadataField["name"]
+                  }')" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg==">
+                  </span>
+                </div>
+                `;
+              } else {
+                metadataFieldHtml = `
+                <div class="field u-mb-m">
+                  <label class="label u-fs-r" for="${metadataField["name"]}">${metadataField["name"]}</label>
+                  <input class="input input--text" id="${metadataField["name"]}" name="${metadataField["name"]}" type="text" value="${defaultValue}" />
+                </div>
+                `;
+              }
+
+              document.getElementById("survey_metadata").innerHTML =
+                document.getElementById("survey_metadata").innerHTML +
+                metadataFieldHtml;
+            }
+          } else {
+            document.getElementById("survey_metadata").innerHTML =
+              "No metadata required for this survey";
+          }
+
+          document.getElementById("submit-btn").disabled = false;
+          document.getElementById("flush-btn").disabled = false;
+        } else {
+          document.getElementById("survey_metadata").innerHTML =
+            "Failed to load Schema Metadata";
+        }
+      }
+    };
+    xhttp.open(
+      "GET",
+      "/metadata?schema=" + document.getElementById("schema").value,
+      true
+    );
+    xhttp.send();
+  }
+
+  function uuid(el_id) {
+    document.getElementById(el_id).value = uuidv4();
+  }
+
+  function responseId(el_id) {
+    var result = "";
+    var chars = "0123456789";
+    for (var i = 16; i > 0; --i) {
       result += chars[Math.round(Math.random() * (chars.length - 1))];
-      document.getElementById(el_id).value = result;
     }
+    document.getElementById(el_id).value = result;
+  }
 
-    uuid('collection_exercise_sid');
-    uuid('case_id');
-    ruref('ru_ref');
-    responseId('response_id');
+  function ruref(el_id) {
+    var result = "";
+    var chars = "0123456789";
+    for (var i = 11; i > 0; --i)
+      result += chars[Math.round(Math.random() * (chars.length - 1))];
+    var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    result += chars[Math.round(Math.random() * (chars.length - 1))];
+    document.getElementById(el_id).value = result;
+  }
 
+  uuid("collection_exercise_sid");
+  uuid("case_id");
+  ruref("ru_ref");
+  responseId("response_id");
 </script>
 
 {{end}}
