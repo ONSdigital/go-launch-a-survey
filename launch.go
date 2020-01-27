@@ -5,10 +5,10 @@ import (
 
 	"html/template"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
 	"path/filepath"
-	"math/rand"
 
 	"html"
 
@@ -16,18 +16,18 @@ import (
 	"github.com/ONSdigital/go-launch-a-survey/settings"
 	"github.com/ONSdigital/go-launch-a-survey/surveys"
 	"github.com/gorilla/mux"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 	"gopkg.in/square/go-jose.v2/json"
 )
 
 func randomNumericString(n int) string {
-    var letter = []rune("0123456789")
+	var letter = []rune("0123456789")
 
-    output := make([]rune, n)
-    for i := range output {
-        output[i] = letter[rand.Intn(len(letter))]
-    }
-    return string(output)
+	output := make([]rune, n)
+	for i := range output {
+		output[i] = letter[rand.Intn(len(letter))]
+	}
+	return string(output)
 }
 
 func serveTemplate(templateName string, data interface{}, w http.ResponseWriter, r *http.Request) {
@@ -75,21 +75,24 @@ func getLaunchHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func postLaunchHandler(w http.ResponseWriter, r *http.Request) {
+
 	err := r.ParseForm()
 	if err != nil {
 		http.Error(w, fmt.Sprintf("POST. r.ParseForm() err: %v", err), 500)
 		return
 	}
+
 	redirectURL(w, r)
 }
 
 func getMetadataHandler(w http.ResponseWriter, r *http.Request) {
 	schema := r.URL.Query().Get("schema")
+
 	launcherSchema := surveys.FindSurveyByName(schema)
 
 	metadata, err := authentication.GetRequiredMetadata(launcherSchema)
 
-	if err != "" {
+	if err != nil {
 		http.Error(w, fmt.Sprintf("GetRequiredMetadata err: %v", err), 500)
 		return
 	}
@@ -145,9 +148,13 @@ func quickLauncherHandler(w http.ResponseWriter, r *http.Request) {
 	surveyURL := urlValues.Get("url")
 	log.Println("Quick launch request received", surveyURL)
 
+	collectionExerciseUUID := uuid.NewV4()
+
+	caseUUID := uuid.NewV4()
+
 	urlValues.Add("ru_ref", authentication.GetDefaultValues()["ru_ref"])
-	urlValues.Add("collection_exercise_sid", uuid.NewV4().String())
-	urlValues.Add("case_id", uuid.NewV4().String())
+	urlValues.Add("collection_exercise_sid", collectionExerciseUUID.String())
+	urlValues.Add("case_id", caseUUID.String())
 	urlValues.Add("response_id", randomNumericString(16))
 
 	token, err := authentication.GenerateTokenFromDefaults(surveyURL, accountServiceURL, AccountServiceLogOutURL, urlValues)
@@ -170,7 +177,6 @@ func main() {
 	r.HandleFunc("/", getLaunchHandler).Methods("GET")
 	r.HandleFunc("/", postLaunchHandler).Methods("POST")
 	r.HandleFunc("/metadata", getMetadataHandler).Methods("GET")
-
 	//Author Launcher with passed parameters in Url
 	r.HandleFunc("/quick-launch", quickLauncherHandler).Methods("GET")
 
