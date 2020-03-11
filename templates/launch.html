@@ -1,198 +1,183 @@
-{{define "title"}}Launch a Questionnaire{{end}} {{define "body"}}
-<p>This tool allows you to preview published questionnaires and their versions from EQ/Runner and the Survey Registry.</p>
-<form action="" method="POST" xmlns="http://www.w3.org/1999/html">
-  <fieldset class="fieldgroup">
-    <div class="fieldgroup__fields">
-      <div class="field field--select">
-        <label class="label u-fs-r" for="schema" label="label">
-          Questionnaire
-        </label>
-        <select id="schema" name="schema" class="input input--select" onchange="loadMetadata()">
-          <option selected disabled>Select a questionnaire</option>
-          <optgroup label="Business Surveys">
-            {{range .Schemas.Business}}
-            <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
-            {{end}}
-          </optgroup>
-          <optgroup label="Census Surveys">
-            {{range .Schemas.Census}}
-            <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
-            {{end}}
-          </optgroup>
-          <optgroup label="Social Surveys">
-            {{range .Schemas.Social}}
-            <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
-            {{end}}
-          </optgroup>
-          <optgroup label="Test Surveys">
-            {{range .Schemas.Test}}
-            <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
-            {{end}}
-          </optgroup>
-          <optgroup label="Register Surveys">
-            {{range .Schemas.Register}}
-            <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
-            {{end}}
-          </optgroup>
-          <optgroup label="Other Surveys">
-            {{range .Schemas.Other}}
-            <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
-            {{end}}
-          </optgroup>
-        </select>
-      </div>
+{{define "title"}}Launch a Survey{{end}} {{define "body"}}
+<h1>Launch a survey</h1>
+<div class="field-wrap">
+  <form action="" method="POST" xmlns="http://www.w3.org/1999/html">
+    <div class="field-container">
+      <label for="schema">Schemas</label>
+      <select
+        id="schema"
+        name="schema"
+        class="qa-select-schema"
+        onchange="loadMetadata()"
+      >
+        <option selected disabled>Select Schema</option>
+        <optgroup label="Business Surveys">
+          {{range .Schemas.Business}}
+          <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
+          {{end}}
+        </optgroup>
+        <optgroup label="Census Surveys">
+          {{range .Schemas.Census}}
+          <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
+          {{end}}
+        </optgroup>
+        <optgroup label="Social Surveys">
+          {{range .Schemas.Social}}
+          <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
+          {{end}}
+        </optgroup>
+        <optgroup label="Test Surveys">
+          {{range .Schemas.Test}}
+          <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
+          {{end}}
+        </optgroup>
+        <optgroup label="Register Surveys">
+          {{range .Schemas.Register}}
+          <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
+          {{end}}
+        </optgroup>
+        <optgroup label="Other Surveys">
+          {{range .Schemas.Other}}
+          <option name="{{.Name}}" value="{{.Name}}">{{.Name}}</option>
+          {{end}}
+        </optgroup>
+      </select>
     </div>
-  </fieldset>
-  <div id="accordion" class="accordion">
-    <details id="accordion-1" class="details js-collapsible details--accordion details--initialised" data-btn-close="Hide"
-      data-group="accordion" role="group">
-      <summary class="details__summary js-collapsible-summary" role="link" aria-controls="accordion-1"
-        aria-expanded="false" data-ga-action="Close panel">
-        <div class="details__heading">
-          <span class="details__title u-fs-r--b">Metadata</span>
-          <button type="button" class="btn details__btn btn--secondary btn--small js-collapsible-button u-d-no@xs@s"
-            aria-controls="accordion-1" data-ga-action="Close panel">
-            <span class="btn__inner js-collapsible-button-inner">Show</span>
-          </button>
-        </div>
-      </summary>
-      <div id="accordion-1-content" class="details__content js-collapsible-content" aria-hidden="true">
-          <fieldset class="fieldgroup">
-            <div class="fieldgroup__fields">
-              <div id="survey_metadata">
-                <p class="u-fs-s">
-                  Metadata fields will be loaded when you select a questionnaire
-                </p>
-              </div>
-            </div>
-          </fieldset>
-      </div>
-    </details>
-    <details id="accordion-2" class="details js-collapsible details--accordion details--initialised" data-btn-close="Hide"
-      data-group="accordion" role="group">
-      <summary class="details__summary js-collapsible-summary" role="link" aria-controls="accordion-2"
-        aria-expanded="false" data-ga-action="Close panel">
-        <div class="details__heading">
-          <span class="details__title u-fs-r--b">Required data</span>
-          <button type="button" class="btn details__btn btn--secondary btn--small js-collapsible-button u-d-no@xs@s"
-            aria-controls="accordion-2" data-ga-action="Close panel">
-            <span class="btn__inner js-collapsible-button-inner">Show</span>
-          </button>
-        </div>
-      </summary>
-      <div id="accordion-2-content" class="details__content js-collapsible-content" aria-hidden="true">
-        <fieldset class="fieldgroup">
-        
-          <div class="field u-mb-m">
-            <label class="label u-fs-r" for="ru_ref">RU Ref</label>
-            <span>
-              <input id="ru_ref" name="ru_ref" type="text" class="input input--text" />
-              <img onclick="ruref('ru_ref')"
-                src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg==" />
-            </span>
-          </div>
-        
-          <div class="field u-mb-m">
-            <label class="label u-fs-r" for="response_id">Response ID</label>
-            <span>
-              <input id="response_id" name="response_id" type="text" class="input input--text" />
-              <img onclick="responseId('response_id')"
-                src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg==" />
-            </span>
-          </div>
-        
-          <div class="field u-mb-m">
-            <label class="label u-fs-r" for="collection_exercise_sid">Collection Exercise SID</label>
-            <span>
-              <input id="collection_exercise_sid" name="collection_exercise_sid" type="text" class="input input--text" />
-              <img onclick="uuid('collection_exercise_sid')"
-                src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg==" />
-            </span>
-          </div>
-        
-          <div class="field u-mb-m">
-            <label class="label u-fs-r" for="case_id">Case ID</label>
-            <span>
-              <input id="case_id" name="case_id" type="text" class="input input--text" />
-              <img onclick="uuid('case_id')"
-                src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg==" />
-            </span>
-          </div>
-        </fieldset>
-      </div>
-    </details>
-    <details id="accordion-3" class="details js-collapsible details--accordion details--initialised" data-btn-close="Hide"
-      data-group="accordion" role="group">
-      <summary class="details__summary js-collapsible-summary" role="link" aria-controls="accordion-3"
-        aria-expanded="false" data-ga-action="Close panel">
-        <div class="details__heading">
-          <span class="details__title u-fs-r--b">Runner data</span>
-          <button type="button" class="btn details__btn btn--secondary btn--small js-collapsible-button u-d-no@xs@s"
-            aria-controls="accordion-3" data-ga-action="Close panel">
-            <span class="btn__inner js-collapsible-button-inner">Show</span>
-          </button>
-        </div>
-      </summary>
-      <div id="accordion-3-content" class="details__content js-collapsible-content" aria-hidden="true">
-        <fieldset class="fieldgroup">
-        
-          <div class="field u-mb-m">
-            <label class="label u-fs-r" for="exp">Token Expiry (seconds)</label>
-            <input id="exp" name="exp" type="text" value="1800" class="input input--text" />
-          </div>
-        
-          <div class="field u-mb-m field--select">
-            <label class="label u-fs-r" for="language_code">Language</label>
-            <select id="language_code" name="language_code" class="input input--select">
-              <option selected disabled>Select a language</option>
-              <option name="en" value="en">en</option>
-              <option name="cy" value="cy">cy</option>
-            </select>
-          </div>
-        
-          <div class="field u-mb-m">
-            <label class="label u-fs-r" for="roles">Roles</label>
-            <select id="roles" name="roles" multiple class="input" style="width: 19.5rem">
-              <option name="dumper" value="dumper" selected>dumper</option>
-              <option name="flusher" value="flusher">flusher</option>
-            </select>
-          </div>
-        
-          <div class="field u-mb-m">
-            <label class="label u-fs-r" for="account_service_url">Account Service URL</label>
-            <input id="account_service_url" name="account_service_url" type="text" value="{{.AccountServiceURL}}"
-              class="input input--text" />
-          </div>
-        
-          <div class="field u-mb-m">
-            <label class="label u-fs-r" for="account_service_log_out_url">Account Service Log Out URL</label>
-            <input id="account_service_log_out_url" name="account_service_log_out_url" type="text"
-              value="{{.AccountServiceLogOutURL}}" class="input input--text" />
-          </div>
-        </fieldset>
-      </div>
-    </details>
-  </div>
 
-  <div class="btn-group">
-    <input
-      type="submit"
-      name="action_launch"
-      value="Open Survey"
-      class="btn"
-      id="submit-btn"
-      disabled="disabled"
-    ></input>
-    <input
-      type="submit"
-      name="action_flush"
-      value="Flush Survey Data"
-      class="btn btn__secondary"
-      id="flush-btn"
-      disabled="disabled"
-    />
-  </div>
-</form>
+    <h3>Survey Metadata</h3>
+    <div id="survey_metadata">
+      <p>--- Metadata fields will be loaded when you select a schema ---</p>
+    </div>
+
+    <h3>Required Data</h3>
+
+    <div class="field-container">
+      <label for="ru_ref">RU Ref</label>
+      <span>
+        <input id="ru_ref" name="ru_ref" type="text" class="qa-ru-ref" />
+        <img
+          onclick="ruref('ru_ref')"
+          src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg=="
+        />
+      </span>
+    </div>
+
+    <div class="field-container">
+      <label for="response_id">Response ID</label>
+      <span>
+        <input
+          id="response_id"
+          name="response_id"
+          type="text"
+          class="qa-response_id"
+        />
+        <img
+          onclick="responseId('response_id')"
+          src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg=="
+        />
+      </span>
+    </div>
+
+    <div class="field-container">
+      <label for="collection_exercise_sid">Collection Exercise SID</label>
+      <span>
+        <input
+          id="collection_exercise_sid"
+          name="collection_exercise_sid"
+          type="text"
+          class="qa-collection-sid"
+        />
+        <img
+          onclick="uuid('collection_exercise_sid')"
+          src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg=="
+        />
+      </span>
+    </div>
+
+    <div class="field-container">
+      <label for="case_id">Case ID</label>
+      <span>
+        <input id="case_id" name="case_id" type="text" class="qa-case_id" />
+        <img
+          onclick="uuid('case_id')"
+          src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg=="
+        />
+      </span>
+    </div>
+
+    <h3>Runner Data</h3>
+    <div class="field-container">
+      <label for="exp">Token Expiry (seconds)</label>
+      <input
+        id="exp"
+        name="exp"
+        type="text"
+        value="1800"
+        class="qa-token-expiry"
+      />
+    </div>
+
+    <div class="field-container">
+      <label for="language_code">Language</label>
+      <select id="language_code" name="language_code" class="qa-language-code">
+        <option name="en" value="en">en</option>
+        <option name="cy" value="cy">cy</option>
+        <option name="" value="">&lt;not set&gt;</option>
+      </select>
+    </div>
+
+    <div class="field-container">
+      <label for="roles">Roles</label>
+      <select id="roles" name="roles" multiple="multiple" class="qa-roles">
+        <option name="flusher" value="flusher">flusher</option>
+        <option name="dumper" value="dumper" selected="selected">dumper</option>
+      </select>
+    </div>
+
+    <div class="field-container">
+      <label for="account_service_url">Account Service URL</label>
+      <input
+        id="account_service_url"
+        name="account_service_url"
+        type="text"
+        value="{{.AccountServiceURL}}"
+        class="qa-account_service_url"
+      />
+    </div>
+
+    <div class="field-container">
+      <label for="account_service_log_out_url"
+        >Account Service Log Out URL</label
+      >
+      <input
+        id="account_service_log_out_url"
+        name="account_service_log_out_url"
+        type="text"
+        value="{{.AccountServiceLogOutURL}}"
+        class="qa-account_service_log_out_url"
+      />
+    </div>
+
+    <div class="field-container">
+      <input
+        type="submit"
+        name="action_launch"
+        value="Open Survey"
+        class="qa-btn-submit-dev btn"
+        id="submit-btn"
+        disabled="disabled"
+      />
+      <input
+        type="submit"
+        name="action_flush"
+        value="Flush Survey Data"
+        class="qa-btn-submit-dev btn"
+        id="flush-btn"
+        disabled="disabled"
+      />
+    </div>
+  </form>
+</div>
 
 <script>
   // uuidv4: from https://github.com/kelektiv/node-uuid
@@ -336,7 +321,7 @@
   function loadMetadata() {
     document.getElementById("submit-btn").disabled = true;
     document.getElementById("flush-btn").disabled = true;
-    const xhttp = new XMLHttpRequest();
+    var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4) {
         if (this.status == 200) {
@@ -365,37 +350,64 @@
               var metadataFieldHtml = "";
 
               if (metadataField["validator"] == "boolean") {
-                metadataFieldHtml = `
-                <div class="field field--checkbox">
-                  <div class="field__item">
-                    <input id="${metadataField["name"]}" type="checkbox" name="${metadataField["name"]}" class="input input--checkbox" />
-                    <label class="label label--inline u-fs-r" for="${metadataField["name"]}"> ${metadataField["name"]} </label>"
-                  </div>
-                </div>
-                `;
+                metadataFieldHtml =
+                  '<div class="field-container">' +
+                  '<label for="' +
+                  metadataField["name"] +
+                  '">' +
+                  metadataField["name"] +
+                  "</label>" +
+                  '<input id="' +
+                  metadataField["name"] +
+                  '" name="' +
+                  metadataField["name"] +
+                  '" type="checkbox" name="' +
+                  metadataField["name"] +
+                  '" class="qa-' +
+                  metadataField["name"] +
+                  '">' +
+                  "</div>";
               } else if (metadataField["validator"] == "uuid") {
-                metadataFieldHtml = `
-                <div class="field u-mb-m">
-                  <label class="label u-fs-r" for="${metadataField["name"]}">${
-                  metadataField["name"]
-                }</label>
-                  <span>
-                  <input class="input input--text" type="text" id="${
-                    metadataField["name"]
-                  }" name="${metadataField["name"]}" value="${uuidv4()}">
-                  <img onclick="uuid('${
-                    metadataField["name"]
-                  }')" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg==">
-                  </span>
-                </div>
-                `;
+                metadataFieldHtml =
+                  '<div class="field-container">' +
+                  '<label for="' +
+                  metadataField["name"] +
+                  '">' +
+                  metadataField["name"] +
+                  "</label>" +
+                  "<span>" +
+                  '<input id="' +
+                  metadataField["name"] +
+                  '" name="' +
+                  metadataField["name"] +
+                  '" type="text" value="' +
+                  uuidv4() +
+                  '" class="' +
+                  metadataField["name"] +
+                  '">' +
+                  "<img onclick=\"uuid('" +
+                  metadataField["name"] +
+                  '\')" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMjU2LDM4NC4xYy03MC43LDAtMTI4LTU3LjMtMTI4LTEyOC4xYzAtNzAuOCw1Ny4zLTEyOC4xLDEyOC0xMjguMVY4NGw5Niw2NGwtOTYsNTUuN3YtNTUuOCAgIGMtNTkuNiwwLTEwOC4xLDQ4LjUtMTA4LjEsMTA4LjFjMCw1OS42LDQ4LjUsMTA4LjEsMTA4LjEsMTA4LjFTMzY0LjEsMzE2LDM2NC4xLDI1NkgzODRDMzg0LDMyNywzMjYuNywzODQuMSwyNTYsMzg0LjF6Ii8+PC9nPjwvc3ZnPg==">' +
+                  "</span>" +
+                  "</div>";
               } else {
-                metadataFieldHtml = `
-                <div class="field u-mb-m">
-                  <label class="label u-fs-r" for="${metadataField["name"]}">${metadataField["name"]}</label>
-                  <input class="input input--text" id="${metadataField["name"]}" name="${metadataField["name"]}" type="text" value="${defaultValue}" />
-                </div>
-                `;
+                metadataFieldHtml =
+                  '<div class="field-container">' +
+                  '<label for="' +
+                  metadataField["name"] +
+                  '">' +
+                  metadataField["name"] +
+                  "</label>" +
+                  '<input id="' +
+                  metadataField["name"] +
+                  '" name="' +
+                  metadataField["name"] +
+                  '" type="text" value="' +
+                  defaultValue +
+                  '" class="qa-' +
+                  metadataField["name"] +
+                  '">' +
+                  "</div>";
               }
 
               document.getElementById("survey_metadata").innerHTML =

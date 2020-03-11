@@ -1,20 +1,28 @@
 body {
   font-family: "Lato", "Helvetica Neue", Arial, sans-serif;
   color: #222;
-  background: #eaeaea;
 }
 
-main {
-  border-radius: 4px;
-  background-color: #ffffff;
-  border: 1px solid #d6d8da;
-  margin-top: 1em !important;
-  padding-top: 20px !important;
-  padding-bottom: 20px !important;
+label {
+  display: inline-block;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  width: 200px;
+  font-size: 0.9rem;
 }
 
-fieldset {
-  margin-bottom: 20px;
+.field-wrap {
+  margin: 0 auto;
+}
+
+.field-container {
+  display: block;
+  margin: 0 0 0.2rem 0;
+  position: relative;
+}
+
+.field-container span {
+  position: relative;
 }
 
 input[type="text"] {
@@ -24,46 +32,43 @@ input[type="text"] {
   box-sizing: border-box;
 }
 
-.field-wrap {
-  margin: 0 auto;
+select {
+  width: 350px;
+  font-size: 0.9rem;
+  padding: 0.35rem;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 0;
+  border: 1px solid #dfdfdf;
+  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDMyIDMyIiBoZWlnaHQ9IjMycHgiIGlkPSLQodC70L7QuV8xIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAzMiAzMiIgd2lkdGg9IjMycHgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxwYXRoIGQ9Ik0yNC4yODUsMTEuMjg0TDE2LDE5LjU3MWwtOC4yODUtOC4yODhjLTAuMzk1LTAuMzk1LTEuMDM0LTAuMzk1LTEuNDI5LDAgIGMtMC4zOTQsMC4zOTUtMC4zOTQsMS4wMzUsMCwxLjQzbDguOTk5LDkuMDAybDAsMGwwLDBjMC4zOTQsMC4zOTUsMS4wMzQsMC4zOTUsMS40MjgsMGw4Ljk5OS05LjAwMiAgYzAuMzk0LTAuMzk1LDAuMzk0LTEuMDM2LDAtMS40MzFDMjUuMzE5LDEwLjg4OSwyNC42NzksMTAuODg5LDI0LjI4NSwxMS4yODR6IiBmaWxsPSIjMTIxMzEzIiBpZD0iRXhwYW5kX01vcmUiLz48Zy8+PGcvPjxnLz48Zy8+PGcvPjxnLz48L3N2Zz4=);
+  background-position: center right 5px;
+  background-repeat: no-repeat;
+  background-size: 22px;
 }
 
-.field-container {
-  display: flex;
-  margin: 0 0 0.2rem 0;
-  position: relative;
+select[multiple] {
+  background: none;
 }
 
-.field span {
-  position: relative;
-}
-
-.field img {
+.field-container img {
   width: 26px;
-  max-width: none;
   height: auto;
   display: block;
   position: absolute;
-  top: -28px;
-  right: -347px;
+  top: -1px;
+  right: 2px;
   cursor: pointer;
-  z-index: 3;
 }
 
-.btn-group > .btn {
-  display: inline-block;
-  background: #0f8243;
-  border-bottom: 0.16666667em solid rgba(0, 0, 0, 0.6);
-  color: #fff;
-  padding: 0.75em 1em;
+.btn {
+  background: #6099c6;
+  color: white;
+  border: 0;
+  border-radius: 3px;
+  display: block;
+  padding: 0.75rem 2rem;
+  text-align: center;
   font-size: 1rem;
-  font-weight: 600;
-  vertical-align: top;
-  line-height: 1.35;
-}
-
-.btn__secondary {
-  background: #d0d0d0;
-  color: #222;
-  font-weight: 400;
+  margin: 0.5rem;
+  float: left;
 }
