@@ -133,7 +133,7 @@ func generateClaims(claimValues map[string][]string) (claims map[string]interfac
 
 	claims["roles"] = roles
 
-	u := uuid.NewV4()
+	u, _ := uuid.NewV4()
 
 	claims["tx_id"] = u.String()
 
@@ -156,7 +156,7 @@ func GenerateJwtClaims() (jwtClaims map[string]interface{}) {
 	jwtClaims["iat"] = jwt.NewNumericDate(issued)
 	jwtClaims["exp"] = jwt.NewNumericDate(expires)
 
-	u := uuid.NewV4()
+	u, _ := uuid.NewV4()
 
 	jwtClaims["jti"] = u.String()
 
@@ -495,7 +495,7 @@ func GetDefaultValues() map[string]string {
 
 	defaults := make(map[string]string)
 
-	u := uuid.NewV4()
+	u, _ := uuid.NewV4()
 
 	defaults["user_id"] = "UNKNOWN"
 	defaults["period_id"] = "201605"
