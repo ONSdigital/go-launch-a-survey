@@ -148,9 +148,9 @@ func quickLauncherHandler(w http.ResponseWriter, r *http.Request) {
 	surveyURL := urlValues.Get("url")
 	log.Println("Quick launch request received", surveyURL)
 
-	collectionExerciseUUID, _ := uuid.NewV4()
+	collectionExerciseUUID := uuid.NewV4()
 
-	caseUUID, _ := uuid.NewV4()
+	caseUUID := uuid.NewV4()
 
 	urlValues.Add("ru_ref", authentication.GetDefaultValues()["ru_ref"])
 	urlValues.Add("collection_exercise_sid", collectionExerciseUUID.String())
