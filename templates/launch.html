@@ -44,43 +44,38 @@
     </div>
   </fieldset>
   <div id="accordion" class="accordion">
-    <details id="accordion-1" class="details js-collapsible details--accordion details--initialised" data-btn-close="Hide"
-      data-group="accordion" role="group">
-      <summary class="details__summary js-collapsible-summary" role="link" aria-controls="accordion-1"
-        aria-expanded="false" data-ga-action="Close panel">
-        <div class="details__heading">
-          <span class="details__title u-fs-r--b">Metadata</span>
-          <button type="button" class="btn details__btn btn--secondary btn--small js-collapsible-button u-d-no@xs@s"
-            aria-controls="accordion-1" data-ga-action="Close panel">
+    <div id="accordion-1" class="collapsible js-collapsible collapsible--accordion collapsible--initialised" data-btn-close="Hide" data-group="accordion" role="group">
+      <div class="collapsible__heading js-collapsible-heading" role="link" aria-controls="accordion-1" aria-expanded="false" data-ga-action="Close panel">
+        <div class="collapsible__controls">
+          <h2 class="collapsible__title u-fs-r--b">Metadata</h2>
+          <button type="button" class="btn collapsible__btn btn--secondary btn--small js-collapsible-button u-d-no@xs@s" aria-controls="accordion-1" data-ga-action="Close panel">
             <span class="btn__inner js-collapsible-button-inner">Show</span>
           </button>
         </div>
-      </summary>
-      <div id="accordion-1-content" class="details__content js-collapsible-content" aria-hidden="true">
-          <fieldset class="fieldgroup">
-            <div class="fieldgroup__fields">
-              <div id="survey_metadata">
-                <p class="u-fs-s">
-                  Metadata fields will be loaded when you select a questionnaire
-                </p>
-              </div>
-            </div>
-          </fieldset>
       </div>
-    </details>
-    <details id="accordion-2" class="details js-collapsible details--accordion details--initialised" data-btn-close="Hide"
+      <div id="accordion-1-content" class="collapsible__content js-collapsible-content" aria-hidden="true">
+        <fieldset class="fieldgroup">
+          <div class="fieldgroup__fields">
+            <div id="survey_metadata">
+              <p class="u-fs-s">
+                Metadata fields will be loaded when you select a questionnaire
+              </p>
+            </div>
+          </div>
+        </fieldset>
+      </div>  
+    </div>
+    <div id="accordion-2" class="collapsible js-collapsible collapsible--accordion collapsible--initialised" data-btn-close="Hide"
       data-group="accordion" role="group">
-      <summary class="details__summary js-collapsible-summary" role="link" aria-controls="accordion-2"
-        aria-expanded="false" data-ga-action="Close panel">
-        <div class="details__heading">
-          <span class="details__title u-fs-r--b">Required data</span>
-          <button type="button" class="btn details__btn btn--secondary btn--small js-collapsible-button u-d-no@xs@s"
-            aria-controls="accordion-2" data-ga-action="Close panel">
+      <div class="collapsible__heading js-collapsible-heading" role="link" aria-controls="accordion-1" aria-expanded="false" data-ga-action="Close panel">
+        <div class="collapsible__controls">
+          <h2 class="collapsible__title u-fs-r--b">Required data</h2>
+          <button type="button" class="btn collapsible__btn btn--secondary btn--small js-collapsible-button u-d-no@xs@s" aria-controls="accordion-1" data-ga-action="Close panel">
             <span class="btn__inner js-collapsible-button-inner">Show</span>
           </button>
         </div>
-      </summary>
-      <div id="accordion-2-content" class="details__content js-collapsible-content" aria-hidden="true">
+      </div>
+      <div id="accordion-2-content" class="collapsible__content js-collapsible-content" aria-hidden="true">
         <fieldset class="fieldgroup">
         
           <div class="field u-mb-m">
@@ -120,20 +115,18 @@
           </div>
         </fieldset>
       </div>
-    </details>
-    <details id="accordion-3" class="details js-collapsible details--accordion details--initialised" data-btn-close="Hide"
+    </div>
+    <div id="accordion-3" class="collapsible js-collapsible collapsible--accordion collapsible--initialised" data-btn-close="Hide"
       data-group="accordion" role="group">
-      <summary class="details__summary js-collapsible-summary" role="link" aria-controls="accordion-3"
-        aria-expanded="false" data-ga-action="Close panel">
-        <div class="details__heading">
-          <span class="details__title u-fs-r--b">Runner data</span>
-          <button type="button" class="btn details__btn btn--secondary btn--small js-collapsible-button u-d-no@xs@s"
-            aria-controls="accordion-3" data-ga-action="Close panel">
+      <div class="collapsible__heading js-collapsible-heading" role="link" aria-controls="accordion-1" aria-expanded="false" data-ga-action="Close panel">
+        <div class="collapsible__controls">
+          <h2 class="collapsible__title u-fs-r--b">Runner data</h2>
+          <button type="button" class="btn collapsible__btn btn--secondary btn--small js-collapsible-button u-d-no@xs@s" aria-controls="accordion-1" data-ga-action="Close panel">
             <span class="btn__inner js-collapsible-button-inner">Show</span>
           </button>
         </div>
-      </summary>
-      <div id="accordion-3-content" class="details__content js-collapsible-content" aria-hidden="true">
+      </div>
+      <div id="accordion-3-content" class="collapsible__content js-collapsible-content" aria-hidden="true">
         <fieldset class="fieldgroup">
         
           <div class="field u-mb-m">
@@ -171,7 +164,7 @@
           </div>
         </fieldset>
       </div>
-    </details>
+    </div>
   </div>
 
   <div class="btn-group">
