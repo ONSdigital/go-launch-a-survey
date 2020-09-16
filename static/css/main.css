@@ -50,20 +50,3 @@ input[type="text"] {
   z-index: 3;
 }
 
-.btn-group > .btn {
-  display: inline-block;
-  background: #0f8243;
-  border-bottom: 0.16666667em solid rgba(0, 0, 0, 0.6);
-  color: #fff;
-  padding: 0.75em 1em;
-  font-size: 1rem;
-  font-weight: 600;
-  vertical-align: top;
-  line-height: 1.35;
-}
-
-.btn__secondary {
-  background: #d0d0d0;
-  color: #222;
-  font-weight: 400;
-}

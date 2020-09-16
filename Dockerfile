@@ -15,11 +15,6 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /go/bin/go-launch
 ######## Start a new stage from scratch #######
 FROM alpine:latest  
 
-RUN apk --no-cache update && \
-    apk --no-cache add python py-pip py-setuptools ca-certificates && \
-    pip --no-cache-dir install awscli && \
-    rm -rf /var/cache/apk/*
-
 # Copy the Pre-built binary file and entry point from the previous stage
 COPY --from=builder /go/bin/go-launch-a-survey .
 COPY docker-entrypoint.sh .

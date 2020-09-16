@@ -1,6 +1,6 @@
 {{define "title"}}Launch a Questionnaire{{end}} {{define "body"}}
 <p>This tool allows you to preview published questionnaires and their versions from EQ/Runner and the Survey Registry.</p>
-<form action="" method="POST" xmlns="http://www.w3.org/1999/html">
+<form action="" method="POST" xmlns="http://www.w3.org/1999/html" id="form1">
   <fieldset class="fieldgroup">
     <div class="fieldgroup__fields">
       <div class="field field--select">
@@ -43,39 +43,63 @@
       </div>
     </div>
   </fieldset>
+  <div id="collapsible-with-save-content" class="collapsible__content js-collapsible-content">
+    <p>A typical photovoltaic system employs solar panels, each comprising a number of solar cells, which generate electrical power. PV installations may be ground-mounted, rooftop mounted or wall mounted. The mount may be fixed, or use a solar tracker to follow the sun across the sky.</p>
+    <button type="button" class="btn btn--small js-collapsible-button u-d-no btn--secondary" aria-hidden="true">
+      <span class="btn__inner js-collapsible-button-inner">
+        Hide this
+      </span>
+      <span class="btn__context u-vh">What is a photovoltaic system? undefined</span>
+    </button>
+  </div>
+</div>
   <div id="accordion" class="accordion">
-    <div id="accordion-1" class="collapsible js-collapsible collapsible--accordion collapsible--initialised" data-btn-close="Hide" data-group="accordion" role="group">
-      <div class="collapsible__heading js-collapsible-heading" role="link" aria-controls="accordion-1" aria-expanded="false" data-ga-action="Close panel">
+    <div id="accordion-1" class="collapsible js-collapsible collapsible--accordion" data-btn-close="Hide" data-group="accordion">
+      <div class="collapsible__heading js-collapsible-heading">
         <div class="collapsible__controls">
           <h2 class="collapsible__title u-fs-r--b">Metadata</h2>
-          <button type="button" class="btn collapsible__btn btn--secondary btn--small js-collapsible-button u-d-no@xs@s" aria-controls="accordion-1" data-ga-action="Close panel">
-            <span class="btn__inner js-collapsible-button-inner">Show</span>
+          <span class="collapsible__icon">
+            <svg id="chevron" class="svg-icon" viewBox="0 0 7.5 12.85" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5.74,14.28l-.57-.56a.5.5,0,0,1,0-.71h0l5-5-5-5a.5.5,0,0,1,0-.71h0l.57-.56a.5.5,0,0,1,.71,0h0l5.93,5.93a.5.5,0,0,1,0,.7L6.45,14.28a.5.5,0,0,1-.71,0Z" transform="translate(-5.02 -1.59)" />
+            </svg>
+          </span>
+          <button type="button" class="btn collapsible__btn btn--secondary btn--small js-collapsible-button u-d-no u-d-no@xs@s">
+            <span class="btn__inner js-collapsible-button-inner">
+              Show
+            </span>
           </button>
         </div>
       </div>
-      <div id="accordion-1-content" class="collapsible__content js-collapsible-content" aria-hidden="true">
-        <fieldset class="fieldgroup">
-          <div class="fieldgroup__fields">
-            <div id="survey_metadata">
-              <p class="u-fs-s">
-                Metadata fields will be loaded when you select a questionnaire
-              </p>
-            </div>
-          </div>
-        </fieldset>
-      </div>  
+      <div id="accordion-1-content" class="collapsible__content js-collapsible-content">
+            <fieldset class="fieldgroup">
+              <div class="fieldgroup__fields">
+                <div id="survey_metadata">
+                  <p class="u-fs-s">
+                    Metadata fields will be loaded when you select a questionnaire
+                  </p>
+                </div>
+              </div>
+            </fieldset>
+        </div>
+      </div>
     </div>
-    <div id="accordion-2" class="collapsible js-collapsible collapsible--accordion collapsible--initialised" data-btn-close="Hide"
-      data-group="accordion" role="group">
-      <div class="collapsible__heading js-collapsible-heading" role="link" aria-controls="accordion-1" aria-expanded="false" data-ga-action="Close panel">
+    <div id="accordion-2" class="collapsible js-collapsible collapsible--accordion" data-btn-close="Hide" data-group="accordion">
+      <div class="collapsible__heading js-collapsible-heading">
         <div class="collapsible__controls">
           <h2 class="collapsible__title u-fs-r--b">Required data</h2>
-          <button type="button" class="btn collapsible__btn btn--secondary btn--small js-collapsible-button u-d-no@xs@s" aria-controls="accordion-1" data-ga-action="Close panel">
-            <span class="btn__inner js-collapsible-button-inner">Show</span>
+          <span class="collapsible__icon">
+            <svg id="chevron" class="svg-icon" viewBox="0 0 7.5 12.85" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5.74,14.28l-.57-.56a.5.5,0,0,1,0-.71h0l5-5-5-5a.5.5,0,0,1,0-.71h0l.57-.56a.5.5,0,0,1,.71,0h0l5.93,5.93a.5.5,0,0,1,0,.7L6.45,14.28a.5.5,0,0,1-.71,0Z" transform="translate(-5.02 -1.59)" />
+            </svg>
+          </span>
+          <button type="button" class="btn collapsible__btn btn--secondary btn--small js-collapsible-button u-d-no u-d-no@xs@s">
+            <span class="btn__inner js-collapsible-button-inner">
+              Show
+            </span>
           </button>
         </div>
       </div>
-      <div id="accordion-2-content" class="collapsible__content js-collapsible-content" aria-hidden="true">
+      <div id="accordion-2-content" class="collapsible__content js-collapsible-content">
         <fieldset class="fieldgroup">
         
           <div class="field u-mb-m">
@@ -116,17 +140,23 @@
         </fieldset>
       </div>
     </div>
-    <div id="accordion-3" class="collapsible js-collapsible collapsible--accordion collapsible--initialised" data-btn-close="Hide"
-      data-group="accordion" role="group">
-      <div class="collapsible__heading js-collapsible-heading" role="link" aria-controls="accordion-1" aria-expanded="false" data-ga-action="Close panel">
+    <div id="accordion-3" class="collapsible js-collapsible collapsible--accordion" data-btn-close="Hide" data-group="accordion">
+      <div class="collapsible__heading js-collapsible-heading">
         <div class="collapsible__controls">
-          <h2 class="collapsible__title u-fs-r--b">Runner data</h2>
-          <button type="button" class="btn collapsible__btn btn--secondary btn--small js-collapsible-button u-d-no@xs@s" aria-controls="accordion-1" data-ga-action="Close panel">
-            <span class="btn__inner js-collapsible-button-inner">Show</span>
+          <h2 class="collapsible__title u-fs-r--b">Runner Data</h2>
+          <span class="collapsible__icon">
+            <svg id="chevron" class="svg-icon" viewBox="0 0 7.5 12.85" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5.74,14.28l-.57-.56a.5.5,0,0,1,0-.71h0l5-5-5-5a.5.5,0,0,1,0-.71h0l.57-.56a.5.5,0,0,1,.71,0h0l5.93,5.93a.5.5,0,0,1,0,.7L6.45,14.28a.5.5,0,0,1-.71,0Z" transform="translate(-5.02 -1.59)" />
+            </svg>
+          </span>
+          <button type="button" class="btn collapsible__btn btn--secondary btn--small js-collapsible-button u-d-no u-d-no@xs@s">
+            <span class="btn__inner js-collapsible-button-inner">
+              Show
+            </span>
           </button>
         </div>
       </div>
-      <div id="accordion-3-content" class="collapsible__content js-collapsible-content" aria-hidden="true">
+      <div id="accordion-3-content" class="collapsible__content js-collapsible-content">
         <fieldset class="fieldgroup">
         
           <div class="field u-mb-m">
@@ -166,27 +196,15 @@
       </div>
     </div>
   </div>
-
-  <div class="btn-group">
-    <input
-      type="submit"
-      name="action_launch"
-      value="Open Survey"
-      class="btn"
-      id="submit-btn"
-      disabled="disabled"
-    ></input>
-    <input
-      type="submit"
-      name="action_flush"
-      value="Flush Survey Data"
-      class="btn btn__secondary"
-      id="flush-btn"
-      disabled="disabled"
-    />
-  </div>
 </form>
-
+<div>
+  <button id="submit-btn" type="submit" class="btn" form="form1" value="Open Survey" name="action_launch" disabled="disabled">
+    <span class="btn__inner">Open Survey</span>
+  </button>
+  <button id="flush-btn" type="submit" class="btn" form="form1" value="Flush Survey Data" name="action_flush" disabled="disabled">
+    <span class="btn__inner">Flush Survey Data</span>
+  </button>
+</div>
 <script>
   // uuidv4: from https://github.com/kelektiv/node-uuid
   !(function(e) {
