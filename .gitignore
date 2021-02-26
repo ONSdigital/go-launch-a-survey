@@ -27,6 +27,9 @@ _testmain.go
 *.prof
 
 vendor/
+.vendor-new/
+
+Gopkg.lock
 
 # binaries
 go-launch-a-survey

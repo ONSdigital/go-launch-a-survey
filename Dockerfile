@@ -1,5 +1,5 @@
 # Start from golang v1.8 base image
-FROM golang:1.8 as builder
+FROM golang:1.13.4 as builder
 
 WORKDIR /go/src/github.com/ONSdigital/go-launch-a-survey
 
