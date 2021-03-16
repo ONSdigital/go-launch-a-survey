@@ -9,11 +9,10 @@ jobs:
   Build_and_push_images:
     runs-on: ubuntu-latest
 
-    env:
-      TAG: "${{ github.ref }}-release"
-
     steps:
       - uses: actions/checkout@v2
+      - name: Set env
+        run: echo "TAG=${GITHUB_REF#refs/*/}-release" >> $GITHUB_ENV
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
