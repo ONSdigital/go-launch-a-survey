@@ -31,4 +31,3 @@ jobs:
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker tag $REGISTRY/$REPOSITORY:$IMAGE_TAG $REGISTRY/$REPOSITORY:$IMAGE_TAG_LATEST
           docker push --all-tags $REGISTRY/$REPOSITORY
-          
